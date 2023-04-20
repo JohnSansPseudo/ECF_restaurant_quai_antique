@@ -1,0 +1,11 @@
+/*ADMIN BAR*/
+#wpadminbar #wp-admin-bar-QuaiAntique a:before{
+    content: "\f187";
+    top: 4px;
+}
+
+/*FIN ADMIN BAR */
+
+.mHover{
+    cursor: pointer;
+}

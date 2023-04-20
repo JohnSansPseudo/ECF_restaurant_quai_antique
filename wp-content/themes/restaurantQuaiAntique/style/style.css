@@ -1,0 +1,54 @@
+
+/*
+COLOR
+#906427 (or)
+#292222 (marron foncé)
+#b6ac97 (beige)
+
+#bdbcbc (gris clair)
+#545352 (gris foncé)
+
+FONT
+font-family: 'Mulish', sans-serif;
+font-family: 'Roboto Condensed', sans-serif;
+font-family: 'Niconne', cursive;
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&family=Niconne&family=Roboto+Condensed&display=swap');
+
+
+body{
+    font-family: 'Mulish', sans-serif;
+}
+
+h1, h2, h3{
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+header .navbar {
+    background: #b6ac97;
+}
+
+header .navbar .nav-link {
+    color: white;
+}
+
+header .navbar .nav-link:hover{
+    color: #906427;
+}
+
+
+.btnSaillance {
+    background: #906427;
+    color: white;
+}
+
+.btnSaillance:hover{
+    background: #7b571e;
+    color: white;
+}
+
+footer{
+    background: #b6ac97;
+}
+

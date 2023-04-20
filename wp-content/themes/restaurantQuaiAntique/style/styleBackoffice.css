@@ -1,0 +1,33 @@
+
+
+.elf {
+    display: inline-block;
+    margin: 10px 7px;
+}
+
+.ctn-elf-inlb {
+    display: inline-block;
+}
+
+.elf-block {
+    display: block;
+}
+
+.elf label {
+    display: inline-block;
+    color: darkgrey;
+    font-size: 10px;
+}
+
+.elf label:first-letter {
+    text-transform: uppercase;
+}
+.elf input,
+.elf select{
+    display: block;
+}
+
+.backOfficeSection-Menu .dashicons.dashicons-action {
+    padding: 0 5px;
+    margin: 0 20px
+}

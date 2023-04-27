@@ -5,6 +5,15 @@ class RestaurantMenu
 {
     private int $id;
     private string $title;
+    private array $aErr = array();
+
+    /**
+     * @return array
+     */
+    public function getErrArray(): array
+    {
+        return $this->aErr;
+    }
 
     /**
      * RestaurantMenu constructor.
@@ -30,7 +39,11 @@ class RestaurantMenu
      */
     public function setId(int $iId): RestaurantMenu
     {
-        $this->id = $iId;
+        $oParam = new ParamInt($iId, self::Class . ' id', 1);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else $this->id = $iId;
         return $this;
     }
 
@@ -48,7 +61,14 @@ class RestaurantMenu
      */
     public function setTitle(string $sTitle): RestaurantMenu
     {
-        $this->title = $sTitle;
+        $oParam = new ParamString($sTitle, self::Class . ' title', 3, 50);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else $this->title = $sTitle;
         return $this;
     }
+
+
+
 }

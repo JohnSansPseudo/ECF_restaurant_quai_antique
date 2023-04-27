@@ -10,6 +10,16 @@ class Client
     private string $lastName;
     private string $tel;
     private string $allergy;
+    private array $aErr = array();
+
+    /**
+     * @return array
+     */
+    public function getErrArray(): array
+    {
+        return $this->aErr;
+    }
+
 
     /**
      * Client constructor.
@@ -46,7 +56,11 @@ class Client
      */
     public function setId(int $iId): Client
     {
-        $this->id = $iId;
+        $oParam = new ParamInt($iId, self::Class . ' id ', 1);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else  $this->id = $iId;
         return $this;
     }
 
@@ -64,7 +78,11 @@ class Client
      */
     public function setEmail(string $sEmail): Client
     {
-        $this->email = $sEmail;
+        $oParam = new ParamString($sEmail, self::Class . ' email ', 3);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else $this->email = $sEmail;
         return $this;
     }
 
@@ -82,7 +100,11 @@ class Client
      */
     public function setPassword(string $sPassword): Client
     {
-        $this->password = $sPassword;
+        $oParam = new ParamString($sPassword, self::Class . ' email ', 3, 50);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else $this->password = $sPassword;
         return $this;
     }
 
@@ -100,7 +122,11 @@ class Client
      */
     public function setFirstName(string $sFirstName): Client
     {
-        $this->firstName = $sFirstName;
+        $oParam = new ParamString($sFirstName, self::Class . ' firstName ', 3, 50);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else $this->firstName = $sFirstName;
         return $this;
     }
 
@@ -118,7 +144,11 @@ class Client
      */
     public function setLastName(string $sLastName): Client
     {
-        $this->lastName = $sLastName;
+        $oParam = new ParamString($sLastName, self::Class . ' lastName ', 3, 50);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else $this->lastName = $sLastName;
         return $this;
     }
 
@@ -136,7 +166,11 @@ class Client
      */
     public function setTelephone(string $sTelephone): Client
     {
-        $this->tel = $sTelephone;
+        $oParam = new ParamString($sTelephone, self::Class . ' telephone ', 10, 10);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else $this->tel = $sTelephone;
         return $this;
     }
 
@@ -154,7 +188,11 @@ class Client
      */
     public function setAllergy(string $sAllergy): Client
     {
-        $this->allergy = $sAllergy;
+        $oParam = new ParamString($sAllergy, self::Class . ' allergy ', 0, 1000);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else $this->allergy = $sAllergy;
         return $this;
     }
 }

@@ -1,27 +1,36 @@
 <?php
 
-
+//GESTION DE L'ADMIN
 //add_action('template_redirect', 'addMenuForm');
 add_action('admin_init', 'addMenuForm');
+
+// FIN GESTION DE L'ADMIN
 
 //MENU ADMIN
 add_action('admin_menu', 'sidebarAdminQuaiAntique');
 add_action('admin_bar_menu', 'topbarAdminQuaiAntique', 999);
+//FIN MENU ADMIN
 
-//CSS ADMIN
-add_action('admin_enqueue_scripts', 'styleAdmin');
-add_action('login_enqueue_scripts', 'styleAdmin');
-//FIN CSS ADMIN
-
+//AJOUT DE SCRIPTS ET CSS
+add_action('admin_enqueue_scripts', 'scriptAdmin');
 add_action('wp_enqueue_scripts', 'quai_antique_scripts');
-add_action('after_setup_theme', 'quai_antique_supports'); //THEME OPTIONS
+//FIN AJOUT DE SCRIPTS ET CSS
+
+
 add_action('after_setup_theme', 'includeFiles');
-add_action('after_setup_theme', 'setTables');//CREATION DES TABLES PERONNALISEES
+add_action('after_setup_theme', 'setTables');//CREATION DES TABLES PERSONNALISEES
+add_action('after_setup_theme', 'quai_antique_supports'); //THEME OPTIONS
+
 
 //NAVIGATION - MENU
 add_filter('nav_menu_css_class', 'quai_antique_menu_class');
 add_filter('nav_menu_link_attributes', 'quai_antique_menu_links_attr');
+//FIN NAVIGATION - MENU
 
+
+//AJAX
+add_action( 'wp_ajax_switch_ajax', 'switch_ajax' );
+//FIN AJAX
 
 
 
@@ -30,11 +39,14 @@ function dbrDie($var) { echo '<pre>'. print_r($var, true).'</pre>'; die(); }
 /** ADMIN SIDEBAR */
 function sidebarAdminQuaiAntique()
 {
-    add_menu_page('Restaurant Quai Antique Param', 'QuaiAntiqueParam', 'manage_options', 'QuaiAntiqueParam', 'quaiAntiqueParamPage', 'dashicons-food');
-}
-function quaiAntiqueParamPage()
-{
-    echo restaurantQuaiAntiqueSectionMenu();
+    add_menu_page(
+        'Restaurant Quai Antique Param',
+        'QuaiAntiqueParam',
+        'manage_options',
+        'QuaiAntiqueParam',
+        'quaiAntiqueParamPage',
+        'dashicons-food');
+
 }
 /** END OF ADMIN SIDEBAR */
 
@@ -55,121 +67,21 @@ function topbarAdminQuaiAntique($wp_admin_bar)
 
 
 
-/**
- * @var $oMenu RestaurantMenu
- * @return string
- */
-function restaurantQuaiAntiqueSectionMenu()
-{
-    //OPtion du select pour ajouter un option à un menu
-    $sOptionAddOption = '';
-    $aMenu = RestaurantMenus::getInstance()->getAllData();
-    foreach($aMenu as $oMenu)
-    {
-        $sOptionAddOption .= '<option value="' . $oMenu->getId() . '">' . $oMenu->getTitle() . '</option>';
-    }
 
-    //Liste de tous les menus
-    $sTrMenu = '';
-    foreach($aMenu as $oMenu)
-    {
-        $sTrMenu .= '<tr data-id="' . $oMenu->getId() . '">
-                        <td data-title=""><input id="inpTitleMenuUpdate" type="text" value="' . $oMenu->getTitle(). '"></td>
-                        <td><span class="dashicons dashicons-trash dashicons-action mHover"></span></td>
-                    </tr>';
-    }
-
-    return '<div class="backOfficeSection-Menu">
-
-
-                    <!-- Menu management -->
-                    <div class="SubSection">
-                        <div class="head">
-                            <h4>Ajouter un menu</h4>
-                            <hr/>
-                        </div>
-                        <div class="body">
-                            <form method="post" action="#">
-                                <div id="cntAddMenu">
-                                    <input type="hidden" name="add-menu-key" value="addMenuRestaurantBackOffice">
-                                    <div class="elf">
-                                        <label for="inpTitleMenu">Titre du menu</label>
-                                        <input type="text" id="inpTitleMenu" name="inpTitleMenu" min="3" max="50"/>
-                                    </div>
-                                    <button type="submit" id="btnAddMenu" name="add-menu">Ajouter le menu</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    
-                    <div class="SubSection">
-                        <div class="head">
-                            <h4>Gérer les menus</h4>
-                            <hr/>
-                        </div>
-                        <div class="body">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Titre du menu</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody> ' . $sTrMenu . ' </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    
-                    
-                    
-                    
-                    <!-- Menu option management -->
-                    <div class="SubSection">
-                        <div class="head">
-                            <h4>Ajouter une option de menu</h4>
-                            <hr/>
-                        </div>
-                        <div class="body">
-                            <div id="ctnAddOPtionMenu">
-                                 <div class="elf">
-                                    <label for="selOptionMenu">Menu de l\'option</label>
-                                    <select id="selOptionMenu" name="selOptionMenu">' . $sOptionAddOption . '</select>
-                                </div>
-                                
-                                <div class="elf">
-                                    <label for="inpTitleOption">Titre de l\'option</label>
-                                    <input type="text" id="inpTitleOption" name="inpTitleOption" />
-                                </div>
-                                
-                                <div class="elf">
-                                    <label for="inpDescOption">Description</label>
-                                    <input type="text" id="inpDescOption" name="inpDescOption" />
-                                </div>
-                                
-                                <div class="elf">
-                                    <label for="inpPriceOption">Prix</label>
-                                    <input type="text" id="inpPriceOption" name="inpPriceOption" />
-                                </div>
-                                
-                                <button type="submit" class="btn" >Créer et ajouter l\'option au menu</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>';
-}
 
 function addMenuForm()
 {
+
     if(isset($_POST['add-menu-key']) && isset($_POST['add-menu'])){
 
         if($_POST['add-menu-key'] !== 'addMenuRestaurantBackOffice') return;
-
         try{
             $oRestaurantMenus = new RestaurantMenus();
             $oMenu = new RestaurantMenu($_POST['inpTitleMenu']);
-            $aResult = $oRestaurantMenus->getByWhere(array('title' => $oMenu->getTitle()));
-            if(count($aResult) > 0)
+            $mResult = $oRestaurantMenus->getByWhere(array('title' => $oMenu->getTitle()));
+            if(is_array($mResult) && count($mResult) > 0)
             {
+                dbrDie($mResult);
                 //Ce menu existe déjà
             }
             else RestaurantMenus::getInstance()->add($oMenu); //On l'ajoute
@@ -182,24 +94,20 @@ function addMenuForm()
 
 
 
-function quai_antique_supports()
-{
-    //NAV
-    add_theme_support('menus');
-    register_nav_menu('header', 'top-menu');
 
-    //LOGO
-    add_theme_support('custom-logo', array('height' => 480, 'width' => 720));
-    add_theme_support('title-tag');
-}
 
-function styleAdmin()
+/* AJOUT SCRIPTS & CSS */
+function scriptAdmin()
 {
     wp_enqueue_style('adminstyle', get_template_directory_uri() . '/style/styleAdmin.css');
     wp_enqueue_style('backoffice', get_template_directory_uri() . '/style/styleBackoffice.css');
 
+    wp_enqueue_script('main_script', get_template_directory_uri() . '/script/main_script.js');
+    wp_enqueue_script('param_check', get_template_directory_uri() . '/script/param/ParamCheck.js');
+    wp_enqueue_script('param_check_int', get_template_directory_uri() . '/script/param/ParamIntCheck.js');
+    wp_enqueue_script('param_check_string', get_template_directory_uri() . '/script/param/ParamStrCheck.js');
+    wp_enqueue_script('param_check_object', get_template_directory_uri() . '/script/param/ParamObjCheck.js');
 }
-
 function quai_antique_scripts()
 {
     //JQUERY
@@ -213,27 +121,30 @@ function quai_antique_scripts()
 
     //CSS
     wp_enqueue_style('maincss', get_template_directory_uri() . '/style/style.css');
-
 }
-
-
-
-function quai_antique_menu_class($aClass)
-{
-    $aClass[] = 'nav-item';
-    return $aClass;
-}
-
-function quai_antique_menu_links_attr($aAttr)
-{
-    $aAttr['class'] = 'nav-link';
-    return $aAttr;
-}
+/* FIN SCRIPTS & CSS */
 
 function includeFiles()
 {
-    require_once('src/PDOSingleton.php');
-    require_once('src/MotherObjTable.php');
+    //Classes utilitaires
+    require_once('src/tools/JsonAnswer.php');
+    require_once('src/tools/PDOSingleton.php');
+
+    //Classes utilitaires pour les paramètres
+    require_once 'src/tools/ParamCheck.php';
+    require_once 'src/tools/ParamException.php';
+    require_once 'src/tools/ParamArray.php';
+    require_once 'src/tools/ParamBool.php';
+    require_once 'src/tools/ParamFloat.php';
+    require_once 'src/tools/ParamInt.php';
+    require_once 'src/tools/ParamObject.php';
+    require_once 'src/tools/ParamString.php';
+
+    //Pour les requêtes AJAX
+    require_once('src/ajax/admin-ajax.php');
+
+    //Classes métiers
+    require_once('src/ManagerObjTable.php');
     require_once('src/Booking.php');
     require_once('src/Bookings.php');
     require_once('src/Client.php');
@@ -248,9 +159,15 @@ function includeFiles()
     require_once('src/RestaurantMenus.php');
     require_once('src/RestaurantMenuOption.php');
     require_once('src/RestaurantMenuOptions.php');
+
+    //Controllers
+    require_once('src/controller/backoffice.php');
+
+
 }
 
 
+//INIT TABLES BDD
 function setTables()
 {
     Bookings::getInstance()->createTable();
@@ -261,6 +178,33 @@ function setTables()
     RestaurantMenus::getInstance()->createTable();
     RestaurantMenuOptions::getInstance()->createTable();
 }
+// FIN INIT TABLES BDD
+
+
+//GESTION DE LA NAVIGATION
+function quai_antique_menu_class($aClass)
+{
+    $aClass[] = 'nav-item';
+    return $aClass;
+}
+
+function quai_antique_menu_links_attr($aAttr)
+{
+    $aAttr['class'] = 'nav-link';
+    return $aAttr;
+}
+
+function quai_antique_supports()
+{
+    //NAV
+    add_theme_support('menus');
+    register_nav_menu('header', 'top-menu');
+
+    //LOGO
+    add_theme_support('custom-logo', array('height' => 480, 'width' => 720));
+    add_theme_support('title-tag');
+}
+// FIN GESTION DE LA NAVIGATION
 
 
 

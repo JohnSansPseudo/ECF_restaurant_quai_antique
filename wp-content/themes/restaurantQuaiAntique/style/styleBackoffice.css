@@ -1,4 +1,6 @@
-
+.hide{
+    display: none;
+}
 
 .elf {
     display: inline-block;
@@ -27,7 +29,27 @@
     display: block;
 }
 
-.backOfficeSection-Menu .dashicons.dashicons-action {
+.backOfficeSection-menu .dashicons.dashicons-action {
     padding: 0 5px;
     margin: 0 20px
+}
+
+.tabBackOffice{
+    padding: 10px 15px;
+    margin: 0 5px;
+    display: inline-block;
+    background: #b6ac97;
+}
+.tabBackOffice.active,
+.tabBackOffice:hover{
+    background: #906427;
+    color: white;
+}
+
+.tabBackOffice.hide{
+    display: none;
+}
+
+#RestaurantQuaiAntiqueBackOffice{
+    padding: 10px;
 }

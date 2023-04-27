@@ -1,7 +1,7 @@
 <?php
 
 
-final class Bookings extends MotherObjTable
+final class Bookings extends ManagerObjTable
 {
     static public function getTableName()
     {
@@ -23,6 +23,7 @@ final class Bookings extends MotherObjTable
                     firstName VARCHAR(50) NOT NULL,
                     lastName VARCHAR(50) NOT NULL,
                     tel VARCHAR(10) NOT NULL,
+                    email VARCHAR(50) NOT NULL,
                     allergy TEXT(500),
                     nbGuest TINYINT NOT NULL,
                     startTime TIME NOT NULL,

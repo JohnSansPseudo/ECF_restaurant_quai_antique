@@ -1,7 +1,7 @@
 <?php
 
 
-final class RestaurantMenus extends MotherObjTable
+final class RestaurantMenus extends ManagerObjTable
 {
     static public function getInstance() { return new RestaurantMenus(); }
 
@@ -9,6 +9,29 @@ final class RestaurantMenus extends MotherObjTable
     {
         global $wpdb;
         return $wpdb->prefix . 'restaurant_menu';
+    }
+
+    /**
+     * @param $id int
+     * @return bool
+     */
+    public function deleteById($id)
+    {
+        $oPDO = PDOSingleton::getInstance();
+
+        //On vérifie si l'id correspond à une entrée en BDD
+        $mData = $this->getByWhere(array('id' => $_POST['id']));
+        if(!$mData) throw new Exception('Error this id is not in database so it cannot be delete');
+
+        //On vérifie si aucune oOption de menus n'utilisent ce menu
+        $mOptions = RestaurantMenuOptions::getInstance()->getByWhere(array('idMenu' => $id));
+        if($mOptions)
+        {
+            throw new Exception('Error this menu is associate whit option menu, please delete option(s) menu before');
+        }
+        $oStatement = $oPDO->prepare("DELETE FROM " . static::getTableName() . " WHERE id=:id");
+        $oStatement->bindParam(':id', $id, PDO::PARAM_INT);
+        return $oStatement->execute();
     }
 
     /**
@@ -42,15 +65,48 @@ final class RestaurantMenus extends MotherObjTable
         return $oRestaurantMenu;
     }
 
-    public function getAllData()
+    /*
+     * @return array
+     */
+    public function getAllData():array
     {
         $oPDO = PDOSingleton::getInstance();
         $oStatement = $oPDO->prepare("SELECT * FROM " . self::getTableName());
-        $aData = array();
-        if($oStatement->execute()){
-            $oStatement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'RestaurantMenu', array('1', '2'));
-            while ($o = $oStatement->fetch()) { $aData[$o->getId()] = $o; }
+        return $this->statementGetExecute($oStatement);
+    }
+
+    /**
+     * @param $aParam array
+     * @return array | bool
+     */
+    public function getByWhere($aParam)
+    {
+        $oPDO = PDOSingleton::getInstance();
+        $aDataRem = array();
+        foreach($aParam as $key => $val) { $aDataRem[] = $key . '=:' . $key; }
+        $sData = join(' AND ', $aDataRem);
+
+        $oStatement = $oPDO->prepare("SELECT * FROM " . self::getTableName() . " WHERE " . $sData);
+        foreach($aParam as $k => $v)
+        {
+            $oStatement->bindValue(':' . $k, $v);
         }
+        return $this->statementGetExecute($oStatement);
+    }
+
+    /**
+     * @param $oStatement PDOStatement
+     * @return array | bool
+     */
+    private function statementGetExecute($oStatement)
+    {
+        //dbrDie($oStatement->queryString);
+        $bExec = $oStatement->execute();
+        if(!$bExec) return $bExec;
+        $aData = array();
+        $oStatement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'RestaurantMenu', array('1', '2'));
+        while ($o = $oStatement->fetch()) { $aData[$o->getId()] = $o; }
+        if(count($aData) === 1) return array_pop($aData);
         return $aData;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 
-final class RestaurantMenuOptions extends MotherObjTable
+final class RestaurantMenuOptions extends ManagerObjTable
 {
     static public function getInstance() { return new RestaurantMenuOptions(); }
 
@@ -53,6 +53,8 @@ final class RestaurantMenuOptions extends MotherObjTable
     }
 
 
+
+
     /**
      * @return array
      */
@@ -65,6 +67,43 @@ final class RestaurantMenuOptions extends MotherObjTable
             $oStatement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'RestaurantMenuOption', array('1', '2', '3', '4', '5'));
             while ($o = $oStatement->fetch()) { $aData[$o->getId()] = $o; }
         }
+        return $aData;
+    }
+
+    /**
+     * @param $aParam array
+     * @return array | bool
+     */
+    public function getByWhere($aParam)
+    {
+        $oPDO = PDOSingleton::getInstance();
+        $aDataRem = array();
+        foreach($aParam as $key => $val) { $aDataRem[] = $key . '=:' . $key; }
+        $sData = join(' AND ', $aDataRem);
+
+        $oStatement = $oPDO->prepare("SELECT * FROM " . self::getTableName() . " WHERE " . $sData);
+        foreach($aParam as $k => $v)
+        {
+            $oStatement->bindValue(':' . $k, $v);
+        }
+        return $this->statementGetExecute($oStatement);
+    }
+
+    /**
+     * @param $oStatement PDOStatement
+     * @return array | bool
+     */
+    private function statementGetExecute($oStatement)
+    {
+        //dbrDie($oStatement->queryString);
+        $bExec = $oStatement->execute();
+
+        if(!$bExec) return $bExec;
+
+        $aData = array();
+        $oStatement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'RestaurantMenuOption', array('1', '2', '3', '4', '5'));
+        while ($o = $oStatement->fetch()) { $aData[$o->getId()] = $o; }
+        if(count($aData) === 1) return array_pop($aData);
         return $aData;
     }
 }

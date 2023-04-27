@@ -1,7 +1,7 @@
 <?php
 
 
-final class FoodDishes extends MotherObjTable
+final class FoodDishes extends ManagerObjTable
 {
 
     static public function getInstance() { return new FoodDishes(); }

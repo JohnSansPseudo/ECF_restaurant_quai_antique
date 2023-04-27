@@ -8,6 +8,15 @@ class RestaurantMenuOption
     private string $title;
     private string $description;
     private float $price;
+    private array $aErr = array();
+
+    /**
+     * @return array
+     */
+    public function getErrArray(): array
+    {
+        return $this->aErr;
+    }
 
     /**
      * RestaurantMenuOption constructor.
@@ -41,7 +50,11 @@ class RestaurantMenuOption
      */
     public function setId(int $iId): RestaurantMenuOption
     {
-        $this->id = $iId;
+        $oParam = new ParamInt($iId, self::Class . ' id ', 1);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else  $this->id = $iId;
         return $this;
     }
 
@@ -59,7 +72,11 @@ class RestaurantMenuOption
      */
     public function setIdMenu(int $iIdMenu): RestaurantMenuOption
     {
-        $this->idMenu = $iIdMenu;
+        $oParam = new ParamInt($iIdMenu, self::Class . ' idMenu ', 1);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else  $this->idMenu = $iIdMenu;
         return $this;
     }
 
@@ -77,7 +94,11 @@ class RestaurantMenuOption
      */
     public function setTitle(string $sTitle): RestaurantMenuOption
     {
-        $this->title = $sTitle;
+        $oParam = new ParamString($sTitle, self::Class . ' title ', 3, 50);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else $this->title = $sTitle;
         return $this;
     }
 
@@ -95,7 +116,11 @@ class RestaurantMenuOption
      */
     public function setDescription(string $sDescription): RestaurantMenuOption
     {
-        $this->description = $sDescription;
+        $oParam = new ParamString($sDescription, self::Class . ' description ', 3, 250);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else $this->description = $sDescription;
         return $this;
     }
 
@@ -113,7 +138,11 @@ class RestaurantMenuOption
      */
     public function setPrice(float $fPrice): RestaurantMenuOption
     {
-        $this->price = $fPrice;
+        $oParam = new ParamFloat($fPrice, self::Class . ' price ', 1);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else $this->price = $fPrice;
         return $this;
     }
 

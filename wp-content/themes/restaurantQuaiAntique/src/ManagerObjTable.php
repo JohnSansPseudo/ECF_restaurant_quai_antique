@@ -1,11 +1,14 @@
 <?php
 
 
-abstract class MotherObjTable
+abstract class ManagerObjTable
 {
+
     abstract function createTable(): bool;
     abstract function add(object $oData);
     abstract function getAllData();
+    //abstract function getByWhere($aParam);
+
 
 
     public function deleteById($id)
@@ -34,6 +37,8 @@ abstract class MotherObjTable
 
         return $oStatement->execute();
     }
+
+
 
 
 }

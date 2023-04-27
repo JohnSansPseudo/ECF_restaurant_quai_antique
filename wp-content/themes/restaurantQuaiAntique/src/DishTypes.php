@@ -1,7 +1,7 @@
 <?php
 
 
-final class DishTypes extends MotherObjTable
+final class DishTypes extends ManagerObjTable
 {
     static public function getInstance() { return new DishTypes(); }
 

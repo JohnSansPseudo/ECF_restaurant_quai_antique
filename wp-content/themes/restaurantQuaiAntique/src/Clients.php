@@ -1,7 +1,7 @@
 <?php
 
 
-final class Clients extends MotherObjTable
+final class Clients extends ManagerObjTable
 {
 
     static public function getInstance() { return new Clients(); }

@@ -8,6 +8,16 @@ class FoodDish
     private string $title;
     private string $description;
     private float $price;
+    private array $aErr = array();
+
+    /**
+     * @return array
+     */
+    public function getErrArray(): array
+    {
+        return $this->aErr;
+    }
+
 
     /**
      * FoodDish constructor.
@@ -40,7 +50,11 @@ class FoodDish
      */
     public function setId(int $iId): FoodDish
     {
-        $this->id = $iId;
+        $oParam = new ParamInt($iId, self::Class . ' id ', 1);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else  $this->id = $iId;
         return $this;
     }
 
@@ -58,7 +72,14 @@ class FoodDish
      */
     public function setIdDishType(int $iIdDishType): FoodDish
     {
-        $this->idDishType = $iIdDishType;
+        $oParam = new ParamInt($iIdDishType, self::Class . ' idDishType ', 1);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else  $this->idDishType = $iIdDishType;
+        return $this;
+
+
         return $this;
     }
 
@@ -76,7 +97,11 @@ class FoodDish
      */
     public function setTitle(string $sTitle): FoodDish
     {
-        $this->title = $sTitle;
+        $oParam = new ParamString($sTitle, self::Class . ' title ', 3, 50);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else $this->title = $sTitle;
         return $this;
     }
 
@@ -94,7 +119,11 @@ class FoodDish
      */
     public function setDescription(string $sDescription): FoodDish
     {
-        $this->description = $sDescription;
+        $oParam = new ParamString($sDescription, self::Class . ' description ', 3, 250);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else $this->description = $sDescription;
         return $this;
     }
 
@@ -112,7 +141,11 @@ class FoodDish
      */
     public function setPrice(float $fPrice): FoodDish
     {
-        $this->price = $fPrice;
+        $oParam = new ParamFloat($fPrice, self::Class . ' price ', 1);
+        if($oParam->getStringError() !== ''){
+            $this->aErr[] = $oParam->getStringError();
+        }
+        else $this->price = $fPrice;
         return $this;
     }
 

@@ -1,0 +1,52 @@
+
+/*-------------------------------*\
+                OUTIL
+\*-------------------------------*/
+/* TOAST */
+
+#boxCtnToast {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 250px;
+    z-index: 10;
+}
+
+#boxCtnToast .ctnToaster {
+
+    opacity: 0.8;
+    color: white;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+#boxCtnToast .ctnToaster .head i { margin-right: 10px; }
+
+#boxCtnToast .ctnToaster .head{
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+    font-weight: bold;
+    font-size: 14px;
+}
+#boxCtnToast .ctnToaster .body{
+    padding: 5px 0;
+}
+
+.successToast { background-color: forestgreen; }
+.warningToast { background-color: orangered; }
+.dangerToast { background-color: red; }
+.infoToast { background-color: dodgerblue}
+.errorToast {
+    background-color: lightgrey;
+    color: black;
+}
+
+.ctnToaster.successToast:hover { background-color: #196a19; }
+.ctnToaster.warningToast:hover { background-color: #b13203; }
+.ctnToaster.dangerToast:hover { background-color: #bb0101; }
+.ctnToaster.infoToast:hover { background-color: #196bbd; }
+.ctnToaster.errorToast:hover { background-color: #a1a0a0; }
+
+/* FIN TOAST */

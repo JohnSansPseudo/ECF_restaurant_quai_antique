@@ -4,8 +4,7 @@ class ParamObjCheck extends ParamCheck
     constructor(obj, sVar)
     {
         super(obj, sVar);
-        this.bIsTypeOf = this.checkIsTypeOf(ParamObjCheck.TYPE_OF);
-
+        this.checkIsTypeOf(ParamObjCheck.TYPE_OF);
     }
 
     checkDomElementById(sId)
@@ -15,6 +14,7 @@ class ParamObjCheck extends ParamCheck
         }
         return this;
     }
+
 
     checkLength()
     {

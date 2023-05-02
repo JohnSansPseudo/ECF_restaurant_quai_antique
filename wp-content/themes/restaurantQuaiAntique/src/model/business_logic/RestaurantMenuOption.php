@@ -1,13 +1,13 @@
 <?php
 
 
-class FoodDish
+class RestaurantMenuOption
 {
     private int $id;
-    private int $idDishType;
+    private int $idMenu;
     private string $title;
     private string $description;
-    private float $price;
+    private $price;
     private array $aErr = array();
 
     /**
@@ -18,23 +18,23 @@ class FoodDish
         return $this->aErr;
     }
 
-
     /**
-     * FoodDish constructor.
+     * RestaurantMenuOption constructor.
      * @param int $iId
-     * @param int $iIdDishType
+     * @param int $iIdMenu
      * @param string $sTitle
      * @param string $sDescription
-     * @param float $sPrice
+     * @param float $fPrice
      */
-    public function __construct(int $iIdDishType, string $sTitle, string $sDescription, float $fPrice, int $iId=0)
+    public function __construct(int $idMenu, string $title, string $description, float $price, int $id=0)
     {
-        $this->setId($iId)
-            ->setIdDishType($iIdDishType)
-            ->setTitle($sTitle)
-            ->setDescription($sDescription)
-            ->setPrice($fPrice);
+        if($id) $this->setId($id);
+        $this->setIdMenu($idMenu);
+        $this->setTitle($title);
+        $this->setDescription($description);
+        $this->setPrice($price);
     }
+
 
     /**
      * @return int
@@ -46,9 +46,9 @@ class FoodDish
 
     /**
      * @param int $iId
-     * @return FoodDish
+     * @return RestaurantMenuOption
      */
-    public function setId(int $iId): FoodDish
+    public function setId(int $iId): RestaurantMenuOption
     {
         $oParam = new ParamInt($iId, self::Class . ' id ', 1);
         if($oParam->getStringError() !== ''){
@@ -61,25 +61,22 @@ class FoodDish
     /**
      * @return int
      */
-    public function getIdDishType(): int
+    public function getIdMenu(): int
     {
-        return $this->idDishType;
+        return $this->idMenu;
     }
 
     /**
-     * @param int $iIdDishType
-     * @return FoodDish
+     * @param int $iIdMenu
+     * @return RestaurantMenuOption
      */
-    public function setIdDishType(int $iIdDishType): FoodDish
+    public function setIdMenu(int $iIdMenu): RestaurantMenuOption
     {
-        $oParam = new ParamInt($iIdDishType, self::Class . ' idDishType ', 1);
+        $oParam = new ParamInt($iIdMenu, self::Class . ' idMenu ', 1);
         if($oParam->getStringError() !== ''){
             $this->aErr[] = $oParam->getStringError();
         }
-        else  $this->idDishType = $iIdDishType;
-        return $this;
-
-
+        else  $this->idMenu = $iIdMenu;
         return $this;
     }
 
@@ -93,9 +90,9 @@ class FoodDish
 
     /**
      * @param string $sTitle
-     * @return FoodDish
+     * @return RestaurantMenuOption
      */
-    public function setTitle(string $sTitle): FoodDish
+    public function setTitle(string $sTitle): RestaurantMenuOption
     {
         $oParam = new ParamString($sTitle, self::Class . ' title ', 3, 50);
         if($oParam->getStringError() !== ''){
@@ -115,9 +112,9 @@ class FoodDish
 
     /**
      * @param string $sDescription
-     * @return FoodDish
+     * @return RestaurantMenuOption
      */
-    public function setDescription(string $sDescription): FoodDish
+    public function setDescription(string $sDescription): RestaurantMenuOption
     {
         $oParam = new ParamString($sDescription, self::Class . ' description ', 3, 250);
         if($oParam->getStringError() !== ''){
@@ -130,16 +127,16 @@ class FoodDish
     /**
      * @return float
      */
-    public function getPrice(): float
+    public function getPrice()
     {
         return $this->price;
     }
 
     /**
-     * @param float $sPrice
-     * @return FoodDish
+     * @param  int |double $fPrice
+     * @return RestaurantMenuOption
      */
-    public function setPrice(float $fPrice): FoodDish
+    public function setPrice($fPrice): RestaurantMenuOption
     {
         $oParam = new ParamFloat($fPrice, self::Class . ' price ', 1);
         if($oParam->getStringError() !== ''){
@@ -148,7 +145,5 @@ class FoodDish
         else $this->price = $fPrice;
         return $this;
     }
-
-
 
 }

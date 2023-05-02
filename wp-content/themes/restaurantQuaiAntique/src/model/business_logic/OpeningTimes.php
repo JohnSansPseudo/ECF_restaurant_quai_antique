@@ -1,10 +1,22 @@
 <?php
 
 
-class OpeningTimes
+final class OpeningTimes extends ManagerObjTable
 {
 
-    CONST MONDAY = 'monday';
+    CONST CLASS_MANAGER = 'OpeningTime';
+
+    CONST MONDAY = 'lundi';
+    CONST TUESDAY = 'mardi';
+    CONST WEDNESDAY = 'mercredi';
+    CONST THURSDAY = 'jeudi';
+    CONST FRIDAY = 'vendredi';
+    CONST SATURDAY = 'samedi';
+    CONST SUNDAY = 'dimanche';
+    CONST NOON = 'midi';
+    CONST EVENING = 'soir';
+
+    /*CONST MONDAY = 'monday';
     CONST TUESDAY = 'tuesday';
     CONST WEDNESDAY = 'wednesday';
     CONST THURSDAY = 'thursday';
@@ -12,12 +24,12 @@ class OpeningTimes
     CONST SATURDAY = 'saturday';
     CONST SUNDAY = 'sunday';
     CONST NOON = 'noon';
-    CONST EVENING = 'evening';
+    CONST EVENING = 'evening';*/
 
-    static public function getInstance() { return new FoodDishes(); }
+    static public function getInstance() { return new OpeningTimes(); }
 
 
-    static public function getTableName()
+    static public function getTableName():string
     {
         global $wpdb;
         return $wpdb->prefix . 'opening_time';
@@ -26,18 +38,29 @@ class OpeningTimes
     function createTable():bool
     {
         $oPDO = PDOSingleton::getInstance();
-        $sql = "CREATE TABLE IF NOT EXISTS " . self::getTableName(). "(
+        $sql = "CREATE TABLE IF NOT EXISTS " . self::getTableName() . "(
             id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
             day ENUM('" . self::MONDAY. "', '" . self::TUESDAY. "', '" . self::WEDNESDAY. "', '" . self::THURSDAY. "', '" . self::FRIDAY. "', '" . self::SATURDAY. "', '" . self::SUNDAY. "') NOT NULL,
             timeDay ENUM('" . self::NOON. "', '" . self::EVENING . "') NOT NULL,
-            startTimeDay TIME NOT NULL,
-            endTimeDay TIME  NOT NULL,
+            startTimeDay TIME NULL,
+            endTimeDay TIME  NULL,
             UNIQUE KEY(day, timeDay) )";
-
 
         $oStatement = $oPDO->prepare($sql);
         if(!$oStatement) return false;
-        return $oStatement->execute();
+        $b = $oStatement->execute();
+
+        //On vérifie si la table est bien initalisée sinon on l'initialise
+        $sql = "SELECT * FROM " . self::getTableName();
+        $oStatement = $oPDO->prepare($sql);
+        if(!$oStatement) return false;
+        $b = $oStatement->execute();
+        $aResult = $oStatement->fetchAll(PDO::FETCH_ASSOC);
+        if(is_array($aResult) && count($aResult) == 0)
+        {
+            $this->initTable();
+        }
+        return $b;
     }
 
     public function initTable()
@@ -62,12 +85,17 @@ class OpeningTimes
         foreach($aData as $o) $this->add($o);
     }
 
+
+    public function deleteById($id)
+    {
+        return false;
+    }
+
     /**
      * @var $OpeningTime OpeningTime
      */
-    public function add(OpeningTime $oOpeningTime):object
+    public function add($oOpeningTime)
     {
-
         $oPDO = PDOSingleton::getInstance();
         $oStatement = $oPDO->prepare("insert INTO " . self::getTableName() . "(day, timeDay, startTimeDay, endTimeDay)  VALUES(:day, :timeDay, :startTimeDay, :endTimeDay)");
         if(!$oStatement) return false;
@@ -81,37 +109,6 @@ class OpeningTimes
         if(!$bExec) return $bExec;
         $oOpeningTime->setId($oPDO->lastInsertId());
         return $oOpeningTime;
-    }
-
-    public function getAllData()
-    {
-        $oPDO = PDOSingleton::getInstance();
-        $oStatement = $oPDO->prepare("SELECT * FROM " . self::getTableName());
-        $aData = array();
-        if($oStatement->execute()){
-            $oStatement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'OpeningTime', array('1', '2', '3', '4'));
-            while ($o = $oStatement->fetch()) { $aData[$o->getId()] = $o; }
-        }
-        return $aData;
-    }
-
-    public function updateById($id, $aData)
-    {
-        $oPDO = PDOSingleton::getInstance();
-        $sData = '';
-        $aDataRem = array();
-        foreach($aData as $key => $val) { $aDataRem[] = $key . '=:' . $key; }
-        $sData = join(', ', $aDataRem);
-        $oStatement = $oPDO->prepare("UPDATE " . static::getTableName() . " SET " . $sData . " WHERE id=:id");
-        $oStatement->bindValue(':id', $id, PDO::PARAM_INT);
-        foreach($aData as $k => $v)
-        {
-            $oStatement->bindValue(':' . $k, $v);
-        }
-
-        //dbrDie($oStatement->queryString);
-
-        return $oStatement->execute();
     }
 
 }

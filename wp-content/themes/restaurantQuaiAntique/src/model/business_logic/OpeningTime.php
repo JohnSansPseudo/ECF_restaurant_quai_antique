@@ -28,7 +28,7 @@ class OpeningTime
      */
     public function __construct(string $sDay, string $sTimeDay, string $sStartTimeDay=null, string $sEndTimeDay=null, int $iId=0)
     {
-        $this->setId($iId);
+        if($iId) $this->setId($iId);
         $this->setDay($sDay);
         $this->setTimeDay($sTimeDay);
         $this->setStartTimeDay($sStartTimeDay);
@@ -71,7 +71,7 @@ class OpeningTime
      */
     public function setDay(string $sDay): OpeningTime
     {
-        $oParam = new ParamString($sDay, self::Class . ' day ', 6, 9);
+        $oParam = new ParamString($sDay, self::Class . ' day ', 5, 8);
         if($oParam->getStringError() !== ''){
             $this->aErr[] = $oParam->getStringError();
         }
@@ -116,7 +116,7 @@ class OpeningTime
     public function setStartTimeDay($sStartTimeDay): OpeningTime
     {
         if($sStartTimeDay !== null){
-            $oParam = new ParamString($sStartTimeDay, self::Class . ' startTimeDay ', 8, 8);
+            $oParam = new ParamString($sStartTimeDay, self::Class . ' startTimeDay ', 5, 8);
             if($oParam->getStringError() !== ''){
                 $this->aErr[] = $oParam->getStringError();
             }
@@ -141,7 +141,7 @@ class OpeningTime
     public function setEndTimeDay($sEndTimeDay): OpeningTime
     {
         if($sEndTimeDay !== null){
-            $oParam = new ParamString($sEndTimeDay, self::Class . ' endTimeDay ', 8, 8);
+            $oParam = new ParamString($sEndTimeDay, self::Class . ' endTimeDay ', 5, 8);
             if($oParam->getStringError() !== ''){
                 $this->aErr[] = $oParam->getStringError();
             }

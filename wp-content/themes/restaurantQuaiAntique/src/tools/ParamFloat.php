@@ -6,36 +6,37 @@ final class ParamFloat extends ParamCheck
     CONST VAR_TYPE = 'float';
 
     /**
-     * @var float
+     * @var int | double | null
      */
     private $fMax;
     /**
-     * @var float
+     * @var int | double | null
      */
     private $fMin;
 
     /**
-     * @return float | null
+     * @return int | double | null
      */
     public function getMax() { return $this->fMax; }
 
     /**
-     * @param float $fMax
+     * @param int | double | null $fMax
      * @return ParamFloat
      */
     private function setMax($fMax): ParamFloat
     {
-        if(parent::checkIsTypeOf('int', $fMax, '$fMax')) $this->fMax = $fMax;
+        if(parent::checkIsTypeOf('numeric', $fMax, '$fMax')) $this->fMax = $fMax;
         return $this;
     }
 
     /**
-     * @return float |null
+     * @return int | double | null
      */
     public function getMin() { return $this->fMin; }
 
     /**
-     * @param float |null $fMin
+     * @param int | double | null $fMin
+     * @param int | double | null $fMax
      * @return ParamFloat
      */
     private function setMin($fMin, $fMax): ParamFloat
@@ -45,15 +46,15 @@ final class ParamFloat extends ParamCheck
             $this->aErr[] = 'Error ' . get_class($this) . ', $fMin >= $fMax : ' . $fMin . ' >= ' . $fMax;
         }
 
-        if(parent::checkIsTypeOf('float', $fMin, '$iMin')) $this->fMin = $fMin;
+        if(parent::checkIsTypeOf('numeric', $fMin, '$fMin')) $this->fMin = $fMin;
         return $this;
     }
 
     /**
      * @param $mVal mixed
      * @param $sVarName string
-     * @param $iMin int | null
-     * @param $iMax int | null
+     * @param $fMin int | double | null
+     * @param $fMax int | double | null
      */
     public function __construct($mVal, $sVarName, $fMin=null, $fMax=null)
     {

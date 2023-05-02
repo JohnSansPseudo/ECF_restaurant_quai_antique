@@ -170,6 +170,7 @@ abstract class ParamCheck
             case 'object': $sMethod = 'is_object'; break;
             case 'boolean': $sMethod = 'is_bool'; break;
             case 'float': $sMethod = 'is_float'; break;
+            case 'numeric': $sMethod = 'is_numeric'; break;
         }
 
         if(!$sMethod($mValue))

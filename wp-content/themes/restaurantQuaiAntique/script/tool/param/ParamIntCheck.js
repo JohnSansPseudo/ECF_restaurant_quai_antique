@@ -1,9 +1,11 @@
 class ParamIntCheck extends ParamCheck
 {
+    static TYPE_OF = 'number';
     constructor(iInt, sVar) {
         super(iInt, sVar);
         this.checkIsNan();
-        this.checkIsTypeOf();
+        this.bIsTypeOf = this.checkIsTypeOf(ParamIntCheck.TYPE_OF);
+        this.checkIsTypeOf()
     }
 
     checkIsNan()

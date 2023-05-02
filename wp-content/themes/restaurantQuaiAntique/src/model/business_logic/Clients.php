@@ -3,10 +3,11 @@
 
 final class Clients extends ManagerObjTable
 {
+    CONST CLASS_MANAGER = 'Client';
 
     static public function getInstance() { return new Clients(); }
 
-    static public function getTableName()
+    static public function getTableName():string
     {
         global $wpdb;
         return $wpdb->prefix . 'client';
@@ -35,7 +36,7 @@ final class Clients extends ManagerObjTable
     /**
      * @return $oClient Client
      */
-    public function add(object $oClient):object
+    public function add($oClient)
     {
 
         $oPDO = PDOSingleton::getInstance();
@@ -49,22 +50,10 @@ final class Clients extends ManagerObjTable
         $oStatement->bindValue(':tel', $oClient->getTelephone(), PDO::PARAM_STR);
         $oStatement->bindValue(':allergy', $oClient->getAllergy(), PDO::PARAM_STR);
 
-
         $bExec = $oStatement->execute();
         if(!$bExec) return $bExec;
         $oClient->setId($oPDO->lastInsertId());
         return $oClient;
     }
 
-    public function getAllData()
-    {
-        $oPDO = PDOSingleton::getInstance();
-        $oStatement = $oPDO->prepare("SELECT * FROM " . self::getTableName());
-        $aData = array();
-        if($oStatement->execute()){
-            $oStatement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Client', array('1', '2', '3', '4', '5', '6', 7));
-            while ($o = $oStatement->fetch()) { $aData[$o->getId()] = $o; }
-        }
-        return $aData;
-    }
 }

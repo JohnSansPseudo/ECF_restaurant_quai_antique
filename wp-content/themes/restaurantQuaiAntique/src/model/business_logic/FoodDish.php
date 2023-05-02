@@ -1,10 +1,10 @@
 <?php
 
 
-class RestaurantMenuOption
+class FoodDish
 {
     private int $id;
-    private int $idMenu;
+    private int $idDishType;
     private string $title;
     private string $description;
     private float $price;
@@ -18,23 +18,23 @@ class RestaurantMenuOption
         return $this->aErr;
     }
 
+
     /**
-     * RestaurantMenuOption constructor.
+     * FoodDish constructor.
      * @param int $iId
-     * @param int $iIdMenu
+     * @param int $iIdDishType
      * @param string $sTitle
      * @param string $sDescription
-     * @param float $fPrice
+     * @param float $sPrice
      */
-    public function __construct(int $iIdMenu, string $sTitle, string $sDescription, float $fPrice, int $iId=0)
+    public function __construct(int $iIdDishType, string $sTitle, string $sDescription, float $fPrice, int $iId=0)
     {
-        $this->setId($iId);
-        $this->setIdMenu($iIdMenu);
-        $this->setTitle($sTitle);
-        $this->setDescription($sDescription);
-        $this->setPrice($fPrice);
+        if($iId) $this->setId($iId);
+        $this->setIdDishType($iIdDishType)
+            ->setTitle($sTitle)
+            ->setDescription($sDescription)
+            ->setPrice($fPrice);
     }
-
 
     /**
      * @return int
@@ -46,9 +46,9 @@ class RestaurantMenuOption
 
     /**
      * @param int $iId
-     * @return RestaurantMenuOption
+     * @return FoodDish
      */
-    public function setId(int $iId): RestaurantMenuOption
+    public function setId(int $iId): FoodDish
     {
         $oParam = new ParamInt($iId, self::Class . ' id ', 1);
         if($oParam->getStringError() !== ''){
@@ -61,22 +61,25 @@ class RestaurantMenuOption
     /**
      * @return int
      */
-    public function getIdMenu(): int
+    public function getIdDishType(): int
     {
-        return $this->idMenu;
+        return $this->idDishType;
     }
 
     /**
-     * @param int $iIdMenu
-     * @return RestaurantMenuOption
+     * @param int $iIdDishType
+     * @return FoodDish
      */
-    public function setIdMenu(int $iIdMenu): RestaurantMenuOption
+    public function setIdDishType(int $iIdDishType): FoodDish
     {
-        $oParam = new ParamInt($iIdMenu, self::Class . ' idMenu ', 1);
+        $oParam = new ParamInt($iIdDishType, self::Class . ' idDishType ', 1);
         if($oParam->getStringError() !== ''){
             $this->aErr[] = $oParam->getStringError();
         }
-        else  $this->idMenu = $iIdMenu;
+        else  $this->idDishType = $iIdDishType;
+        return $this;
+
+
         return $this;
     }
 
@@ -90,9 +93,9 @@ class RestaurantMenuOption
 
     /**
      * @param string $sTitle
-     * @return RestaurantMenuOption
+     * @return FoodDish
      */
-    public function setTitle(string $sTitle): RestaurantMenuOption
+    public function setTitle(string $sTitle): FoodDish
     {
         $oParam = new ParamString($sTitle, self::Class . ' title ', 3, 50);
         if($oParam->getStringError() !== ''){
@@ -112,9 +115,9 @@ class RestaurantMenuOption
 
     /**
      * @param string $sDescription
-     * @return RestaurantMenuOption
+     * @return FoodDish
      */
-    public function setDescription(string $sDescription): RestaurantMenuOption
+    public function setDescription(string $sDescription): FoodDish
     {
         $oParam = new ParamString($sDescription, self::Class . ' description ', 3, 250);
         if($oParam->getStringError() !== ''){
@@ -133,10 +136,10 @@ class RestaurantMenuOption
     }
 
     /**
-     * @param float $fPrice
-     * @return RestaurantMenuOption
+     * @param float $sPrice
+     * @return FoodDish
      */
-    public function setPrice(float $fPrice): RestaurantMenuOption
+    public function setPrice(float $fPrice): FoodDish
     {
         $oParam = new ParamFloat($fPrice, self::Class . ' price ', 1);
         if($oParam->getStringError() !== ''){
@@ -145,7 +148,6 @@ class RestaurantMenuOption
         else $this->price = $fPrice;
         return $this;
     }
-
 
 
 

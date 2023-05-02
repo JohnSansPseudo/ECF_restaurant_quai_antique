@@ -3,7 +3,9 @@
 
 final class Bookings extends ManagerObjTable
 {
-    static public function getTableName()
+    CONST CLASS_MANAGER = 'Booking';
+
+    static public function getTableName():string
     {
         global $wpdb;
         return $wpdb->prefix . 'booking';
@@ -36,50 +38,30 @@ final class Bookings extends ManagerObjTable
     }
 
     /**
-     * @var Booking $oBooking
+     * @Param Booking $oBooking
      */
-    public function add(object $oBooking):object
+    public function add($oBooking)
     {
 
         $oPDO = PDOSingleton::getInstance();
-        $oStatement = $oPDO->prepare("insert INTO " . self::getTableName() . "(idOpening, firstName, lastName, tel, allergy, nbGuest, startTime, bookingDate)  
-        VALUES(:idOpening, :firstName, :lastName, :tel, :allergy, :nbGuest, :startTime, :bookingDate)");
+        $oStatement = $oPDO->prepare("insert INTO " . self::getTableName() . "(idOpening, firstName, lastName, tel, email, allergy, nbGuest, startTime, bookingDate)  
+        VALUES(:idOpening, :firstName, :lastName, :tel, :email, :allergy, :nbGuest, :startTime, :bookingDate)");
         if(!$oStatement) return false;
 
         $oStatement->bindValue(':idOpening', $oBooking->getIdOpening(), PDO::PARAM_INT);
         $oStatement->bindValue(':firstName', $oBooking->getFirstName(), PDO::PARAM_STR);
         $oStatement->bindValue(':lastName', $oBooking->getLastName(), PDO::PARAM_STR);
         $oStatement->bindValue(':tel', $oBooking->getTel(), PDO::PARAM_STR);
-        $oStatement->bindValue(':allergy', $oBooking->getAllergy());
+        $oStatement->bindValue(':email', $oBooking->getEmail(), PDO::PARAM_STR);
+        $oStatement->bindValue(':allergy', $oBooking->getAllergy(), PDO::PARAM_STR);
         $oStatement->bindValue(':nbGuest', $oBooking->getNbGuest(), PDO::PARAM_INT);
         $oStatement->bindValue(':startTime', $oBooking->getStartTime(), PDO::PARAM_STR);
         $oStatement->bindValue(':bookingDate', $oBooking->getBookingDate(), PDO::PARAM_STR);
-
-
-        //Debug PDO
-        /*ob_start();
-        $oStatement->debugDumpParams();
-        $r = ob_get_contents();
-        ob_end_clean();
-        dbrDie($r);*/
 
         $bExec = $oStatement->execute();
         if(!$bExec) return $bExec;
         $oBooking->setId($oPDO->lastInsertId());
         return $oBooking;
-
-    }
-
-    public function getAllData()
-    {
-        $oPDO = PDOSingleton::getInstance();
-        $oStatement = $oPDO->prepare("SELECT * FROM " . self::getTableName());
-        $aData = array();
-        if($oStatement->execute()){
-            $oStatement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Booking', array('1', '2', '3', '4', '5', '6', '7', '8', '9', '10'));
-            while ($o = $oStatement->fetch()) { $aData[$o->getId()] = $o; }
-        }
-        return $aData;
     }
 
 }

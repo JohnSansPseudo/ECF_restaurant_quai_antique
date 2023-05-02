@@ -7,6 +7,10 @@
     margin: 10px 7px;
 }
 
+button[type="submit"]{
+    margin: 10px 7px;
+}
+
 .ctn-elf-inlb {
     display: inline-block;
 }
@@ -35,6 +39,8 @@
 }
 
 .tabBackOffice{
+    text-decoration: none;
+    color: black;
     padding: 10px 15px;
     margin: 0 5px;
     display: inline-block;
@@ -52,4 +58,8 @@
 
 #RestaurantQuaiAntiqueBackOffice{
     padding: 10px;
+}
+
+.errorField{
+    color: darkred;
 }

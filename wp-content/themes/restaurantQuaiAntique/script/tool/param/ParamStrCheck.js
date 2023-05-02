@@ -1,9 +1,9 @@
 class ParamStrCheck extends ParamCheck
 {
-    static STR_TYPE_OF = 'string';
+    static TYPE_OF = 'string';
     constructor(sStr, sVar) {
         super(sStr, sVar);
-        this.checkIsTypeOf(ParamStrCheck.STR_TYPE_OF);
+        this.checkIsTypeOf(ParamStrCheck.TYPE_OF);
     }
 
     checkMaxLen(iMaxLength)

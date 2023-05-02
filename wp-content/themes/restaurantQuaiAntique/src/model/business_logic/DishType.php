@@ -1,7 +1,7 @@
 <?php
 
 
-class RestaurantMenu
+class DishType
 {
     private int $id;
     private string $title;
@@ -16,13 +16,14 @@ class RestaurantMenu
     }
 
     /**
-     * RestaurantMenu constructor.
+     * DishType constructor.
      * @param int $iId
      * @param string $sTitle
      */
-    public function __construct(string $sTitle, int $iId=0)
+    public function __construct( string $sTitle, int $iId=0)
     {
-        $this->setId($iId)->setTitle($sTitle);
+        if($iId) $this->setId($iId);
+        $this->setTitle($sTitle);
     }
 
     /**
@@ -35,15 +36,15 @@ class RestaurantMenu
 
     /**
      * @param int $iId
-     * @return RestaurantMenu
+     * @return DishType
      */
-    public function setId(int $iId): RestaurantMenu
+    public function setId(int $iId): DishType
     {
         $oParam = new ParamInt($iId, self::Class . ' id', 1);
         if($oParam->getStringError() !== ''){
             $this->aErr[] = $oParam->getStringError();
         }
-        else $this->id = $iId;
+        else  $this->id = $iId;
         return $this;
     }
 
@@ -57,18 +58,15 @@ class RestaurantMenu
 
     /**
      * @param string $sTitle
-     * @return RestaurantMenu
+     * @return DishType
      */
-    public function setTitle(string $sTitle): RestaurantMenu
+    public function setTitle(string $sTitle): DishType
     {
         $oParam = new ParamString($sTitle, self::Class . ' title', 3, 50);
         if($oParam->getStringError() !== ''){
             $this->aErr[] = $oParam->getStringError();
         }
-        else $this->title = $sTitle;
+        else  $this->title = $sTitle;
         return $this;
     }
-
-
-
 }

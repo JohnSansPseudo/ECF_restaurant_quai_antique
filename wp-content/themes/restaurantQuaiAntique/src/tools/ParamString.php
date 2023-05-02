@@ -46,13 +46,14 @@ final class ParamString extends ParamCheck
 
     /**
      * @param int $iMinLength
+     * @param int $iMaxLength
      * @return ParamString
      */
     private function setIntMinLength($iMinLength, $iMaxLength): ParamString
     {
-        if(is_int($iMaxLength) && is_int($iMinLength) && $iMinLength >= $iMaxLength)
+        if(is_int($iMaxLength) && is_int($iMinLength) && $iMinLength > $iMaxLength)
         {
-            $this->aErr[] = 'Error ' . get_class($this) . ', $iMinLength >= $iMaxLength : ' . $iMinLength . ' >= ' . $iMaxLength;
+            $this->aErr[] = 'Error ' . get_class($this) . ', $iMinLength >= $iMaxLength : ' . $iMinLength . ' > ' . $iMaxLength;
         }
 
         if(!is_int($iMinLength))
@@ -66,6 +67,8 @@ final class ParamString extends ParamCheck
     /**
      * @param $mVal mixed
      * @param $sVarName string
+     * @param $iMinLength int | null
+     * @param $iMaxLength int | null
      */
     public function __construct($mVal, $sVarName, $iMinLength=null, $iMaxLength=null)
     {

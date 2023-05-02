@@ -1,24 +1,17 @@
 <?php
 //Réunir le modèle et la vue
 
-function quaiAntiqueParamPage()
+function root_action_admin()
 {
-    $aTab = array(
-        'menu' => (object)array('id' => 'menu', 'title' => 'Menu', 'active' => true),
-        'dish' => (object)array('id' => 'dish', 'title' => 'Dish', 'active' => false),
-        'opening' => (object)array('id' => 'opening', 'title' => 'Opening time', 'active' => false),
-        'guest' => (object)array('id' => 'guest', 'title' => 'Guest max', 'active' => false),
-        'gallery' => (object)array('id' => 'gallery', 'title' => 'Gallery', 'active' => false));
-
-    $aMenu = RestaurantMenus::getInstance()->getAllData();
-    $aOptionMenu = RestaurantMenuOptions::getInstance()->getAllData();
-    $aDishType = DishTypes::getInstance()->getAllData();
-    $aFoodDish = FoodDishes::getInstance()->getAllData();
-    $aOpeningTime = OpeningTimes::getInstance()->getAllData();
-
-    //Templates
-    require_once(get_template_directory() . '/templates/backoffice/layout.php');
-
-
+    $sAdminAction = '';
+    if(isset($_GET['admin_action']) && $_GET['admin_action'] && $_GET['admin_action'] !== '') $sAdminAction = $_GET['admin_action'];
+    switch($sAdminAction){
+        //PAGES
+        case 'dish': require('page/dish.php'); break;
+        case 'opening': require('page/opening_time.php'); break;
+        case 'guest': require('page/guest_max.php'); break;
+        case 'gallery': require('page/gallery.php'); break;
+        default: require('page/menu.php'); break;
+    }
 
 }

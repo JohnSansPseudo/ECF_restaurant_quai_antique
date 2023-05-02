@@ -3,10 +3,11 @@
 
 final class FoodDishes extends ManagerObjTable
 {
+    CONST CLASS_MANAGER = 'FoodDish';
 
     static public function getInstance() { return new FoodDishes(); }
 
-    static public function getTableName()
+    static public function getTableName():string
     {
         global $wpdb;
         return $wpdb->prefix . 'food_dish';
@@ -33,7 +34,7 @@ final class FoodDishes extends ManagerObjTable
     /**
      * @var FoodDish $oFoodDish
      */
-    public function add(object $oFoodDish)
+    public function add($oFoodDish)
     {
         $oPDO = PDOSingleton::getInstance();
         $oStatement = $oPDO->prepare("insert INTO " . self::getTableName() . "(idDishType, title, description, price) VALUES(:idDishType, :title, :description, :price)");
@@ -49,20 +50,5 @@ final class FoodDishes extends ManagerObjTable
         return $oFoodDish;
     }
 
-
-    /**
-     * @return array
-     */
-    public function getAllData()
-    {
-        $oPDO = PDOSingleton::getInstance();
-        $oStatement = $oPDO->prepare("SELECT * FROM " . self::getTableName());
-        $aData = array();
-        if($oStatement->execute()){
-            $oStatement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'FoodDish', array('1', '2', '3', '4', '5'));
-            while ($o = $oStatement->fetch()) { $aData[$o->getId()] = $o; }
-        }
-        return $aData;
-    }
 
 }

@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 //MENU ADMIN
 add_action('admin_menu', 'sidebarAdminQuaiAntique');
 add_action('admin_bar_menu', 'topbarAdminQuaiAntique', 999);
@@ -13,7 +13,19 @@ add_action('wp_enqueue_scripts', 'quai_antique_scripts');
 
 add_action('after_setup_theme', 'includeFiles');
 add_action('after_setup_theme', 'setTables');//CREATION DES TABLES PERSONNALISEES
-add_action('after_setup_theme', 'quai_antique_supports'); //THEME OPTIONS
+add_action('after_setup_theme', 'initPage');
+add_action('after_setup_theme', 'quai_antique_supports');//THEME OPTIONS
+add_action( 'init', 'register_my_menus' );
+
+//FRONT - MENU
+function register_my_menus() {
+    register_nav_menus(
+        array(
+            'header_menu' => __( 'top-menu' ),
+            'footer-menu' => __( 'bottom-menu' ),
+        )
+    );
+}
 
 
 //NAVIGATION - MENU
@@ -22,7 +34,9 @@ add_filter('nav_menu_link_attributes', 'quai_antique_menu_links_attr');
 //FIN NAVIGATION - MENU
 
 //BACKOFFICE - ROUTEUR AJAX
-add_action( 'wp_ajax_root_ajax', 'root_ajax');
+add_action('wp_ajax_root_ajax', 'root_ajax');
+add_action('wp_ajax_nopriv_root_ajax', 'root_ajax');
+
 
 
 //BACKOFFICE - GESTION DE L'ADMIN
@@ -35,58 +49,72 @@ add_action('admin_init', 'deleteDishType');
 add_action('admin_init', 'addFoodDish');
 add_action('admin_init', 'deleteFoodDish');
 
-/* BACKOFFICE POUR LA PAGE NB GUEST */
-add_action("admin_init", "social_media_section_settings");
-function social_media_section_settings()
+//FRONT
+add_action('template_redirect', 'addClient');
+add_action('template_redirect', 'decoClient');
+add_action('template_redirect', 'connexionClient');
+add_action('template_redirect', 'bookTable');
+
+//connexion
+//Réserver votre table
+
+
+function initPage()
 {
-    // Création d'une section
-    add_settings_section("guest_max_section", "", null, "QuaiAntiqueParam");
-
-    // Création de champs
-    add_settings_field("guest_max_qty", "", "guest_max_qty_html", "QuaiAntiqueParam", "guest_max_section");
-
-    // Enregistrement des champs
-    register_setting("guest_max_section", "guest_max");
-}
-function guest_max_qty_html()
-{ ?>
-    <div class="elf">
-        <label for="guest_max">Nombre de clients maximum</label>
-        <input type="number" name="guest_max" value="<?php echo get_option('guest_max') ?>">
-    </div>
-<?php }
-/* FIN POUR LA PAGE NB GUEST */
-
-
-function dbrDie($var) { echo '<pre>'. print_r($var, true).'</pre>'; die(); }
-
-/** BACKOFFICE - ADMIN SIDEBAR */
-function sidebarAdminQuaiAntique()
-{
-    add_menu_page(
-        'Restaurant Quai Antique Param',
-        'QuaiAntiqueParam',
-        'manage_options',
-        'QuaiAntiqueParam',
-        'root_action_admin',
-        'dashicons-food');
-
-}
-
-/** BACKOFFICE - ADMIN TOPBAR */
-function topbarAdminQuaiAntique($wp_admin_bar)
-{
-    //TODO mettre l'ico dans la top bar du back sinon il faut la mettre dans le css additionnel du thème aussi
-    //'meta' => array('html' => '<span class="dashicons  dashicons-before dashicons-food"></span>')
-    $admin_topbar = array(
-        'id' => 'QuaiAntique',
-        'title' => 'QuaiAntiqueParam',
-        'href' => admin_url('admin.php?page=QuaiAntiqueParam')
+    $aPage = array();
+    $aPage[] = (object)array(
+        'post_content' => '',
+        'post_title' => 'Accueil',
+        'post_name' => 'home'
     );
-    $wp_admin_bar->add_node($admin_topbar);
+
+    $aPage[] = (object)array(
+        'post_content' => '',
+        'post_title' => 'A la carte',
+        'post_name' => 'a-la-carte',
+        'position' => 2
+    );
+    $aPage[] = (object)array(
+        'post_content' => '',
+        'post_title' => 'Mon compte',
+        'post_name' => 'create-account',
+        'position' => 3
+    );
+    $aPage[] = (object)array(
+        'post_content' => '',
+        'post_title' => 'Connexion',
+        'post_name' => 'sign-in',
+        'position' => 4
+    );
+    $aPage[] = (object)array(
+        'post_content' => '',
+        'post_title' => 'Réserver votre table',
+        'post_name' => 'book-table',
+        'position' => 5
+    );
+
+    foreach($aPage as $i => $oPage)
+    {
+        //Vérifier l'existence de la page
+        $args = array(
+            'post_type' => 'page',
+            'post_name__in' => array($oPage->post_name));
+        $get_posts = new WP_Query();
+        $a = $get_posts->query($args);
+        //Si la page n'a pas été créée alors on la créée
+        if(count($a) < 1)
+        {
+            $aPost = array(
+                'post_content' => $oPage->post_content,
+                'post_title' => $oPage->post_title,
+                'post_name' => $oPage->post_name,
+                'post_status' => 'publish',
+                'post_author' => 1,
+                'post_type' => 'page'
+            );
+        }
+    }
 }
-
-
 
 //FRONT - GESTION DE LA NAVIGATION
 function quai_antique_menu_class($aClass)
@@ -105,7 +133,6 @@ function quai_antique_supports()
 {
     //NAV
     add_theme_support('menus');
-    register_nav_menu('header', 'top-menu');
 
     //LOGO
     add_theme_support('custom-logo', array('height' => 480, 'width' => 720));
@@ -114,6 +141,55 @@ function quai_antique_supports()
 // FIN GESTION DE LA NAVIGATION
 
 
+/* BACKOFFICE POUR LA PAGE NB GUEST */
+add_action("admin_init", "social_media_section_settings");
+function social_media_section_settings()
+{
+    // Création d'une section
+    add_settings_section("guest_max_section", "", null, "QuaiAntiqueParam");
+
+    // Création de champs
+    add_settings_field("guest_max_qty", "", "guest_max_qty_html", "QuaiAntiqueParam", "guest_max_section");
+
+    // Enregistrement des champs
+    register_setting("guest_max_section", "guest_max");
+}
+function guest_max_qty_html()
+{ ?>
+    <div class="elf">
+        <label for="guest_max">Nombre de clients maximum</label>
+        <input type="number" name="guest_max" value="<?php echo Bookings::getNbGuestsMax(); ?>">
+    </div>
+<?php }
+/* FIN POUR LA PAGE NB GUEST */
+
+
+
+
+/** BACKOFFICE - ADMIN SIDEBAR */
+function sidebarAdminQuaiAntique()
+{
+    add_menu_page(
+        'Restaurant Quai Antique Param',
+        'QuaiAntiqueParam',
+        'manage_options',
+        'QuaiAntiqueParam',
+        'root_action_admin',
+        'dashicons-food');
+}
+
+/** BACKOFFICE - ADMIN TOPBAR */
+function topbarAdminQuaiAntique($wp_admin_bar)
+{
+    //TODO mettre l'ico dans la top bar du back sinon il faut la mettre dans le css additionnel du thème aussi
+    //'meta' => array('html' => '<span class="dashicons  dashicons-before dashicons-food"></span>')
+    $admin_topbar = array(
+        'id' => 'QuaiAntique',
+        'title' => 'QuaiAntiqueParam',
+        'href' => admin_url('admin.php?page=QuaiAntiqueParam')
+    );
+    $wp_admin_bar->add_node($admin_topbar);
+}
 
 /* AJOUT SCRIPTS & CSS */
 function scriptAdmin()
@@ -130,9 +206,9 @@ function scriptAdmin()
     wp_enqueue_style('toast_alert', get_template_directory_uri() . '/style/ToastAlert.css');
 
 }
+
 function quai_antique_scripts()
 {
-
     //JS
     //JQUERY
     //On désinstalle jquery pour le remettre derrière on évite les conflits
@@ -141,14 +217,22 @@ function quai_antique_scripts()
 
     //BOOTSTRAP
     wp_enqueue_script('bootstrapjs', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js', array('jquery'), false, true);
-    //wp_enqueue_script('bootstrap-datepicker', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js');
+    wp_enqueue_script('bootstrap-datepicker', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js');
 
     wp_enqueue_style('bootstrapcss', "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css");
-    //wp_enqueue_style('bootstrap-datepicker', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css');
+    wp_enqueue_style('bootstrap-datepicker', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css');
 
     //CSS
-    wp_enqueue_style('maincss', get_template_directory_uri() . '/style/style.css');
+    wp_enqueue_style('maincss', get_template_directory_uri() . '/style.css');
 
+    //JS
+    wp_enqueue_script('param_check', get_template_directory_uri() . '/script/tool/param/ParamCheck.js');
+    wp_enqueue_script('param_check_int', get_template_directory_uri() . '/script/tool/param/ParamIntCheck.js');
+    wp_enqueue_script('param_check_string', get_template_directory_uri() . '/script/tool/param/ParamStrCheck.js');
+    wp_enqueue_script('param_check_object', get_template_directory_uri() . '/script/tool/param/ParamObjCheck.js');
+    wp_enqueue_script('toast_alert', get_template_directory_uri() . '/script/tool/ToastAlert.js');
+    wp_enqueue_script('date', get_template_directory_uri() . '/script/tool/Date.js');
+    wp_enqueue_script('main_front', get_template_directory_uri() . '/script/main_front.js');
 }
 /* FIN SCRIPTS & CSS */
 
@@ -160,7 +244,6 @@ function includeFiles()
     require_once('src/tools/JsonAnswer.php');
     require_once('src/tools/PDOSingleton.php');
     require_once('src/tools/ManagerObjTable.php');
-
 
     //Classes utilitaires - paramètres
     require_once 'src/tools/ParamCheck.php';
@@ -187,6 +270,12 @@ function includeFiles()
     require_once('src/controller/form/add_food_dish.php');
     require_once('src/controller/form/delete_food_dish.php');
 
+    //Controller front
+    require_once('src/controller/form/add_client.php');
+    require_once('src/controller/form/deco_client.php');
+    require_once('src/controller/form/connexion_client.php');
+    require_once('src/controller/form/book_table.php');
+
     //Classes métiers
     require_once('src/model/business_logic/Booking.php');
     require_once('src/model/business_logic/Bookings.php');
@@ -202,26 +291,34 @@ function includeFiles()
     require_once('src/model/business_logic/RestaurantMenus.php');
     require_once('src/model/business_logic/RestaurantMenuOption.php');
     require_once('src/model/business_logic/RestaurantMenuOptions.php');
+    require_once('src/model/ClientConnection.php');
 }
 
 
 //INIT TABLES BDD
 function setTables()
 {
-    RestaurantMenus::getInstance()->createTable();
-    RestaurantMenuOptions::getInstance()->createTable();
-    DishTypes::getInstance()->createTable();
-    FoodDishes::getInstance()->createTable();
-    Clients::getInstance()->createTable();
-    OpeningTimes::getInstance()->createTable();
-    Bookings::getInstance()->createTable();
+    try{
+        RestaurantMenus::getInstance()->createTable();
+        RestaurantMenuOptions::getInstance()->createTable();
+        DishTypes::getInstance()->createTable();
+        FoodDishes::getInstance()->createTable();
+        Clients::getInstance()->createTable();
+        OpeningTimes::getInstance()->createTable();
+        Bookings::getInstance()->createTable();
+    }catch(Exception $e){
+        echo($e->getMessage());
+        echo($e->getTrace());
+        echo($e->getFile());
+        die();
+    }
 }
 // FIN INIT TABLES BDD
 
 
 
-
-
+function dbr($var) { echo '<pre>'. print_r($var, true).'</pre>'; }
+function dbrDie($var) { dbr($var); die(); }
 
 
 

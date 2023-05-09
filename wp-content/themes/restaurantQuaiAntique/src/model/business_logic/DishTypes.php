@@ -43,7 +43,24 @@ final class DishTypes extends ManagerObjTable
                 title VARCHAR(50) NOT NULL UNIQUE)";
         $oStatement = $oPDO->prepare($sql);
         if(!$oStatement) return false;
-        return $oStatement->execute();
+        $b = $oStatement->execute();
+        if(!$b) {
+            throw new Exception('Error creating table ' . self::getTableName());
+            return false;
+        }
+
+        //On vérifie si la table est bien initalisée sinon on l'initialise
+        $sql = "SELECT * FROM " . self::getTableName();
+        $oStatement = $oPDO->prepare($sql);
+        if(!$oStatement) return false;
+        $b = $oStatement->execute();
+        if(!$b) {
+            throw new Exception('Error get table from creating table ' . self::getTableName());
+            return false;
+        }
+        $aResult = $oStatement->fetchAll(PDO::FETCH_ASSOC);
+        if(is_array($aResult) && count($aResult) == 0) $this->fillLoremTable();
+        return $b;
     }
 
     /**
@@ -60,6 +77,15 @@ final class DishTypes extends ManagerObjTable
         if(!$bExec) return $bExec;
         $oDishType->setId($oPDO->lastInsertId());
         return $oDishType;
+    }
+
+    public function fillLoremTable()
+    {
+        $aData = array();
+        $aData[] = new DishType('Nos entrées');
+        $aData[] = new DishType('Nos Plats');
+        $aData[] = new DishType('Nos Desserts');
+        foreach($aData as $o) $this->add($o);
     }
 
 }

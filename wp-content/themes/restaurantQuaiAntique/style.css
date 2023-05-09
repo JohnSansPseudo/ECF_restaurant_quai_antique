@@ -1,0 +1,173 @@
+/*
+Theme Name: RestaurantQuaiAntique
+Author: Jonathan Teyssier
+Author URI:
+Description: Thème pour un restaurant avec réservation, jours et horaires d'ouverture, la carte du menu, des options de menus et menus paramétrables.
+Requires at least: 6
+Tested up to: 6.2
+Requires PHP: 7.4
+ */
+
+/*
+COLOR
+#906427 (or)
+#292222 (marron foncé)
+#b6ac97 (beige)
+
+#bdbcbc (gris clair)
+#545352 (gris foncé)
+
+FONT
+font-family: 'Mulish', sans-serif;
+font-family: 'Roboto Condensed', sans-serif;
+font-family: 'Niconne', cursive;
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@400;700&family=Niconne&family=Roboto+Condensed&display=swap');
+
+.hide{
+    display: none;
+}
+.mHover{
+    cursor: pointer;
+}
+body{
+    font-family: 'Mulish', sans-serif;
+}
+
+h1, h2, h3{
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+header .navbar {
+    background: #b6ac97;
+}
+
+header .navbar .nav-link {
+    color: white;
+}
+
+header .navbar .nav-link:hover{
+    color: #906427;
+}
+
+button[type="submit"]{
+    margin: 10px 7px;
+    background:lightgrey;
+}
+
+button[type="submit"]:hover{
+    background:grey;
+}
+
+.btn.btnSaillance {
+    background: #906427;
+    color: white;
+}
+
+.btnSaillance:hover{
+    background: #7b571e;
+    color: white;
+}
+
+footer{
+    background: #b6ac97;
+}
+
+/* FORM */
+.elf {
+    margin: 10px 7px;
+}
+
+.ctn-elf-inlb {
+    display: inline-block;
+}
+
+.elf-block {
+    display: block;
+}
+
+.elf label {
+    display: inline-block;
+    color: darkgrey;
+    font-size: 10px;
+}
+
+.elf textarea{
+    display: block;
+}
+
+.elf label:first-letter {
+    text-transform: uppercase;
+}
+.elf input,
+.elf select{
+    display: block;
+}
+
+.info{
+    color: cornflowerblue;
+}
+.error{
+    color: darkred;
+}
+
+.success{
+    color: darkgreen;
+}
+/* FIN FORM */
+
+/* DATE PICKER */
+.datepicker.datepicker-dropdown{
+    padding: 20px
+}
+
+.datepicker.datepicker-dropdown .table-condensed td{
+    padding: 20px;
+}
+/* FIN DATE PICKER */
+
+/* BOOKING HOUR */
+#inpDateBook{
+    position: relative;
+}
+.inpBookingHour.hide{
+    display: none;
+}
+
+.ctnBookingHourItem{
+    display: inline-block;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.btnHour{
+
+    padding: 10px 15px;
+    border: solid 1px #906427;
+}
+.btnHour.selected{
+    border: none;
+    background: #906427;
+    color: white;
+}
+.btnHour:hover{
+    background: #906427;
+    color: white;
+}
+.btnHour.disabled{
+    border: none;
+    background: lightgray;
+    color: darkgray;
+}
+.btnHour.disabled:hover{
+    border: none;
+    background: lightgray;
+    color: darkgray;
+}
+
+.inpIdOpening.hide{
+    display:none;
+}
+
+/* FIN BOOKING HOUR */

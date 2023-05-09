@@ -44,7 +44,31 @@ final class RestaurantMenus extends ManagerObjTable
 
         $oStatement = $oPDO->prepare($sql);
         if(!$oStatement) return false;
-        return $oStatement->execute();
+        $b = $oStatement->execute();
+        if(!$b) {
+            throw new Exception('Error get table from creating table ' . self::getTableName());
+        }
+
+        //On vérifie si la table est bien initalisée sinon on l'initialise
+        $sql = "SELECT * FROM " . self::getTableName();
+        $oStatement = $oPDO->prepare($sql);
+        if(!$oStatement) return false;
+        $b = $oStatement->execute();
+        if(!$b) {
+            throw new Exception('Error get table from creating table ' . self::getTableName());
+        }
+        $aResult = $oStatement->fetchAll(PDO::FETCH_ASSOC);
+        if(is_array($aResult) && count($aResult) == 0) $this->fillLoremTable();
+        return $b;
+    }
+
+    public function fillLoremTable()
+    {
+        $aData = array();
+        $aData[] = new RestaurantMenu('Menu liberté');
+        $aData[] = new RestaurantMenu('Menu plaisir');
+        $aData[] = new RestaurantMenu('Menu gourmand');
+        foreach($aData as $o) $this->add($o);
     }
 
     /**

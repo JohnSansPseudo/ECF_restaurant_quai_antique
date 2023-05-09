@@ -40,7 +40,7 @@ class Booking
      */
     public function __construct(int $iIdOpening, string $sEmail, string $sFirstName, string $sLastName, string $sTelephone, string $sAllergy=null, int $iNbGuest, string $sStartTime, string $sDate, int $iId=0)
     {
-        $this->setId($iId);
+        if($iId) $this->setId($iId);
         $this->setIdOpening($iIdOpening);
         $this->setEmail($sEmail);
         $this->setFirstName($sFirstName);

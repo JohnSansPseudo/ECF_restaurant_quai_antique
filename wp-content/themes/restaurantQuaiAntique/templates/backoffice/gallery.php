@@ -6,6 +6,6 @@ function getContentSectionGallery($oTab)
     return getContentSection($oTab, $sBody);
 }
 
-$sContent = '<div>Gallery</div>';
+$sContent = '<div>Galleryjjj</div>';
 
 include('layout.php');

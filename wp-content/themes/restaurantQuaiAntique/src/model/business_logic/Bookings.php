@@ -5,6 +5,11 @@ final class Bookings extends ManagerObjTable
 {
     CONST CLASS_MANAGER = 'Booking';
 
+    static public function getNbGuestsMax()
+    {
+        return intval(get_option('guest_max'));
+    }
+
     static public function getTableName():string
     {
         global $wpdb;
@@ -38,11 +43,38 @@ final class Bookings extends ManagerObjTable
     }
 
     /**
-     * @Param Booking $oBooking
+     * @param $oBooking Booking
+     * @return bool | array | Booking
      */
     public function add($oBooking)
     {
+        //Vérification du nombre de place restante
+        $iNbGuestBooked = $this->getNbGuestsBySqlDateAndIdOpening($oBooking->getBookingDate(), $oBooking->getIdOpening());
+        $iPlaceAvailable = self::getNbGuestsMax() - $iNbGuestBooked;
+        $aData = OpeningTimes::getInstance()->getByWhere(array('id' => $oBooking->getIdOpening()));
+        if(is_array($aData) && count($aData) === 1) {
+            /**
+             * @var $o OpeningTime
+             */
+            $o = array_pop($aData);
+        }
+        if($oBooking->getNbGuest() > $iPlaceAvailable){
+            $sMess = 'Il ne reste que ' . $iPlaceAvailable . ' place(s) à cette date pour ce créneaux';
+            if($o) $sMess = 'Il ne reste que ' . $iPlaceAvailable . ' place(s) à cette date pour le ' . $o->getTimeDay();
+            throw new Exception($sMess);
+        }
 
+        //Vérification que le client ne fasse qu'une réservation par moment de journée (par son mail et ou tél)
+        $aBooked = $this->getByWhere(array('email' => $oBooking->getEmail(), 'bookingDate' => $oBooking->getBookingDate(), 'idOpening' => $oBooking->getIdOpening()));
+        if(is_array($aBooked) && count($aBooked) > 0){
+            /**
+             * @var $oBooked Booking
+             */
+            $oBooked = array_pop($aBooked);
+            $sMess = 'Vous avez déjà une réservation le ' . date('d/m/Y', strtotime($oBooked->getBookingDate())) . ' à ' . $oBooked->getStartTime();
+            throw new Exception($sMess);
+        }
+        
         $oPDO = PDOSingleton::getInstance();
         $oStatement = $oPDO->prepare("insert INTO " . self::getTableName() . "(idOpening, firstName, lastName, tel, email, allergy, nbGuest, startTime, bookingDate)  
         VALUES(:idOpening, :firstName, :lastName, :tel, :email, :allergy, :nbGuest, :startTime, :bookingDate)");
@@ -62,6 +94,20 @@ final class Bookings extends ManagerObjTable
         if(!$bExec) return $bExec;
         $oBooking->setId($oPDO->lastInsertId());
         return $oBooking;
+    }
+
+    public function getNbGuestsBySqlDateAndIdOpening($sSqlDate, $idOpening)
+    {
+        $idOpening = intval($idOpening);
+        $sSqlDate = htmlspecialchars($sSqlDate);
+        $oPDO = PDOSingleton::getInstance();
+        $oStatement = $oPDO->prepare('SELECT SUM(nbGuest) FROM ' . self::getTableName() . ' WHERE idOpening=:idOpening AND bookingDate=:bookingDate GROUP BY(nbGuest)');
+        //dbrDie($oStatement->queryString);
+        $oStatement->bindValue(':idOpening', $idOpening, PDO::PARAM_INT);
+        $oStatement->bindValue(':bookingDate', $sSqlDate, PDO::PARAM_STR);
+        $bExec = $oStatement->execute();
+        if(!$bExec) return $bExec;
+        return $oStatement->fetch(PDO::FETCH_COLUMN);
     }
 
 }

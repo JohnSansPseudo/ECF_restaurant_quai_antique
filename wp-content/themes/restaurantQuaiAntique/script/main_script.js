@@ -4,14 +4,6 @@ const action = 'root_ajax';
 
 window.addEventListener('load', function(){
 
-
-    /*$('#datepicker').datepicker();
-    $('.datepicker').datepicker({
-        format: 'dd/mm/yyyy',
-        startDate: '0d'
-    });*/
-
-
     //*** MENU - GESTION
     //Modification des menus
     const aInpTitleMenu = document.getElementsByClassName('inpTitleMenuUpdate');
@@ -182,14 +174,12 @@ window.addEventListener('load', function(){
         });
     }
 
-
-
     //**TOOLS TOAST ALERT
     document.getElementById(ToastAlert.CLASS_BOX_TOAST_ALERT).addEventListener('click', function (e) {
         e.target.closest('.' + ToastAlert.CLASS_CTN_TOAST_ALERT).remove();
     });
-
 });
+
 
 class Manager
 {

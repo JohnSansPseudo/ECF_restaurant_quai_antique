@@ -8,11 +8,11 @@
     <div class="row">
 
         <div class="col sm-3"></div>
-        <div class="col sm-9"><?php the_title(); ?></div>
+        <div class="col sm-9"></div>
 
     </div>
     <div class="row">
-        <?php the_content(); ?>
+        <p>tototototo eeoeooe</p>
     </div>
 
 <?php get_footer() ?>

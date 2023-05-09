@@ -2,11 +2,11 @@
 
 //MENU
 $aMenuArgs = array(
-    'theme_location' => 'header',
+    'theme_location' => 'header_menu',
     'menu_class' => 'navbar-nav mb-2 mb-lg-0',
-    'container' => false,
-    'walker' => '');
+    'container' => false);
 
+//  wp_nav_menu($aMenuArgs);
 //LOGO
 $custom_logo_id = get_theme_mod( 'custom_logo' );
 $image = wp_get_attachment_image_src( $custom_logo_id , 'full' );
@@ -32,9 +32,9 @@ $image = wp_get_attachment_image_src( $custom_logo_id , 'full' );
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mb-2 mb-lg-0">
-                        <?php wp_nav_menu($aMenuArgs); ?>
+                        <?= wp_nav_menu($aMenuArgs); ?>
                     </ul>
-                    <a href="" class="btn btnSaillance" id="">Réserver votre table</a>
+                    <a href="<?= get_site_url() ?>/book-table" class="btn btnSaillance" id="">Réserver votre table</a>
                 </div>
             </div>
         </nav>

@@ -87,7 +87,7 @@ final class ParamString extends ParamCheck
     {
         if($this->getIntMinLength() && strlen($this->getValue()) < $this->getIntMinLength())
         {
-            $this->aErr[] = 'Error ' . get_class($this) . ' : ' . $this->getVarName() . ' => ' . $this->getValue() . ' (' . strlen($this->getValue()). ' char)  < ' . $this->getIntMinLength() . ' characters';
+            $this->aErr[] = 'Error ' . $this->getVarName() . ' => "' . $this->getValue() . '" (' . strlen($this->getValue()). ' char) must be  > at ' . $this->getIntMinLength() . ' characters';
         }
         return $this;
     }
@@ -99,7 +99,7 @@ final class ParamString extends ParamCheck
     {
         if($this->getIntMaxLength() && strlen($this->getValue()) > $this->getIntMaxLength())
         {
-            $this->aErr[] = 'Error ' . get_class($this) . ' : ' . $this->getVarName() . ' => ' . $this->getValue() . ' (' . strlen($this->getValue()). ' char)  > ' . $this->getIntMaxLength() . ' characters';
+            $this->aErr[] = 'Error ' . $this->getVarName() . ' => "' . $this->getValue() . '" (' . strlen($this->getValue()). ' char) must be  < at ' . $this->getIntMaxLength() . ' characters';
         }
         return $this;
     }

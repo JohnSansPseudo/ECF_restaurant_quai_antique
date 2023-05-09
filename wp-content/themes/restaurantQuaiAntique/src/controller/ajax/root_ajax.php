@@ -5,10 +5,14 @@ require_once('backoffice/updateOptionMenu.php');
 require_once('backoffice/updateDishType.php');
 require_once('backoffice/updateFoodDish.php');
 require_once('backoffice/updateOpeningTime.php');
+require_once('front/updateBookingHour.php');
+require_once('front/isUserNameAdmin.php');
+
 
 //FONCTION PRINCIPALE QUI ROUTE VERS LA BONNE FONCTION
 function root_ajax()
 {
+
     //Sécurité, pour s'assurer que la requête vient bien de la page admin
     if(!isset($_REQUEST['nonce']) || !wp_verify_nonce($_REQUEST['nonce'], 'root_ajax' )){
         wp_send_json_error( "Vous n’avez pas l’autorisation d’effectuer cette action.", 403 );
@@ -27,6 +31,8 @@ function root_ajax()
                 case 'updateDishType': $oJSON = ajaxUpdateDishType(); break;
                 case 'updateFoodDish': $oJSON = ajaxUpdateFoodDish(); break;
                 case 'updateOpeningTime': $oJSON = ajaxUpdateOpeningTime(); break;
+                case 'updateBookingHours': $oJSON = ajaxUpdateBookingHour(); break;
+                case 'isUserNameAdmin': $oJSON = ajaxIsUserNameAdmin(); break;
             }
         } catch (Exception $oErr) {
             $oJSON->setMess($_POST['ajax'] . ' ' . $oErr->getMessage());

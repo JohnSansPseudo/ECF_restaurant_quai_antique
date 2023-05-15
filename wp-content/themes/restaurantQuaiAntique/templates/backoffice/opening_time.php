@@ -22,9 +22,6 @@ foreach($aOpeningTime as $oOpening)
             </tr>';
 }
 
-/*<td><input type="" data-provide="datepicker" class="inpStartTimeDay" value="' . $oOpening->getStartTimeDay() . '" /></td>
-<td><input type="" data-provide="datepicker" class="inpEndTimeDay" value="' . $oOpening->getEndTimeDay() . '" /></td>*/
-
 ob_start();
 //ADD DISH TYPE
 $sBody = '<table>

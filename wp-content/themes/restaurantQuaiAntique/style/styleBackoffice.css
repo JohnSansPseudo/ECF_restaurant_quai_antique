@@ -1,3 +1,7 @@
+.mHover{
+    cursor: pointer;
+}
+
 .hide{
     display: none;
 }
@@ -33,10 +37,26 @@ button[type="submit"]{
     display: block;
 }
 
+.info{
+    color:  #906427;
+    font-style: italic;
+}
+.error{
+    color: darkred;
+}
+
+.success{
+    color: darkgreen;
+}
+
+
+
 .backOfficeSection-menu .dashicons.dashicons-action {
     padding: 0 5px;
     margin: 0 20px
 }
+
+/* GENERAL BACKOFFICE */
 
 .tabBackOffice{
     text-decoration: none;
@@ -63,3 +83,36 @@ button[type="submit"]{
 .errorField{
     color: darkred;
 }
+
+/* FIN GENERAL BACKOFFICE */
+
+/* MENUS & DISH TYPE & DISH */
+
+.inpTitleUpFoodDish,
+#inpTitleFoodDish,
+#inpTitleOption,
+.inpTitleUpMenuOption{
+    width: 300px;
+}
+
+#txtDescFoodDish,
+#txtDescOption{
+    display: block;
+}
+
+#RestaurantQuaiAntiqueBackOffice form{
+    display: flex;
+    align-items: flex-end;
+}
+
+/* FIN MENUS & DISH TYPE & DISH */
+
+/* FORM GUEST MAX */
+#formGuestMax .form-table{
+    width: unset;
+}
+#formGuestMax .form-table th[scope=row]{
+    display: none;
+}
+
+/* FORM GUEST MAX */

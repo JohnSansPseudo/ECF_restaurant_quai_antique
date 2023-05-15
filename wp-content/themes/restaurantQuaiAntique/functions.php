@@ -17,6 +17,15 @@ add_action('after_setup_theme', 'initPage');
 add_action('after_setup_theme', 'quai_antique_supports');//THEME OPTIONS
 add_action( 'init', 'register_my_menus' );
 
+
+////wp_insert_user()
+/// //wp_create_user()
+
+
+
+
+
+
 //FRONT - MENU
 function register_my_menus() {
     register_nav_menus(
@@ -48,6 +57,7 @@ add_action('admin_init', 'addDishType');
 add_action('admin_init', 'deleteDishType');
 add_action('admin_init', 'addFoodDish');
 add_action('admin_init', 'deleteFoodDish');
+add_action('admin_init', 'addMediaImgFile');
 
 //FRONT
 add_action('template_redirect', 'addClient');
@@ -55,65 +65,14 @@ add_action('template_redirect', 'decoClient');
 add_action('template_redirect', 'connexionClient');
 add_action('template_redirect', 'bookTable');
 
-//connexion
-//Réserver votre table
 
 
+
+//CREATION DES PAGES
 function initPage()
 {
-    $aPage = array();
-    $aPage[] = (object)array(
-        'post_content' => '',
-        'post_title' => 'Accueil',
-        'post_name' => 'home'
-    );
-
-    $aPage[] = (object)array(
-        'post_content' => '',
-        'post_title' => 'A la carte',
-        'post_name' => 'a-la-carte',
-        'position' => 2
-    );
-    $aPage[] = (object)array(
-        'post_content' => '',
-        'post_title' => 'Mon compte',
-        'post_name' => 'create-account',
-        'position' => 3
-    );
-    $aPage[] = (object)array(
-        'post_content' => '',
-        'post_title' => 'Connexion',
-        'post_name' => 'sign-in',
-        'position' => 4
-    );
-    $aPage[] = (object)array(
-        'post_content' => '',
-        'post_title' => 'Réserver votre table',
-        'post_name' => 'book-table',
-        'position' => 5
-    );
-
-    foreach($aPage as $i => $oPage)
-    {
-        //Vérifier l'existence de la page
-        $args = array(
-            'post_type' => 'page',
-            'post_name__in' => array($oPage->post_name));
-        $get_posts = new WP_Query();
-        $a = $get_posts->query($args);
-        //Si la page n'a pas été créée alors on la créée
-        if(count($a) < 1)
-        {
-            $aPost = array(
-                'post_content' => $oPage->post_content,
-                'post_title' => $oPage->post_title,
-                'post_name' => $oPage->post_name,
-                'post_status' => 'publish',
-                'post_author' => 1,
-                'post_type' => 'page'
-            );
-        }
-    }
+    $oPageWorpress = new PageWordpress();
+    $oPageWorpress->initPage();
 }
 
 //FRONT - GESTION DE LA NAVIGATION
@@ -269,6 +228,7 @@ function includeFiles()
     require_once('src/controller/form/delete_dish_type.php');
     require_once('src/controller/form/add_food_dish.php');
     require_once('src/controller/form/delete_food_dish.php');
+    require_once('src/controller/form/add_media_img_file.php');
 
     //Controller front
     require_once('src/controller/form/add_client.php');
@@ -291,7 +251,10 @@ function includeFiles()
     require_once('src/model/business_logic/RestaurantMenus.php');
     require_once('src/model/business_logic/RestaurantMenuOption.php');
     require_once('src/model/business_logic/RestaurantMenuOptions.php');
+
+    //
     require_once('src/model/ClientConnection.php');
+    require_once('src/model/PageWordpress.php');
 }
 
 

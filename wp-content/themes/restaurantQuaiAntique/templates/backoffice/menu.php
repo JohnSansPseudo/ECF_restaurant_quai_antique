@@ -72,7 +72,7 @@ $sBody = '<form method="post" action="#">
             </div>
             <div class="elf">
                 <label for="inpDescOption">Description</label>
-                <textarea id="txtDescOption" name="txtDescOption"></textarea>
+                <textarea id="txtDescOption" name="txtDescOption" cols="100" rows="1"></textarea>
             </div>
             <div class="elf">
                 <label for="inpPriceOption">Prix</label>
@@ -140,7 +140,7 @@ function getTableRowOptionMenu(array $aOption, array $aMenu, array $aErrDeleteMe
         $sTrOption .= '<tr data-id="' . $oOption->getId() . '">
                         <td>' . $sSelect . '</td>
                         <td><input type="text" class="inpTitleUpMenuOption" name="" value="' . $oOption->getTitle() . '"></td>
-                        <td><textarea class="txtDescUpMenuOption" name="txtDescUpMenuOption">' . $oOption->getDescription() . '</textarea></td>
+                        <td><textarea class="txtDescUpMenuOption" name="txtDescUpMenuOption" cols="100" rows="1">' . $oOption->getDescription() . '</textarea></td>
                         <td><input type="number" class="inpPriceUpMenuOption" name ="inpPriceUpMenuOption" value="' . $oOption->getPrice() . '"></td>
                         <td>
                              <form method="post" action="#">

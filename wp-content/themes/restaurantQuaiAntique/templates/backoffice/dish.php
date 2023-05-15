@@ -83,7 +83,7 @@ $sBody = '<form method="post" action="#">
             </div>
             <div class="elf">
                 <label for="txtDescFoodDish">Description</label>
-                <textarea id="txtDescFoodDish" name="txtDescFoodDish">' . $sDescFoodDish . '</textarea>
+                <textarea id="txtDescFoodDish" name="txtDescFoodDish" rows="1" cols="100">' . $sDescFoodDish . '</textarea>
             </div>
             <div class="elf">
                 <label for="inpPriceFoodDish">Prix</label>
@@ -193,7 +193,7 @@ function getTableRowFoodDish($aFoodDish, $aDishType, $aErrDeleteFoodDish)
         $sTrOption .= '<tr data-id="' . $oFoodDish->getId() . '">
                         <td>' . $sSelect . '</td>
                         <td><input type="text" class="inpTitleUpFoodDish" name="" value="' . $oFoodDish->getTitle() . '"></td>
-                        <td><textarea class="txtDescUpFoodDish" name="txtDescUpFoodDish">' . $oFoodDish->getDescription() . '</textarea></td>
+                        <td><textarea class="txtDescUpFoodDish" name="txtDescUpFoodDish" cols="100" rows="1">' . $oFoodDish->getDescription() . '</textarea></td>
                         <td><input type="number" class="inpPriceUpFoodDish" name ="inpPriceUpFoodDish" value="' . $oFoodDish->getPrice() . '"></td>
                         <td>
                              <form method="post" action="#">
@@ -246,7 +246,7 @@ function getTableRowOptionMenu(array $aOption, array $aMenu, array $aErrDeleteMe
         $sTrOption .= '<tr data-id="' . $oOption->getId() . '">
                         <td>' . $sSelect . '</td>
                         <td><input type="text" class="inpTitleUpMenuOption" name="" value="' . $oOption->getTitle() . '"></td>
-                        <td><textarea class="txtDescUpMenuOption" name="txtDescUpMenuOption">' . $oOption->getDescription() . '</textarea></td>
+                        <td><textarea class="txtDescUpMenuOption" name="txtDescUpMenuOption" cols="100" rows="1">' . $oOption->getDescription() . '</textarea></td>
                         <td><input type="number" class="inpPriceUpMenuOption" name ="inpPriceUpMenuOption" value="' . $oOption->getPrice() . '"></td>
                         <td>
                              <form method="post" action="#">

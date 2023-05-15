@@ -7,6 +7,7 @@ require_once('backoffice/updateFoodDish.php');
 require_once('backoffice/updateOpeningTime.php');
 require_once('front/updateBookingHour.php');
 require_once('front/isUserNameAdmin.php');
+require_once('front/isClient.php');
 
 
 //FONCTION PRINCIPALE QUI ROUTE VERS LA BONNE FONCTION
@@ -33,6 +34,7 @@ function root_ajax()
                 case 'updateOpeningTime': $oJSON = ajaxUpdateOpeningTime(); break;
                 case 'updateBookingHours': $oJSON = ajaxUpdateBookingHour(); break;
                 case 'isUserNameAdmin': $oJSON = ajaxIsUserNameAdmin(); break;
+                case 'isClient': $oJSON = ajaxIsClient(); break;
             }
         } catch (Exception $oErr) {
             $oJSON->setMess($_POST['ajax'] . ' ' . $oErr->getMessage());

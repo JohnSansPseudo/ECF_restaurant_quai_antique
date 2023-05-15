@@ -2,7 +2,7 @@
 
 function decoClient()
 {
-    $sBackPath = get_site_url() . '/sign-in';
+    $sBackPath = get_site_url() . '/' . PageWordpress::SING_IN_NAME;
     if (!isset($_POST['deco-client'])) return false;
 
     if (!isset($_REQUEST['deco_client_nonce']) || !wp_verify_nonce($_REQUEST['deco_client_nonce'], 'decoClient')) {

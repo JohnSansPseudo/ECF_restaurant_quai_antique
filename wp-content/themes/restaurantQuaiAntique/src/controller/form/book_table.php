@@ -2,7 +2,7 @@
 
 function bookTable()
 {
-    $sBackPath = get_site_url() . '/book-table';
+    $sBackPath = get_site_url() . '/' . PageWordpress::BOOK_TABLE_NAME;
     if (!isset($_POST['book-table'])) return false;
 
     if (!isset($_REQUEST['book_table_nonce']) || !wp_verify_nonce($_REQUEST['book_table_nonce'], 'bookTable')) {

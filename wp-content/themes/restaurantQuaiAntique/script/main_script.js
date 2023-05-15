@@ -91,7 +91,6 @@ window.addEventListener('load', function(){
     //*** FIN DISH TYPE
 
 
-
     //*** FOOD DISH UPDATE
     //Update food dish => dish type
     const aSelDishType = document.getElementsByClassName('selIdDishTypeUpFoodDish');
@@ -163,7 +162,7 @@ window.addEventListener('load', function(){
 
     //*** OPNENING TIME
     //Effacer les horaires d'ouverture
-    const aBtnSaveTimeDay   = document.getElementsByClassName('btnEraseTimeDay');
+    const aBtnSaveTimeDay  = document.getElementsByClassName('btnEraseTimeDay');
     for(const btn of aBtnSaveTimeDay){
         btn.addEventListener('click', function(){
             const idOpening = btn.closest('tr').getAttribute('data-id');
@@ -175,9 +174,12 @@ window.addEventListener('load', function(){
     }
 
     //**TOOLS TOAST ALERT
-    document.getElementById(ToastAlert.CLASS_BOX_TOAST_ALERT).addEventListener('click', function (e) {
-        e.target.closest('.' + ToastAlert.CLASS_CTN_TOAST_ALERT).remove();
-    });
+    const boxToastAlert = document.getElementById(ToastAlert.CLASS_BOX_TOAST_ALERT);
+    if(boxToastAlert){
+        boxToastAlert.addEventListener('click', function (e) {
+            e.target.closest('.' + ToastAlert.CLASS_CTN_TOAST_ALERT).remove();
+        });
+    }
 });
 
 

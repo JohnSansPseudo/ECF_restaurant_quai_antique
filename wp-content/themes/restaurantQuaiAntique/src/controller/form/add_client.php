@@ -2,7 +2,7 @@
 
 function addClient()
 {
-    $sBackPath = get_site_url() . '/create-account';
+    $sBackPath = get_site_url() . '/' . PageWordpress::ACCOUNT_NAME;
     if(!isset($_POST['add-client'])) return false;
 
     if(!isset($_REQUEST['add_client_nonce']) || !wp_verify_nonce($_REQUEST['add_client_nonce'], 'addClient' )){

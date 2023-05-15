@@ -1,8 +1,7 @@
 <?php
-function getHtmlPageAlaCarte2()
+function getHtmlPageAlaCarte()
 {
     //La carte du chef
-
     $aDish = DishTypes::getInstance()->getAllData();
     $aFoodDish = FoodDishes::getInstance()->getAllData();
     $s = '';
@@ -11,8 +10,6 @@ function getHtmlPageAlaCarte2()
      */
     foreach ($aDish as $oDish)
     {
-        $sTitle = '<div class=""></div>';
-
         $sTr =  '';
         /**
          * @var FoodDish $oFoodDish
@@ -21,36 +18,36 @@ function getHtmlPageAlaCarte2()
         {
             if($oFoodDish->getIdDishType() === $oDish->getId())
             {
-                $sTr .= '<tr>
-                            <td>' . $oFoodDish->getTitle() . '</td>
-                            <td>' . $oFoodDish->getDescription() . '</td>
-                            <td>' . $oFoodDish->getPrice() . '</td>
-                        </tr>';
+                $sTr .= '<div class="row ">
+                            <div class="col-3 ">' . $oFoodDish->getTitle() . '</div>
+                            <div class="col-7 ">' . $oFoodDish->getDescription() . '</div>
+                            <div class="col-2  text-end">' . $oFoodDish->getPrice() . ' €</div>
+                        </div>';
             }
         }
 
         $s .= '<div class="ctnDishType">
-                    <div class="head"><div class="titleDishType">' . $oDish->getTitle() . '</div>
+                    <div class="head">
+                        <div class="titleDishType">' . $oDish->getTitle() . '</div>
+                    </div>
                     <div class="body">
-                        <table>
-                            <tbody>' . $sTr . '</tbody>
-                        </table>
+                        ' . $sTr . '
                     </div>
                 </div>';
     }
-
     return $s;
 }
-
 get_header();
 ?>
-
-<div class="row">
-    <div class="col sm-3"></div>
-    <div class="col sm-9"></div>
-</div>
-<div class="row">
-    <?php echo getHtmlPageAlaCarte2(); ?>
-</div>
+    <div class="row firstRow">
+        <div class="col-12">
+            <h2>La carte du chef</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 offset-lg-1 col-lg-10 mb-5" id="ctnDish">
+            <?php echo getHtmlPageAlaCarte(); ?>
+        </div>
+    </div>
 
 <?php get_footer() ?>

@@ -33,10 +33,44 @@ font-family: 'Niconne', cursive;
 }
 body{
     font-family: 'Mulish', sans-serif;
+    font-size: 1rem;
 }
+
+a{
+    color: #906427;
+}
+p{
+    margin:0;
+}
+
+.firstRow{
+    padding-top: 65px;
+}
+
 
 h1, h2, h3{
     font-family: 'Roboto Condensed', sans-serif;
+    text-align: center;
+}
+h1, h2, h3{
+    text-align: center;
+}
+
+h1{
+    font-family: 'Niconne';
+    margin: 30px 0;
+    font-size: 4rem;
+}
+
+h2{
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+h3.titleMenu{
+    font-family: 'Niconne';
+    border-bottom: solid 1px #906427;
+    padding-bottom: 5px;
 }
 
 header .navbar {
@@ -51,13 +85,17 @@ header .navbar .nav-link:hover{
     color: #906427;
 }
 
-button[type="submit"]{
+button[type="submit"], .btn{
     margin: 10px 7px;
     background:lightgrey;
 }
 
-button[type="submit"]:hover{
+button[type="submit"]:hover, .btn:hover{
     background:grey;
+}
+
+.btn{
+
 }
 
 .btn.btnSaillance {
@@ -65,16 +103,73 @@ button[type="submit"]:hover{
     color: white;
 }
 
+.btn.big{
+    padding: 15px 35px;
+}
+
+.btn.large{
+    margin: 30px 0;
+    padding: 15px 75px;
+}
+
 .btnSaillance:hover{
     background: #7b571e;
     color: white;
 }
 
-footer{
-    background: #b6ac97;
+/* FOOTER */
+footer {
+    background: #292222;
+    padding: 20px;
+    color: white;
+}
+footer .ctnSectionFooter{
+    padding-right: 30px;
+    margin-bottom: 20px;
+}
+footer .ctnSectionFooter .head{
+    margin-bottom: 10px;
+    font-size: 14px;
 }
 
-/* FORM */
+footer .tblOpenningFooter{
+    color: white;
+}
+
+footer .ctnSectionFooter .body,
+footer .ctnSectionFooter .body .tblOpenningFooter
+{
+    font-size: 12px;
+}
+
+
+
+.tblOpenningFooter td{
+    padding: 3px 20px 3px 0;
+}
+
+.ctnSectionFooter[data-section="logo"]{
+    align-self: center;
+}
+
+.logoFooter{
+    max-width: 100%;
+}
+
+#menu-footer-menu{
+    list-style: none;
+    padding: 0;
+}
+#menu-footer-menu li{
+    padding: 5px 0;
+}
+.ctnSectionFooter:last-child{
+    padding-right: 0;
+}
+/* FIN FOOTER */
+
+
+/* FORM (GLOBAL) */
 .elf {
     margin: 10px 7px;
 }
@@ -106,7 +201,8 @@ footer{
 }
 
 .info{
-    color: cornflowerblue;
+    color:  #906427;
+    font-style: italic;
 }
 .error{
     color: darkred;
@@ -115,6 +211,7 @@ footer{
 .success{
     color: darkgreen;
 }
+
 /* FIN FORM */
 
 /* DATE PICKER */
@@ -169,5 +266,155 @@ footer{
 .inpIdOpening.hide{
     display:none;
 }
-
+.sectionHourBooking .head{
+    color: darkgrey;
+    font-size: 10px;
+}
 /* FIN BOOKING HOUR */
+
+
+/* Title IMG Gallery */
+.ctnTitleImgGallery{
+    position: absolute;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.75);
+    padding: 10px;
+    right: 0;
+    left: 0;
+    opacity: 0;
+}
+/* FIN Title IMG Gallery */
+
+
+/* HOME */
+
+.ctnOptionMenu .footer{
+    color: #906427;
+}
+
+.ctnOptionsMenu{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+
+.ctnOptionMenu{
+    margin-bottom: 30px;
+}
+
+.sectionSepHome{
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.ctnMenuRestaurant{
+    margin: 40px 0 60px 0;
+}
+
+.ctnMenuRestaurant .head{
+    margin-bottom: 20px;
+}
+#btnBookHome{
+    width: 100%;
+}
+
+/* FIN HOME */
+
+/* A LA CARTE */
+.titleDishType{
+    font-family: 'Roboto Condensed', sans-serif;
+    color: #906427;
+    text-align: center;
+    font-size: 1.5rem;
+    margin: 0px 0 10px 0;
+}
+
+.ctnDishType{
+    margin-bottom: 40px;
+}
+
+
+/* FIN A AL CARTE */
+
+
+
+/* CONNEXION */
+
+
+#ctnConnexion .footer{
+    text-align: center;
+}
+
+#formUserConn {
+   display: inline-block;
+}
+#ctnConnexion .body {
+    text-align: center;
+}
+#ctnConnexion #formUserConn .elf{
+    text-align: left;
+}
+#ctnConnexion {
+    margin-bottom: 50px;
+}
+
+#ctnConnected{
+    text-align: center;
+}
+
+/* FIN CONNEXION */
+
+/* ACCOUNT */
+#formAccount{
+
+}
+#formAccount .elf{
+    text-align: left;
+}
+
+#ctnFormAccount .body{
+    margin-bottom: 50px;
+}
+#ctnFormAccount form{
+    margin-bottom: 30px;
+}
+
+#formAccount input,
+#formAccount textarea,
+#formAccount button{
+    width: 100%;
+}
+
+/* FIN ACCOUNT */
+
+/* BOOK TABLE */
+
+#formBookTable input,
+#formBookTable textarea,
+#formBookTable button{
+    width: 100%;
+}
+#ctnFormBookTable{
+    margin-bottom: 50px;
+}
+/* FIN BOOK TABLE */
+
+@media only screen and (max-width: 1100px){
+    footer .ctnSectionFooter[data-section="menu"]{
+        display: none;
+    }
+
+}
+
+@media only screen and (max-width: 1200px){
+
+    .ctnTitleImgGallery{
+        display: none !important;
+    }
+}
+
+/* NAVBAR */
+.barNavAdmin{
+    margin-top: 32px;
+}
+/* FIN NAV BAR */

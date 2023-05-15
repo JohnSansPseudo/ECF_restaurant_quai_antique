@@ -2,7 +2,7 @@
 
 function connexionClient()
 {
-    $sBackPath = get_site_url() . '/sign-in';
+    $sBackPath = get_site_url() . '/' . PageWordpress::SING_IN_NAME;
     if (!isset($_POST['conn-client'])) return false;
 
     if (!isset($_REQUEST['conn_client_nonce']) || !wp_verify_nonce($_REQUEST['conn_client_nonce'], 'connClient')) {

@@ -134,7 +134,7 @@ class Client
         if($oParam->getStringError() !== ''){
             $this->aErr['email'] = $oParam->getStringError();
         }else if(!filter_var($sEmail, FILTER_VALIDATE_EMAIL)){
-            $this->aErr['tel'] = 'email do not match with PHP FILTER_VALIDATE_EMAIL,  something@stuff.wtf';
+            $this->aErr['email'] = 'email do not match with PHP FILTER_VALIDATE_EMAIL,  something@stuff.wok';
         }
         else $this->email = $sEmail;
         return $this;

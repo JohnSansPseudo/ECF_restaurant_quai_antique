@@ -64,7 +64,7 @@ final class Bookings extends ManagerObjTable
             throw new Exception($sMess);
         }
 
-        //Vérification que le client ne fasse qu'une réservation par moment de journée (par son mail et ou tél)
+        //Vérification que le client ne fasse qu'une réservation par moment de journée (par son mail)
         $aBooked = $this->getByWhere(array('email' => $oBooking->getEmail(), 'bookingDate' => $oBooking->getBookingDate(), 'idOpening' => $oBooking->getIdOpening()));
         if(is_array($aBooked) && count($aBooked) > 0){
             /**

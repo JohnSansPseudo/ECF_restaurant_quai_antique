@@ -178,9 +178,11 @@ class Booking
      */
     public function setEmail(string $sEmail): Booking
     {
-        $oParam = new ParamString($sEmail, self::Class . ' email ', 3, 50);
+        $oParam = new ParamString($sEmail, ' email ', 3);
         if($oParam->getStringError() !== ''){
-            $this->aErr[] = $oParam->getStringError();
+            $this->aErr['email'] = $oParam->getStringError();
+        }else if(!filter_var($sEmail, FILTER_VALIDATE_EMAIL)){
+            $this->aErr['email'] = 'email do not match with PHP FILTER_VALIDATE_EMAIL,  something@stuff.wok';
         }
         else $this->email = $sEmail;
         return $this;
@@ -244,11 +246,12 @@ class Booking
      */
     public function setTel(string $sTelephone): Booking
     {
-        $oParam = new ParamString($sTelephone, self::Class . ' telephone ', 10, 10);
+        $oParam = new ParamString($sTelephone, ' telephone ', 10, 10);
         if($oParam->getStringError() !== ''){
-            $this->aErr[] = $oParam->getStringError();
-        }
-        else $this->tel = $sTelephone;
+            $this->aErr['tel'] = $oParam->getStringError();
+        } else if(!preg_match('/[0-9]{10}/', $sTelephone)){
+            $this->aErr['tel'] = 'Field telephone must be composed by 10 numbers';
+        } else $this->tel = $sTelephone;
         return $this;
     }
 

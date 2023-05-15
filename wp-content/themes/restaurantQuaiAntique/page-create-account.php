@@ -22,11 +22,11 @@ if(isset($_GET['update_client'])) $sSuccess = 'Votre compte est modifié';
 $sTitle = 'Créez votre compte';
 $sTitleBtn = 'Créer mon compte';
 $sPassword = '<div class="elf">
-                    <label for="inpPassword">Mot de passe (Pas de "< > %") </label>
+                    <label for="inpPassword">Mot de passe (Les "< > %" sont exclus) </label>
                     <input type="password" id="inpPassword" name="inpPassword" value="" required>
                 </div>';
 
-$sConnectezVous = '<a href="' . get_site_url() . '/sign-in">Ou conncetez-vous</a>';
+$sConnectezVous = '<a href="' . get_site_url() . '/' . PageWordpress::SING_IN_NAME . '">Ou connectez-vous</a>';
 
 //Si le client est connecté
 $oClient = ClientConnection::isConnected();
@@ -43,55 +43,54 @@ if($oClient){
     $iNbGuest = $oClient->getNbGuest();
     $sConnectezVous = '';
 }
-
+//offset-lg-3 col-lg-3 offset-xl-4 col-xl-4
 get_header();
 ?>
 
-    <div class="row">
-        <div class="col-3"></div>
-        <div class="col-6">
+    <div class="row firstRow">
+        <div class="col-12">
             <h2><?= $sTitle ?></h2>
         </div>
-        <div class="col-3"></div>
     </div>
     <div class="row">
-        <div class="col-3"></div>
-        <div class="col-6">
-            <form method="post" action="#">
-                <?= wp_nonce_field('addClient', 'add_client_nonce') ?>
-                <p class="error"><?= $sGlobalError ?></p>
-                <p class="success"><?= $sSuccess ?></p>
-                <div class="elf">
-                    <label for="inpFirstName">Prénom</label>
-                    <input type="text" id="inpFirstName" name="inpFirstName" value="<?= $sFirstName ?>" required>
+        <div class="col-12 offset-lg-4 col-lg-4  text-center" id="ctnFormAccount">
+            <div class="body">
+                <form method="post" action="#" id="formAccount">
+                    <?= wp_nonce_field('addClient', 'add_client_nonce') ?>
+                    <p class="error"><?= $sGlobalError ?></p>
+                    <p class="success"><?= $sSuccess ?></p>
+                    <div class="elf">
+                        <label for="inpFirstName">Prénom</label>
+                        <input type="text" id="inpFirstName" name="inpFirstName" value="<?= $sFirstName ?>" required>
+                    </div>
+                    <div class="elf">
+                        <label for="inpLastName">Nom</label>
+                        <input type="text" id="inpLastName" name="inpLastName" value="<?= $sLastName ?>" required>
+                    </div>
+                    <div class="elf">
+                        <label for="inpTel">Téléphone</label>
+                        <input type="tel" id="inpTel" name="inpTel" pattern="[0-9]{10}" placeholder="0102030405" value="<?= $sTel ?>" required>
+                    </div>
+                    <div class="elf">
+                        <label for="txtAllergie">Allergie(s)</label>
+                        <textarea name="txtAllergie" id="txtAllergie" cols="18" rows="3" placeholder="Détaillez ici vos allergies"><?= $sAllergie ?></textarea>
+                    </div>
+                    <div class="elf">
+                        <label for="inpMail">Mail</label>
+                        <input type="email" id="inpMail" name="inpMail" value="<?= $sMail ?>" required>
+                    </div>
+                    <?= $sPassword ?>
+                    <div class="elf">
+                        <label for="inpNbGuestDef">Nb de convives par défaut</label>
+                        <input type="number" id="inpNbGuestDef" name="inpNbGuestDef" value="<?= $iNbGuest ?>" min="1" max="<?= Bookings::getNbGuestsMax(); ?>">
+                    </div>
+                    <button type="submit" class="btn" id="btnCreateAccount" name="add-client"><?= $sTitleBtn ?></button>
+                </form>
+                <div>
+                    <?= $sConnectezVous ?>
                 </div>
-                <div class="elf">
-                    <label for="inpLastName">Nom</label>
-                    <input type="text" id="inpLastName" name="inpLastName" value="<?= $sLastName ?>" required>
-                </div>
-                <div class="elf">
-                    <label for="inpTel">Téléphone</label>
-                    <input type="tel" id="inpTel" name="inpTel" pattern="[0-9]{10}" placeholder="0102030405" value="<?= $sTel ?>" required>
-                </div>
-                <div class="elf">
-                    <label for="txtAllergie">Allergie(s)</label>
-                    <textarea name="txtAllergie" id="txtAllergie" cols="20" rows="3" placeholder="Détaillez ici vos allergies"><?= $sAllergie ?></textarea>
-                </div>
-                <div class="elf">
-                    <label for="inpMail">Mail</label>
-                    <input type="email" id="inpMail" name="inpMail" value="<?= $sMail ?>" required>
-                </div>
-                <?= $sPassword ?>
-                <div class="elf">
-                    <label for="inpNbGuestDef">Nb de convives par défaut</label>
-                    <input type="number" id="inpNbGuestDef" name="inpNbGuestDef" value="<?= $iNbGuest ?>" min="1" max="<?= Bookings::getNbGuestsMax(); ?>">
-                </div>
-                <button type="submit" class="btn" id="btnCreateAccount" name="add-client"><?= $sTitleBtn ?></button>
-            </form>
-            <div>
-                <?= $sConnectezVous ?>
             </div>
         </div>
-        <div class="col-3"></div>
+    </div>
 
 <?php get_footer() ?>

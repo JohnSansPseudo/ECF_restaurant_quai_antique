@@ -1,5 +1,4 @@
 "use strict";
-//const sPage = 'admin-ajax.php';//Fonctionnement par défaut de wordpress il renvoi vers wp-admin/admin-ajax.php
 const action = 'root-ajax';
 window.addEventListener('load', function() {
 
@@ -60,31 +59,104 @@ window.addEventListener('load', function() {
         });
     }
 
-
+    //  jonathan.teyssier@gmail.com
     //Connexion client & admin
-    const oUserLogin = document.getElementById('user_login');
-    if(oUserLogin){
-        oUserLogin.addEventListener('blur', function(){
-            const oUserConn = new UserConnexion();
-            const sPage = this.getAttribute('data-action');//attributes.getNamedItem('data-action');
-            try{ new ParamStrCheck(sPage, 'sPage').checkMinLen(3).checkMaxLen(50); }
-            catch(e){
-                alert(e.message);
-                console.error(e.message);
-                console.trace();
-                return false;
+    const oBtnConn = document.getElementById('btnConn');
+    if(oBtnConn){
+        oBtnConn.addEventListener('click', function (e) {
+            const bAdmin = document.getElementById('formUserConn').getAttribute('data-conn_admin');
+            if(bAdmin === '1'){
+                document.getElementById('formUserConn').setAttribute('data-conn_admin', '0');//reset de la valeur
+            } else {
+                document.getElementById('formUserConn').setAttribute('action', '#');
+                e.preventDefault();
+                document.querySelector('.errorForm').innerHtml = '';
+                //sPageAjax
+                const sPageAjax = document.getElementById('formUserConn').getAttribute('data-page_ajax');
+                try{
+                    new ParamStrCheck(sPageAjax, 'sPageAjax').checkMinLen(3).checkMaxLen(100);
+                }
+                catch(e){
+                    alert('Error contact an admin');
+                    console.error(e.message);
+                    return false;
+                }
+
+                //sPageReload
+                const sPageReload = document.getElementById('formUserConn').getAttribute('data-page_reload');
+                try{
+                    new ParamStrCheck(sPageReload, 'sPageReload').checkMinLen(3).checkMaxLen(100);
+                }
+                catch(e){
+                    alert('Error contact an admin');
+                    console.error(e.message);
+                    return false;
+                }
+
+                //sPageAdminConn
+                const sPageAdminConn = document.getElementById('formUserConn').getAttribute('data-page_admin_conn');
+                try{
+                    new ParamStrCheck(sPageAdminConn, 'sPageAdminConn').checkMinLen(3).checkMaxLen(100);
+                }
+                catch(e){
+                    alert('Error contact an admin');
+                    console.error(e.message);
+                    return false;
+                }
+
+                //sMail
+                const sMail = document.getElementById('user_login').value;
+                try{
+                    new ParamStrCheck(sMail, 'sMail').checkMinLen(3).checkMaxLen(50);
+                    document.getElementById('user_login').parentNode.querySelector('.error').innerHtml = '';
+                }
+                catch(e){
+                    sMail.parentNode.querySelector('.error').innerHtml = e.message;
+                    return false;
+                }
+
+                //sPass
+                const sPassword = document.getElementById('user_pass').value;
+                try{
+                    new ParamStrCheck(sPassword, 'sPassword').checkMinLen(3).checkMaxLen(50);
+                    document.getElementById('user_pass').parentNode.querySelector('.error').innerHtml = '';
+                }
+                catch(e){
+                    sPassword.parentNode.querySelector('.error').innerHtml = e.message;
+                    return false;
+                }
+
+                const oUserConnexion = new UserConnexion();
+                oUserConnexion.isClient(sMail, sPassword, sPageAjax, sPageReload, sPageAdminConn);
             }
-            const sMail = document.getElementById('user_login').value;
-            try{ new ParamStrCheck(sMail, 'sMail').checkMinLen(3).checkMaxLen(50); }
-            catch(e){
-                alert(e.message);
-                console.error(e.message);
-                console.trace();
-                return false;
-            }
-            oUserConn.isUserNameAdmin(sMail, sPage);
         });
     }
+    //FIN Connexion client & admin
+
+
+    //TITLE GALLERY
+    const oGallery = document.getElementById('ctnGallery');
+    if(oGallery){
+        const aBlock = oGallery.querySelectorAll('.wp-block-gallery .wp-block-image');
+        for(let oBlock of aBlock) {
+            let sTitle = oBlock.querySelector('img').getAttribute('alt');
+            if(sTitle === '') continue;
+            let oCtnTitle = document.createElement('div');
+            oCtnTitle.classList.add('ctnTitleImgGallery');
+            oCtnTitle.innerHTML = '<span class="titleImgGallery">' + sTitle + '</span>';
+            oBlock.append(oCtnTitle);
+            oBlock.addEventListener('mouseenter', function () {
+                oBlock.querySelector('.ctnTitleImgGallery').animate([
+                    { opacity: 1}], { duration: 300, fill: "forwards"});
+            });
+
+            oBlock.addEventListener('mouseleave', function () {
+                oBlock.querySelector('.ctnTitleImgGallery').animate([
+                    { opacity: 0}], { duration: 300, fill: "forwards"});
+            });
+        }
+    }
+    //FIN TITLE GALLERY
 });
 
 class UserConnexion
@@ -102,7 +174,45 @@ class UserConnexion
         return sNonce;
     }
 
-    isUserNameAdmin(sMail, sPage)
+    isClient(sMail, sPassword, sPageAjax, sPageReload, sPageAdminConn)
+    {
+        const sBody = new URLSearchParams({
+            action: 'root_ajax',
+            mail: sMail,
+            password: sPassword,
+            nonce: this.getNonce(),
+            ajax: 'isClient'});
+
+        const oInit = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Cache-Control': 'no-cache' },
+            body: sBody
+        }
+
+        fetch(sPageAjax, oInit)
+            .then((oResp) => {
+                if(oResp.ok){ return oResp.json(); }
+                else{
+                    alert('Error then promise update menu');
+                    console.error('Error promise then update menu');
+                    console.trace();
+                }
+            })
+            .then((oResp) => {
+
+                if(parseInt(oResp.data.code) === 1) document.location.href = sPageReload;
+                else this.isUserNameAdmin(sMail, sPassword, sPageAjax, sPageAdminConn);
+            })
+            .catch((oResp) => {
+                alert('Error catch promise');
+                console.error(oResp);
+                console.trace();
+            });
+    }
+
+    isUserNameAdmin(sMail, sPassword, sPageAjax, sPageAdminConn)
     {
         const sBody = new URLSearchParams({
             action: 'root_ajax',
@@ -118,8 +228,7 @@ class UserConnexion
             body: sBody
         }
 
-
-        fetch(sPage, oInit)
+        fetch(sPageAjax, oInit)
             .then((oResp) => {
                 if(oResp.ok){ return oResp.json(); }
                 else{
@@ -130,11 +239,19 @@ class UserConnexion
             })
             .then((oResp) => {
                 if(parseInt(oResp.data.code) === 1) {
-                    //RESULT HTML
-                    const sPath = "http://ecf_studi.localhost/wp-login.php";
-                    document.getElementById('formUserConn').setAttribute('action', sPath);
+                    document.getElementById('formUserConn').setAttribute('action', sPageAdminConn);
+                    document.getElementById('formUserConn').setAttribute('data-conn_admin', '1');
+
+                    const event = new MouseEvent('click', {
+                        view: window,
+                        bubbles: true,
+                        cancelable: true
+                    });
+                    document.getElementById("btnConn").dispatchEvent(event);
                 }else{
                     document.getElementById('formUserConn').setAttribute('action', '#');
+                    document.getElementById('formUserConn').setAttribute('data-conn_admin', '0');
+                    document.querySelector('.errorForm').innerHtml = 'Error any account with these identifiers';
                 }
             })
             .catch((oResp) => {
@@ -143,7 +260,6 @@ class UserConnexion
                 console.trace();
             });
     }
-
 }
 
 class BtnHourManager

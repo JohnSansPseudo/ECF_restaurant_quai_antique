@@ -22,7 +22,7 @@ function ajaxUpdateOpeningTime()
     if(strlen($sTimeEnd) === 5){
         $sTimeEnd = $sTimeEnd . ':00';
     }
-    //Vérifier si les deux champs sont bien remplis !! par l'un en null et l'autre en remplis...
+    //Vérifier si les deux champs sont bien remplis !! pas l'un en null et l'autre en remplis...
     if(($sTimeStart === null && $sTimeEnd !== null) || $sTimeStart !== null && $sTimeEnd === null)
     {
         return JsonAnswer::retour(0,'Please enter each time field');
@@ -35,39 +35,19 @@ function ajaxUpdateOpeningTime()
     if($aOpening && count($aOpening) > 0) $oOpening = array_pop($aOpening);
     else return JsonAnswer::retour(0, 'Error id Opening is not exist in database', '');
 
+    //On modifie l'objet
     $oOpening->setStartTimeDay($sTimeStart)->setEndTimeDay($sTimeEnd);
+
     //Si il y a une erreur sur les param alors on fait un retour   Json avec l'erreur
     if(count($oOpening->getErrArray()) > 0) return JsonAnswer::retour(0, join(', ', $oOpening->getErrArray()), '');
 
 
-
-    //Vérifier si il a une réservation qui risque d'être exclus !!
-
-    $aBooking = Bookings::getInstance()->getByWhere(array('idOpening' => $oOpening->getId()));
-    if(is_array($aBooking) && count($aBooking) > 0){
-
-        /**
-         * @var $oBooking Booking
-         */
-        /*foreach($aBooking as $oBooking) {
-            $oDateBookStart = new Date('H:m:s', $oBooking->getStartTime());
-            $oDateOpenStart = new Date('H:m:s', $oOpening->getStartTimeDay());
-
-            if($oBooking->getStartTime() > $oOpening->getStartTimeDay()){
-
-            }
-
-        }*/
-
-        //Vérifier l'heure
-
-        //Si ma nouvelle heure de début est après l'heure de résa
-        //Si ma nouvelle heure de fin est avant l'heure de résa
-
+    //Vérifier si il a une réservation à venir en dehors de ces nouvelles horaires
+    $aErr = $oOpeningTimes->checkBookingBeforeUpdate($oOpening);
+    if(!empty($aErr)){
+        $sMess = join('<br/>', $aErr);
+        return JsonAnswer::retour(0, $sMess, '');
     }
-    //Prendre toute les résevations
-    //Celle qui ont l'idOpening
-
 
     try{
         $b = $oOpeningTimes->updateById($oOpening->getId(), array('startTimeDay' => $oOpening->getStartTimeDay(), 'endTimeDay' => $oOpening->getEndTimeDay()));
@@ -78,3 +58,4 @@ function ajaxUpdateOpeningTime()
     return JsonAnswer::retour(0, 'Error update opening time', $b);
 
 }
+

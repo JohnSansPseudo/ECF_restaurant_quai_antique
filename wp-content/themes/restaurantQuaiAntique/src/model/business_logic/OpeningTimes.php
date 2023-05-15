@@ -250,4 +250,50 @@ final class OpeningTimes extends ManagerObjTable
             </div>';
     }
 
+    /**
+     * @param $oOpening OpeningTime
+     * @return array
+     */
+    public function checkBookingBeforeUpdate($oOpening)
+    {
+        //Vérifier si il y a une réservation à venir en dehors de ces nouvelles horaires
+        $aErr = array();
+        date_default_timezone_set("Europe/Paris");
+        $aBooking = Bookings::getInstance()->getByWhere(array('idOpening' => $oOpening->getId()));
+        if(is_array($aBooking) && count($aBooking) > 0){
+
+            if($oOpening->getStartTimeDay() === null && $oOpening->getEndTimeDay() === null){
+                /**
+                 * @var $oBooking Booking
+                 */
+                foreach($aBooking as $oBooking) {
+                    $sMess = 'Il y a une réservation en date du ' . date('d/m/Y', strtotime($oBooking->getBookingDate())) .  ' à ' . $oBooking->getStartTime() . ' par ' . $oBooking->getFirstName() . ' ' . $oBooking->getLastName();
+                    $aErr[] = utf8_decode($sMess);
+                }
+            } else {
+                /**
+                 * @var $oBooking Booking
+                 */
+                foreach($aBooking as $oBooking) {
+
+                    //On convertit l'heure de départ en timestamp
+                    $iStartOpening = strtotime($oBooking->getBookingDate() . ' ' . $oOpening->getStartTimeDay());
+                    $iEndOpening = strtotime($oBooking->getBookingDate() . ' ' .  $oOpening->getEndTimeDay());
+                    $iStartBooking = strtotime($oBooking->getBookingDate() . ' ' . $oBooking->getStartTime());
+
+                    if($iStartBooking > $iEndOpening){
+                        $sMess = 'L\'heure de fin est inférieure à la réservation du ' . date('d/m/Y', strtotime($oBooking->getBookingDate())) . ' à ' . $oBooking->getStartTime() . ' par ' . $oBooking->getFirstName() . ' ' . $oBooking->getLastName();
+                        $aErr[] = utf8_decode($sMess);
+                    }
+                    if($iStartBooking < $iStartOpening){
+                        $sMess = 'L\'heure de début est supérieure à la réservation du ' . date('d/m/Y', strtotime($oBooking->getBookingDate())) . ' à ' . $oBooking->getStartTime() . ' par ' . $oBooking->getFirstName() . ' ' . $oBooking->getLastName();
+                        $aErr[] = utf8_decode($sMess);
+                    }
+                }
+            }
+        }
+        return $aErr;
+    }
+
+
 }

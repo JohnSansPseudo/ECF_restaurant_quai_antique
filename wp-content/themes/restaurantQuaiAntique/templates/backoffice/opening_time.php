@@ -24,7 +24,7 @@ foreach($aOpeningTime as $oOpening)
 
 ob_start();
 //ADD DISH TYPE
-$sBody = '<table>
+$sBody = '<table id="tblOpeningTime">
             <tbody>
                 <tr>
                     <th>Jour</th>

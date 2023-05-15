@@ -15,16 +15,24 @@ add_action('after_setup_theme', 'includeFiles');
 add_action('after_setup_theme', 'setTables');//CREATION DES TABLES PERSONNALISEES
 add_action('after_setup_theme', 'initPage');
 add_action('after_setup_theme', 'quai_antique_supports');//THEME OPTIONS
+add_action('after_setup_theme', 'createUser');
 add_action( 'init', 'register_my_menus' );
 
 
-////wp_insert_user()
-/// //wp_create_user()
 
 
-
-
-
+function createUser()
+{
+    //wp_insert_user()
+    ////wp_create_user()
+    //username_exists('');
+    //_wp_get_current_user();
+    //add_user();
+    //register_new_user();
+    //sanitize_user();
+    //wp_update_user();
+    //get_user_by_email();
+}
 
 //FRONT - MENU
 function register_my_menus() {

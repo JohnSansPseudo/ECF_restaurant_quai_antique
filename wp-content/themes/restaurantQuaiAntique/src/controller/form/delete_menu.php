@@ -14,14 +14,9 @@ function deleteMenu()
     if(isset($_POST['idMenu']) ){
 
         $id = intval(($_POST['idMenu']));
-        try{
-            $b = RestaurantMenus::getInstance()->deleteById($id);
-        }catch(Exception $e){
-            $_POST['err_del_menu'] = $e->getMessage();
-        }
-        if(!$b) $_POST['err_del_menu'] = 'Error delete menu';
+        try{ RestaurantMenus::getInstance()->deleteById($id); }
+        catch(Exception $e){ $_POST['err_del_menu'] = $e->getMessage(); }
     } else{
         $_POST['err_del_menu'] = 'Error delete menu, id is missing';
     }
-
 }

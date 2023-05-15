@@ -1,3 +1,19 @@
+#RestaurantQuaiAntiqueBackOffice{
+    padding: 10px;
+}
+
+
+
+#RestaurantQuaiAntiqueBackOffice form{
+    display: flex;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+#RestaurantQuaiAntiqueBackOffice form .btn{
+    padding: 20px 10px;
+}
+
 .mHover{
     cursor: pointer;
 }
@@ -9,6 +25,7 @@
 .elf {
     display: inline-block;
     margin: 10px 7px;
+    flex-grow: 2;
 }
 
 button[type="submit"]{
@@ -35,6 +52,7 @@ button[type="submit"]{
 .elf input,
 .elf select{
     display: block;
+    width: 100%;
 }
 
 .info{
@@ -57,7 +75,11 @@ button[type="submit"]{
 }
 
 /* GENERAL BACKOFFICE */
-
+tr input,
+tr select,
+tr textarea{
+    width: 100%;
+}
 .tabBackOffice{
     text-decoration: none;
     color: black;
@@ -65,6 +87,7 @@ button[type="submit"]{
     margin: 0 5px;
     display: inline-block;
     background: #b6ac97;
+    margin-bottom: 20px;
 }
 .tabBackOffice.active,
 .tabBackOffice:hover{
@@ -76,9 +99,7 @@ button[type="submit"]{
     display: none;
 }
 
-#RestaurantQuaiAntiqueBackOffice{
-    padding: 10px;
-}
+
 
 .errorField{
     color: darkred;
@@ -88,22 +109,86 @@ button[type="submit"]{
 
 /* MENUS & DISH TYPE & DISH */
 
-.inpTitleUpFoodDish,
+/*.inpTitleUpFoodDish,
 #inpTitleFoodDish,
 #inpTitleOption,
-.inpTitleUpMenuOption{
-    width: 300px;
-}
+.inpTitleUpMenuOption,
+.txtDescUpMenuOption{
+    width: 100%;
+}*/
 
 #txtDescFoodDish,
 #txtDescOption{
     display: block;
+    width: 100%;
 }
 
-#RestaurantQuaiAntiqueBackOffice form{
-    display: flex;
-    align-items: flex-end;
+
+/* Fomr add dish */
+
+
+
+
+/* Form add option menu & add dish type */
+#elfDescOption,
+#elfTxtDescFoodDish{
+    flex-grow: 4;
+    flex-shrink: 1;
 }
+#elfTitleOption,
+#tdInpTitleFoodDish{
+    flex-grow: 2;
+    flex-shrink: 1;
+}
+#tblEditOptionMenu,
+#tblEditFoodDish{
+    width: 100%;
+}
+#tblEditOptionMenu tr,
+#tblEditFoodDish tr{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+/* Update option menu */
+.tdTxtDescUpMenuOption,
+.tdTxtDescUpFoodDish{
+    flex-grow: 6;
+    flex-shrink: 2;
+}
+.tdInpTitleUpMenuOption,
+.tdInpTitleUpFoodDish{
+    flex-grow: 2;
+}
+
+
+
+/* ONPENING TIME */
+
+
+
+
+/* FIN OPENING TIME */
+
+
+@media only screen and (max-width: 800px){
+    #tblEditOptionMenu tr,
+    #tblEditFoodDish tr{
+        flex-direction: column;
+    }
+
+    form#formAddDish{
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #formAddDish btn{
+        height: 50px;
+    }
+
+}
+
 
 /* FIN MENUS & DISH TYPE & DISH */
 

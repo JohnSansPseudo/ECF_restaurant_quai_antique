@@ -275,18 +275,18 @@ final class OpeningTimes extends ManagerObjTable
                  * @var $oBooking Booking
                  */
                 foreach($aBooking as $oBooking) {
-
                     //On convertit l'heure de départ en timestamp
                     $iStartOpening = strtotime($oBooking->getBookingDate() . ' ' . $oOpening->getStartTimeDay());
                     $iEndOpening = strtotime($oBooking->getBookingDate() . ' ' .  $oOpening->getEndTimeDay());
+                    $iEndOpening = $iEndOpening - (OpeningTimes::MIN_BEFORE_STOP_BOOK * 60);
                     $iStartBooking = strtotime($oBooking->getBookingDate() . ' ' . $oBooking->getStartTime());
 
-                    if($iStartBooking > $iEndOpening){
-                        $sMess = 'L\'heure de fin est inférieure à la réservation du ' . date('d/m/Y', strtotime($oBooking->getBookingDate())) . ' à ' . $oBooking->getStartTime() . ' par ' . $oBooking->getFirstName() . ' ' . $oBooking->getLastName();
+                    if($iStartBooking >= $iEndOpening){
+                        $sMess = 'L\'heure de fin moins délais de fermeture est supérieure ou égale à la réservation du ' . date('d/m/Y', strtotime($oBooking->getBookingDate())) . ' à ' . $oBooking->getStartTime() . ' par ' . $oBooking->getFirstName() . ' ' . $oBooking->getLastName();
                         $aErr[] = utf8_decode($sMess);
                     }
                     if($iStartBooking < $iStartOpening){
-                        $sMess = 'L\'heure de début est supérieure à la réservation du ' . date('d/m/Y', strtotime($oBooking->getBookingDate())) . ' à ' . $oBooking->getStartTime() . ' par ' . $oBooking->getFirstName() . ' ' . $oBooking->getLastName();
+                        $sMess = 'L\'heure de début est inférieure à la réservation du ' . date('d/m/Y', strtotime($oBooking->getBookingDate())) . ' à ' . $oBooking->getStartTime() . ' par ' . $oBooking->getFirstName() . ' ' . $oBooking->getLastName();
                         $aErr[] = utf8_decode($sMess);
                     }
                 }
@@ -294,6 +294,4 @@ final class OpeningTimes extends ManagerObjTable
         }
         return $aErr;
     }
-
-
 }

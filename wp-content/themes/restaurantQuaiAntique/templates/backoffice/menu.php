@@ -66,13 +66,13 @@ $sBody = '<form method="post" action="#">
                 <label for="selOptionMenu">Menu de l\'option</label>
                 <select id="selOptionMenu" name="selOptionMenu">' . $sOption . '</select>
             </div>
-            <div class="elf">
+            <div class="elf" id="elfTitleOption">
                 <label for="inpTitleOption">Titre de l\'option</label>
                 <input type="text" id="inpTitleOption" name="inpTitleOption" />
             </div>
-            <div class="elf">
+            <div class="elf" id="elfDescOption">
                 <label for="inpDescOption">Description</label>
-                <textarea id="txtDescOption" name="txtDescOption" cols="100" rows="1"></textarea>
+                <textarea id="txtDescOption" name="txtDescOption" ></textarea>
             </div>
             <div class="elf">
                 <label for="inpPriceOption">Prix</label>
@@ -139,8 +139,8 @@ function getTableRowOptionMenu(array $aOption, array $aMenu, array $aErrDeleteMe
 
         $sTrOption .= '<tr data-id="' . $oOption->getId() . '">
                         <td>' . $sSelect . '</td>
-                        <td><input type="text" class="inpTitleUpMenuOption" name="" value="' . $oOption->getTitle() . '"></td>
-                        <td><textarea class="txtDescUpMenuOption" name="txtDescUpMenuOption" cols="100" rows="1">' . $oOption->getDescription() . '</textarea></td>
+                        <td class="tdInpTitleUpMenuOption"><input type="text" class="inpTitleUpMenuOption" name="" value="' . $oOption->getTitle() . '"></td>
+                        <td class="tdTxtDescUpMenuOption"><textarea class="txtDescUpMenuOption" name="txtDescUpMenuOption">' . $oOption->getDescription() . '</textarea></td>
                         <td><input type="number" class="inpPriceUpMenuOption" name ="inpPriceUpMenuOption" value="' . $oOption->getPrice() . '"></td>
                         <td>
                              <form method="post" action="#">

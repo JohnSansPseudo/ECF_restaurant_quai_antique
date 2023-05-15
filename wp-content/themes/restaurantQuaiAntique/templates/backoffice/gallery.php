@@ -2,60 +2,18 @@
 
 $sError = '';
 $sSuccess = '';
-if(isset($_GET['error_file'])){
-    switch($_GET['error_file']){
-        case '1': $sError = 'There is no file to upload.'; break;
-        case '3': $sError = 'File is over 8 Mo'; break;
-        case '4': $sError = 'Error saving the image, try again or contact an admin'; break;
-        case '5': $sError = 'Error saving the image metadata, try again or contact an admin'; break;
-    }
-}
-if(isset($_POST['success_file'])) $sSuccess = 'File uploaded';
-
-//WP_Widget_Media::form();
-
-//media_upload_gallery_form();
-
-//media_upload_gallery_form();
+if(isset($_POST['success_file'])) $sSuccess = $_POST['success_file'];
+if(isset($_POST['error_file'])) $sSuccess = $_POST['error_file'];
 
 //media_buttons();
 //media_upload_gallery_form(array());
 
-//get_media_item(array());
+//dbrDie(get_media_item(38));
 
 //media_upload_gallery();
 
 //media_upload_form();
 
-//media_upload_gallery();
-
-
-//define('UPLOADS', 'images' )" dans wp-config.php
-
-//Dossier de sauvegarde des fichiers
-//wp-content/uploads/2023/05/ => prendre le dossier du mois / année courante !
-//Il faut aussi créer un attachment post
-//
-
-// get the upload directory and make a test.txt file
-/*$upload_dir = wp_upload_dir();
-$filename = trailingslashit($upload_dir['path']).'test.txt';
-
-// by this point, the $wp_filesystem global should be working, so let's use it to create a file
-global $wp_filesystem;
-if ( ! $wp_filesystem->put_contents( $filename, 'Test file contents', FS_CHMOD_FILE) ) {
-    echo 'error saving file!';
-}*/
-
-//wp_media_upload_handler();
-
-
-
-//TABLE wp_postmeta
-
-//meta_key => _wp_attached_file
-//meta_key => _wp_attachment_image_alt
-//meta_key => _wp_attachment_metadata
 
 ob_start();
 ?>
@@ -66,7 +24,7 @@ ob_start();
 <form method="post" action="#" enctype="multipart/form-data">
     <div class="elf">
         <?= wp_nonce_field('addMediaImgFile', 'add_media_img_file') ?>
-        <label for="inpFileGallery">Insérer un fichier</label>
+        <label for="inpFileGallery">Insérer une image</label>
         <input type="file" id="inpFileGallery" name="inpFileGallery">
     </div>
     <button type="submit" name="btnAddMediaImgFile">Envoyer</button>

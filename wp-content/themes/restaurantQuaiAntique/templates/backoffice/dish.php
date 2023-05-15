@@ -35,7 +35,7 @@ if(isset($_POST['err_delete_food_dish'])){
 
 ob_start();
 //ADD DISH TYPE
-$sBody = '<form method="post" action="#">
+$sBody = '<form method="post" action="#" id="formAddDishType">
                 <div id="cntDishType">
                     ' . wp_nonce_field('addDishType', "add_dish_type_nonce") . '
                     <div class="elf">
@@ -71,19 +71,19 @@ include('layout_subsection.php');
 $oOption = new HtmlSelectOption($aDishType, 'getTitle');
 if(count($oOption->getErrArray()) > 0) $sOption = implode('<br/>', $oOption->getErrArray());
 else $sOption = $oOption->getOptionHtml();
-$sBody = '<form method="post" action="#">
+$sBody = '<form method="post" action="#" id="formAddDish">
             ' . wp_nonce_field('addFoodDish', "add_food_dish_nonce") . '
              <div class="elf">
                 <label for="selOptionDishType">Type du plat</label>
                 <select id="selOptionDishType" name="selOptionDishType">' . $sOption . '</select>
             </div>
-            <div class="elf">
+            <div class="elf" id="tdInpTitleFoodDish">
                 <label for="inpTitleFoodDish">Titre du plat</label>
                 <input type="text" id="inpTitleFoodDish" name="inpTitleFoodDish" value="' . $sTitleFoodDish . '"/>
             </div>
-            <div class="elf">
+            <div class="elf" id="elfTxtDescFoodDish">
                 <label for="txtDescFoodDish">Description</label>
-                <textarea id="txtDescFoodDish" name="txtDescFoodDish" rows="1" cols="100">' . $sDescFoodDish . '</textarea>
+                <textarea id="txtDescFoodDish" name="txtDescFoodDish">' . $sDescFoodDish . '</textarea>
             </div>
             <div class="elf">
                 <label for="inpPriceFoodDish">Prix</label>
@@ -192,8 +192,8 @@ function getTableRowFoodDish($aFoodDish, $aDishType, $aErrDeleteFoodDish)
 
         $sTrOption .= '<tr data-id="' . $oFoodDish->getId() . '">
                         <td>' . $sSelect . '</td>
-                        <td><input type="text" class="inpTitleUpFoodDish" name="" value="' . $oFoodDish->getTitle() . '"></td>
-                        <td><textarea class="txtDescUpFoodDish" name="txtDescUpFoodDish" cols="100" rows="1">' . $oFoodDish->getDescription() . '</textarea></td>
+                        <td class="tdInpTitleUpFoodDish"><input type="text" class="inpTitleUpFoodDish" name="" value="' . $oFoodDish->getTitle() . '"></td>
+                        <td class="tdTxtDescUpFoodDish"><textarea class="txtDescUpFoodDish" name="txtDescUpFoodDish">' . $oFoodDish->getDescription() . '</textarea></td>
                         <td><input type="number" class="inpPriceUpFoodDish" name ="inpPriceUpFoodDish" value="' . $oFoodDish->getPrice() . '"></td>
                         <td>
                              <form method="post" action="#">

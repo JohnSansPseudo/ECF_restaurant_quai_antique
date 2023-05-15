@@ -101,7 +101,7 @@ final class Bookings extends ManagerObjTable
         $idOpening = intval($idOpening);
         $sSqlDate = htmlspecialchars($sSqlDate);
         $oPDO = PDOSingleton::getInstance();
-        $oStatement = $oPDO->prepare('SELECT SUM(nbGuest) FROM ' . self::getTableName() . ' WHERE idOpening=:idOpening AND bookingDate=:bookingDate GROUP BY(nbGuest)');
+        $oStatement = $oPDO->prepare('SELECT SUM(nbGuest) FROM ' . self::getTableName() . ' WHERE idOpening=:idOpening AND bookingDate=:bookingDate');
         //dbrDie($oStatement->queryString);
         $oStatement->bindValue(':idOpening', $idOpening, PDO::PARAM_INT);
         $oStatement->bindValue(':bookingDate', $sSqlDate, PDO::PARAM_STR);

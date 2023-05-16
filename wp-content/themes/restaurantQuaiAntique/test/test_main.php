@@ -1,5 +1,12 @@
 <?php
 
+
+//FRONT
+require_once('front/TestConnexionClient.php');
+require_once('front/TestCreateAccount.php');
+
+
+
 function testTables()
 {
     //CLIENT
@@ -32,7 +39,7 @@ function testTables()
     //dbrDie($oBookings->getAllData());
 
     $oMenus = new RestaurantMenus();
-    $oMenus->createTable();
+    //$oMenus->createTable();
     //$oMenu = new RestaurantMenu('FabuleuxXXX');
     //$oMenus->add($oMenu);
     //$oMenus->updateById(4, array('title' => 'rrooozz'));
@@ -40,7 +47,7 @@ function testTables()
     //dbrDie($oMenus->getAllData());
 
     $oMenusOption = new RestaurantMenuOptions();
-    $oMenusOption->createTable();
+    //$oMenusOption->createTable();
     $oOption = new RestaurantMenuOption(1, 'option 1', 'Ma descritpion option 1', 12.50);
     //$oMenusOption->add($oOption);
     //$oMenusOption->updateById(2, array('title' => 'option 1.1'));
@@ -57,8 +64,8 @@ function testTables()
     //$oDishTypes->deleteById(1);
 
     $oFoodDishes = new FoodDishes();
-    $oFoodDishes->createTable();
-    $oFood = new FoodDish(2, 'Caviar', 'Cavaiar d\'aubergine', 45.50);
+    //$oFoodDishes->createTable();
+    $oFood = new FoodDish(2, 'Caviar', 'Caviar d\'aubergine', 45.50);
     //$oFoodDishes->add($oFood);
     //$oFoodDishes->updateById(1, array('title' => 'Caviars'));
     //dbrDie($oFoodDishes->getAllData());

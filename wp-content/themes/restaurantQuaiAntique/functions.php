@@ -10,40 +10,11 @@ add_action('admin_enqueue_scripts', 'scriptAdmin');
 add_action('wp_enqueue_scripts', 'quai_antique_scripts');
 //FIN AJOUT DE SCRIPTS ET CSS
 
-
 add_action('after_setup_theme', 'includeFiles');
 add_action('after_setup_theme', 'setTables');//CREATION DES TABLES PERSONNALISEES
 add_action('after_setup_theme', 'initPage');
 add_action('after_setup_theme', 'quai_antique_supports');//THEME OPTIONS
-add_action('after_setup_theme', 'createUser');
 add_action( 'init', 'register_my_menus' );
-
-
-
-
-function createUser()
-{
-    //wp_insert_user()
-    ////wp_create_user()
-    //username_exists('');
-    //_wp_get_current_user();
-    //add_user();
-    //register_new_user();
-    //sanitize_user();
-    //wp_update_user();
-    //get_user_by_email();
-}
-
-//FRONT - MENU
-function register_my_menus() {
-    register_nav_menus(
-        array(
-            'header_menu' => __( 'top-menu' ),
-            'footer-menu' => __( 'bottom-menu' ),
-        )
-    );
-}
-
 
 //NAVIGATION - MENU
 add_filter('nav_menu_css_class', 'quai_antique_menu_class');
@@ -53,8 +24,6 @@ add_filter('nav_menu_link_attributes', 'quai_antique_menu_links_attr');
 //BACKOFFICE - ROUTEUR AJAX
 add_action('wp_ajax_root_ajax', 'root_ajax');
 add_action('wp_ajax_nopriv_root_ajax', 'root_ajax');
-
-
 
 //BACKOFFICE - GESTION DE L'ADMIN
 add_action('admin_init', 'addMenu');
@@ -73,6 +42,31 @@ add_action('template_redirect', 'decoClient');
 add_action('template_redirect', 'connexionClient');
 add_action('template_redirect', 'bookTable');
 
+//TEST
+add_action('after_setup_theme', 'testLauncher');
+
+
+function testLauncher()
+{
+    //dbrDie($_SESSION);
+    //   /!\You have to comment "header('Location:...')" in each file you need
+
+    /*$oTestCreateAccount = new TestCreateAccount();
+    $oTestCreateAccount->mainTestCreateAccount();*/
+
+    /*$oTestConn = new TestConnexionClient();
+    $oTestConn->testMainConnexionClient();*/
+}
+
+//FRONT - MENU
+function register_my_menus() {
+    register_nav_menus(
+        array(
+            'header_menu' => __( 'top-menu' ),
+            'footer-menu' => __( 'bottom-menu' ),
+        )
+    );
+}
 
 
 
@@ -263,6 +257,10 @@ function includeFiles()
     //
     require_once('src/model/ClientConnection.php');
     require_once('src/model/PageWordpress.php');
+
+
+    //TEST
+    require_once('test/test_main.php');
 }
 
 
@@ -277,6 +275,12 @@ function setTables()
         Clients::getInstance()->createTable();
         OpeningTimes::getInstance()->createTable();
         Bookings::getInstance()->createTable();
+
+        $iNbGuestMax = Bookings::getNbGuestsMax();
+        if($iNbGuestMax === 0){
+            add_option(Bookings::GUEST_MAX_OPTION, 50);
+        }
+
     }catch(Exception $e){
         echo($e->getMessage());
         echo($e->getTrace());

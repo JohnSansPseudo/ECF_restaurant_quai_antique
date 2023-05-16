@@ -4,10 +4,10 @@
 final class Bookings extends ManagerObjTable
 {
     CONST CLASS_MANAGER = 'Booking';
-
+    CONST GUEST_MAX_OPTION = 'guest_max';
     static public function getNbGuestsMax()
     {
-        return intval(get_option('guest_max'));
+        return intval(get_option(self::GUEST_MAX_OPTION));
     }
 
     static public function getTableName():string

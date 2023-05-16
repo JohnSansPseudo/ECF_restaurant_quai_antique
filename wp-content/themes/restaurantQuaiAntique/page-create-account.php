@@ -30,6 +30,7 @@ $sConnectezVous = '<a href="' . get_site_url() . '/' . PageWordpress::SING_IN_NA
 
 //Si le client est connecté
 $oClient = ClientConnection::isConnected();
+
 if($oClient){
     $sTitle = 'Modifiez votre compte';
     $sPassword = '';
@@ -43,7 +44,6 @@ if($oClient){
     $iNbGuest = $oClient->getNbGuest();
     $sConnectezVous = '';
 }
-//offset-lg-3 col-lg-3 offset-xl-4 col-xl-4
 get_header();
 ?>
 

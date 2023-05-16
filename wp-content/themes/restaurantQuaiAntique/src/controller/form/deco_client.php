@@ -8,6 +8,6 @@ function decoClient()
     if (!isset($_REQUEST['deco_client_nonce']) || !wp_verify_nonce($_REQUEST['deco_client_nonce'], 'decoClient')) {
         die('Vous n\'avez pas l\'autorisation d\'effectuer cette action. <br/><br/><a href="' . $sBackPath . '">Retour</a>');
     }
-
     ClientConnection::deconnection();
+
 }

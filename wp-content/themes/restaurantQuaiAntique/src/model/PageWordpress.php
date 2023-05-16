@@ -17,31 +17,36 @@ class PageWordpress
             'post_content' => '',
             'post_title' => 'Accueil',
             'post_name' => PageWordpress::HOME_NAME,
-            'position' => 1
+            'guid' => get_site_url() . '/' . PageWordpress::HOME_NAME,
+            'menu_order' => 1
         );
         $aPage[] = (object)array(
             'post_content' => '',
             'post_title' => 'A la carte',
             'post_name' => PageWordpress::CARTE_NAME,
-            'position' => 2
+            'guid' => get_site_url() . '/' . PageWordpress::CARTE_NAME,
+            'menu_order' => 2
         );
         $aPage[] = (object)array(
             'post_content' => '',
             'post_title' => 'Mon compte',
             'post_name' => PageWordpress::ACCOUNT_NAME,
-            'position' => 3
+            'guid' => get_site_url() . '/' . PageWordpress::ACCOUNT_NAME,
+            'menu_order' => 3
         );
         $aPage[] = (object)array(
             'post_content' => '',
             'post_title' => 'Connexion',
             'post_name' => PageWordpress::SING_IN_NAME,
-            'position' => 4
+            'guid' => get_site_url() . '/' . PageWordpress::SING_IN_NAME,
+            'menu_order' => 4
         );
         $aPage[] = (object)array(
             'post_content' => '',
             'post_title' => 'Réserver votre table',
             'post_name' => PageWordpress::BOOK_TABLE_NAME,
-            'position' => 5
+            'guid' => get_site_url() . '/' . PageWordpress::BOOK_TABLE_NAME,
+            'menu_order' => 5
         );
         return $aPage;
     }
@@ -66,7 +71,9 @@ class PageWordpress
                     'post_name' => $oPage->post_name,
                     'post_status' => 'publish',
                     'post_author' => 1,
-                    'post_type' => 'page'
+                    'post_type' => 'page',
+                    'menu_order' =>$oPage->menu_order,
+                    'guid' => $oPage->guid
                 );
 
                 $b = wp_insert_post($aPost);

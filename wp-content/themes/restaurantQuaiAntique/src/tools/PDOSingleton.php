@@ -3,6 +3,7 @@
 
 class PDOSingleton
 {
+    private CONST DB_NAME = 'ecf_restaurant_quai_antique';
     private static PDO $instance;
 
     private function __construct()

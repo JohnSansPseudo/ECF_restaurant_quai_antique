@@ -13,6 +13,8 @@ function addClient()
     unset($_POST['success_add_client']);
     unset($_POST['add_client_nonce']);
     unset($_POST['add-client']);
+    unset($_REQUEST['add_client_nonce']);
+
 
     $oParam = (object)array(
         'firstName' => 'inpFirstName',
@@ -52,7 +54,6 @@ function creatAccountClient($oParamSan, $sBackPath)
     }else{
         $sPassword = sanitize_text_field(($_POST['inpPassword']));
         $sPassword = ClientConnection::generatePassword($sPassword);
-
         $oClient = new Client($oParamSan->firstName, $oParamSan->lastName, $oParamSan->tel, $oParamSan->mail, $oParamSan->allergie, $sPassword, $oParamSan->nbGuest);
         if (!empty($oClient->getErrArray())) {
             unset($_POST['inpPassword']);
@@ -63,7 +64,8 @@ function creatAccountClient($oParamSan, $sBackPath)
                 if($bAdd){
                     unset($_POST['inpPassword']);
                     new ClientConnection($oClient->getEmail(), $oClient->getPassword());
-                    header('Location: ' . $sBackPath . '?success_add_client=1');
+                    $_POST['success_add_client'] = 1;
+                    header('Location: ' . $sBackPath . '?success_add_client=1');//Otherwise firfox keep the reuqest in memory and reload it on F5 keypress
                 }
             }catch(PDOException $e){
                 $_POST['err_add_client'] = $e->getMessage() . '<br/><br/>Error form add create account, please contact an admin';

@@ -1,15 +1,14 @@
 <?php
-$a = get_posts(array('post_type' => 'attachment'));
+$a = get_posts(array('post_type' => 'attachment', 'relation' => 'AND', 'numberposts' => 100, 'post_name__in' => array('logo_white')));
+
 $sPathLogoWhite = '';
 $oLogoWhite = null;
 /**
  * @var WP_Post $o
  */
-foreach($a as $o){
-    if($o->post_name === 'logo_white'){
-        $oLogoWhite = $o;
-        $sPathLogoWhite = $o->guid;
-    }
+if(is_array($a)){
+    $oLogoWhite = array_pop($a);
+    $sPathLogoWhite = $oLogoWhite->guid;
 }
 
 //footer-menu

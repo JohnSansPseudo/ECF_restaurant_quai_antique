@@ -46,8 +46,7 @@ class ClientConnection
 
     static public function deconnection()
     {
-        unset($_SESSION['quai_client']['email']);
-        session_destroy();
+        unset($_SESSION['quai_client']);
     }
 
     public static function generatePassword($sPassword)

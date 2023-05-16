@@ -12,7 +12,13 @@ function addMediaImgFile()
 
     unset($_POST['success_file']);
     unset($_POST['error_file']);
+
+
     $uploaded_file = $_FILES['inpFileGallery'];
+
+    $isUploadSuccessful = isset($uploaded_file['error']) && $uploaded_file['error'] === UPLOAD_ERR_OK;
+    if ($isUploadSuccessful) throw new RuntimeException('Error while uploading file.');
+
 
     if($uploaded_file['size'] > 8200000){
         $_POST['error_file'] = 'File is over 8 Mo';

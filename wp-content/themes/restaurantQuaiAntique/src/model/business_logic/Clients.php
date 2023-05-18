@@ -34,6 +34,8 @@ final class Clients extends ManagerObjTable
         return $oStatement->execute();
     }
 
+
+
     /**
      * @param $oClient Client
      * @return $oClient Client

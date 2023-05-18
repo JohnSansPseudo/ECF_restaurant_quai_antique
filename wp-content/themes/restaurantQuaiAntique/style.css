@@ -276,7 +276,7 @@ footer .ctnSectionFooter .body .tblOpenningFooter
 /* FIN BOOKING HOUR */
 
 
-/* Title IMG Gallery */
+/*HOME   Gallery */
 .ctnTitleImgGallery{
     position: absolute;
     bottom: 0;
@@ -286,7 +286,14 @@ footer .ctnSectionFooter .body .tblOpenningFooter
     left: 0;
     opacity: 0;
 }
-/* FIN Title IMG Gallery */
+
+.ctnImgGallery{
+    position: relative;
+}
+.imgGallery{
+    width: 100%;
+}
+/* FIN Gallery */
 
 
 /* HOME */
@@ -320,6 +327,8 @@ footer .ctnSectionFooter .body .tblOpenningFooter
 #btnBookHome{
     width: 100%;
 }
+
+
 
 /* FIN HOME */
 
@@ -409,15 +418,10 @@ footer .ctnSectionFooter .body .tblOpenningFooter
 
 }
 
-@media only screen and (max-width: 1200px){
-
-    .ctnTitleImgGallery{
-        display: none !important;
-    }
-}
-
 /* NAVBAR */
 .barNavAdmin{
     margin-top: 32px;
 }
 /* FIN NAV BAR */
+
+

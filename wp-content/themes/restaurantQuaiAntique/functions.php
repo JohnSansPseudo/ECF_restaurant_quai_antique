@@ -103,8 +103,8 @@ function quai_antique_supports()
 
 
 /* BACKOFFICE POUR LA PAGE NB GUEST */
-add_action("admin_init", "social_media_section_settings");
-function social_media_section_settings()
+add_action("admin_init", "guest_max_section_settings");
+function guest_max_section_settings()
 {
     // Création d'une section
     add_settings_section("guest_max_section", "", null, "QuaiAntiqueParam");
@@ -115,6 +115,7 @@ function social_media_section_settings()
     // Enregistrement des champs
     register_setting("guest_max_section", "guest_max");
 }
+
 function guest_max_qty_html()
 { ?>
     <div class="elf">
@@ -124,9 +125,6 @@ function guest_max_qty_html()
 <?php }
 /* FIN POUR LA PAGE NB GUEST */
 
-
-
-
 /** BACKOFFICE - ADMIN SIDEBAR */
 function sidebarAdminQuaiAntique()
 {
@@ -135,7 +133,7 @@ function sidebarAdminQuaiAntique()
         'QuaiAntiqueParam',
         'manage_options',
         'QuaiAntiqueParam',
-        'root_action_admin',
+        'root_backoffice',
         'dashicons-food');
 }
 
@@ -151,6 +149,8 @@ function topbarAdminQuaiAntique($wp_admin_bar)
     );
     $wp_admin_bar->add_node($admin_topbar);
 }
+
+
 
 /* AJOUT SCRIPTS & CSS */
 function scriptAdmin()
@@ -218,25 +218,25 @@ function includeFiles()
     require_once 'src/tools/ParamNumeric.php';
 
     //Router Pour les requêtes AJAX
-    require_once('src/controller/ajax/root_ajax.php');
+    require_once('src/controllers/ajax/root_ajax.php');
 
     //Controllers action admin
-    require_once('src/controller/backoffice.php');
-    require_once('src/controller/form/add_menu.php');
-    require_once('src/controller/form/add_menu_option.php');
-    require_once('src/controller/form/delete_menu_option.php');
-    require_once('src/controller/form/delete_menu.php');
-    require_once('src/controller/form/add_dish_type.php');
-    require_once('src/controller/form/delete_dish_type.php');
-    require_once('src/controller/form/add_food_dish.php');
-    require_once('src/controller/form/delete_food_dish.php');
-    require_once('src/controller/form/add_media_img_file.php');
+    require_once('src/root_backoffice.php');
+    require_once('src/controllers/form/add_menu.php');
+    require_once('src/controllers/form/add_menu_option.php');
+    require_once('src/controllers/form/delete_menu_option.php');
+    require_once('src/controllers/form/delete_menu.php');
+    require_once('src/controllers/form/add_dish_type.php');
+    require_once('src/controllers/form/delete_dish_type.php');
+    require_once('src/controllers/form/add_food_dish.php');
+    require_once('src/controllers/form/delete_food_dish.php');
+    require_once('src/controllers/form/add_media_img_file.php');
 
-    //Controller front
-    require_once('src/controller/form/add_client.php');
-    require_once('src/controller/form/deco_client.php');
-    require_once('src/controller/form/connexion_client.php');
-    require_once('src/controller/form/book_table.php');
+    //Controller front_page
+    require_once('src/controllers/form/add_client.php');
+    require_once('src/controllers/form/deco_client.php');
+    require_once('src/controllers/form/connexion_client.php');
+    require_once('src/controllers/form/book_table.php');
 
     //Classes métiers
     require_once('src/model/business_logic/Booking.php');
@@ -253,6 +253,8 @@ function includeFiles()
     require_once('src/model/business_logic/RestaurantMenus.php');
     require_once('src/model/business_logic/RestaurantMenuOption.php');
     require_once('src/model/business_logic/RestaurantMenuOptions.php');
+    require_once('src/model/business_logic/Gallery.php');
+    require_once('src/model/business_logic/ImageGallery.php');
 
     //
     require_once('src/model/ClientConnection.php');
@@ -267,6 +269,11 @@ function includeFiles()
 //INIT TABLES BDD
 function setTables()
 {
+    $bOptionInitTheme = get_option('init_theme');
+
+    if(!$bOptionInitTheme)  add_option(Bookings::GUEST_MAX_OPTION);
+    else if(intval($bOptionInitTheme) === 1) return; //Le thème est déjà chargée si l'option est configurée
+
     try{
         RestaurantMenus::getInstance()->createTable();
         RestaurantMenuOptions::getInstance()->createTable();
@@ -275,15 +282,18 @@ function setTables()
         Clients::getInstance()->createTable();
         OpeningTimes::getInstance()->createTable();
         Bookings::getInstance()->createTable();
+        Gallery::getInstance()->createTable();
 
         $iNbGuestMax = Bookings::getNbGuestsMax();
         if($iNbGuestMax === 0){
             add_option(Bookings::GUEST_MAX_OPTION, 50);
         }
 
+        add_option('init_theme', 1);
+
     }catch(Exception $e){
         echo($e->getMessage());
-        echo($e->getTrace());
+        dbr($e->getTrace());
         echo($e->getFile());
         die();
     }

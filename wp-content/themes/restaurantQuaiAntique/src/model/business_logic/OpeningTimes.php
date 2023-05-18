@@ -18,23 +18,13 @@ final class OpeningTimes extends ManagerObjTable
     CONST MIN_BEFORE_STOP_BOOK = 60;
     CONST BOOK_EVERY = 15;
 
-    /*CONST MONDAY = 'monday';
-    CONST TUESDAY = 'tuesday';
-    CONST WEDNESDAY = 'wednesday';
-    CONST THURSDAY = 'thursday';
-    CONST FRIDAY = 'friday';
-    CONST SATURDAY = 'saturday';
-    CONST SUNDAY = 'sunday';
-    CONST NOON = 'noon';
-    CONST EVENING = 'evening';*/
-
     static public function getInstance() { return new OpeningTimes(); }
 
     /**
      * @param $sLongDayEn string
      * @return bool|string
      */
-    static function sLongDayEnToFr($sLongDayEn)
+    static public function getLongDayEnToFr($sLongDayEn)
     {
         $sValue = '';
         $sLongDayEn = strtoupper($sLongDayEn);
@@ -78,6 +68,7 @@ final class OpeningTimes extends ManagerObjTable
         }
 
         //On vérifie si la table est bien initalisée sinon on l'initialise
+
         $sql = "SELECT * FROM " . self::getTableName();
         $oStatement = $oPDO->prepare($sql);
         if(!$oStatement) return false;
@@ -115,6 +106,10 @@ final class OpeningTimes extends ManagerObjTable
     }
 
 
+    /**
+     * @param int $id
+     * @return bool
+     */
     public function deleteById($id)
     {
         return false;
@@ -122,9 +117,13 @@ final class OpeningTimes extends ManagerObjTable
 
     /**
      * @var $OpeningTime OpeningTime
+     * @return OpeningTime | bool
      */
     public function add($oOpeningTime)
     {
+        $aData = $this->getAllData();
+        if(is_array($aData) && count($aData) === 14) return false;
+
         $oPDO = PDOSingleton::getInstance();
         $oStatement = $oPDO->prepare("insert INTO " . self::getTableName() . "(day, timeDay, startTimeDay, endTimeDay)  VALUES(:day, :timeDay, :startTimeDay, :endTimeDay)");
         if(!$oStatement) return false;
@@ -157,7 +156,7 @@ final class OpeningTimes extends ManagerObjTable
         }else{
             $sSqlDate = date('Y-m-d', time());
         }
-        $sDayFr = self::sLongDayEnToFr($sEnDay);
+        $sDayFr = self::getLongDayEnToFr($sEnDay);
         if($sDayFr === false) return false;
 
         //Récupérer le opening time
@@ -213,9 +212,9 @@ final class OpeningTimes extends ManagerObjTable
                     }
                     else $bSelected = false;
                     //Créer un input radio à chaque tour de boucle
-                    $aStrHtml[$oOpening->getTimeDay()] .= $this->getHtmlHourItem($i, $oOpening->getId(), $bDisabled, $bSelected);
+                    $aStrHtml[$oOpening->getTimeDay()] .= $this->getHtmlHourBookingItem($i, $oOpening->getId(), $bDisabled, $bSelected);
                 }
-                if($iPlace <= 10 && (strtotime(date('Y-m-d H:i:s', time())) < $iEndTimeDay)){
+                if(strtotime(date('Y-m-d H:i:s', time())) < $iEndTimeDay){
                     $aStrHtml[$oOpening->getTimeDay()] .= '<p class="info">Il ne reste plus que ' . $iPlace . ' places sur les horaires du ' . $oOpening->getTimeDay() . '</p>';
                 }
             }
@@ -224,7 +223,7 @@ final class OpeningTimes extends ManagerObjTable
         return $aStrHtml;
     }
 
-    private function getHtmlHourItem($iTimestamp, $idOpening, $bDisabled, $bSelected=false)
+    private function getHtmlHourBookingItem($iTimestamp, $idOpening, $bDisabled, $bSelected=false)
     {
         $sChecked = '';
         $sSelected = '';

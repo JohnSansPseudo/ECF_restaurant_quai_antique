@@ -69,6 +69,7 @@ final class RestaurantMenuOptions extends ManagerObjTable
 
     /**
      * @var RestaurantMenuOption $oMenuOption
+     * @return bool | RestaurantMenuOption
      */
     public function add($oMenuOption)
     {

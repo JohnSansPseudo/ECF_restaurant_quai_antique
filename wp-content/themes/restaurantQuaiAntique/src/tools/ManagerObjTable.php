@@ -9,7 +9,11 @@ abstract class ManagerObjTable
     const CLASS_MANAGER = self::CLASS;
 
 
-    public function deleteById($id)
+    /**
+     * @param $id int
+     * @return bool
+     */
+    public function deleteById(int $id)
     {
         $oPDO = PDOSingleton::getInstance();
         $oStatement = $oPDO->prepare("DELETE FROM " . static::getTableName() . " WHERE id=:id");
@@ -17,7 +21,12 @@ abstract class ManagerObjTable
         return $oStatement->execute();
     }
 
-    public function updateById($id, $aData)
+    /**
+     * @param $id int
+     * @param $aData array
+     * @return bool
+     */
+    public function updateById(int $id, array $aData):bool
     {
         $oPDO = PDOSingleton::getInstance();
         $aDataRem = array();
@@ -59,7 +68,7 @@ abstract class ManagerObjTable
      * @param string $sOrderBy
      * @return array | bool
      */
-    public function getAllData($sOrderBy='')
+    public function getAllData(string $sOrderBy='')
     {
         $oPDO = PDOSingleton::getInstance();
         $oStatement = $oPDO->prepare("SELECT * FROM " . static::getTableName() . " " .$sOrderBy);
@@ -72,7 +81,7 @@ abstract class ManagerObjTable
      * @param string $sOrDerBy
      * @return array | bool
      */
-    public function getByWhere($aParam, $sOrDerBy='')
+    public function getByWhere(array $aParam, string $sOrDerBy='')
     {
         $oPDO = PDOSingleton::getInstance();
         $aDataRem = array();
@@ -91,7 +100,7 @@ abstract class ManagerObjTable
      * @param $oState PDOStatement
      * @return array | bool
      */
-    public function statementGetExecute($oState)
+    protected function statementGetExecute(PDOStatement $oState)
     {
         //dbrDie($oState->queryString);
         $aArgs = array('12345678', '1234567', '12345678', '12345678', '12345678', '12345678', '12345678', '12345678', '12345678', '12345678', '12345678', '12345678', '12345678', '12345678', '12345678');
@@ -104,11 +113,11 @@ abstract class ManagerObjTable
     }
 
     /**
-     * @param $oObj
+     * @param  $oObj
      * @param array $aExcludeProp
      * @return array
      */
-    public function objectToArray($oObj, $aExcludeProp)
+    public function objectToArray($oObj, array $aExcludeProp)
     {
         $aDataRem = array();
         $aData = (array)$oObj;

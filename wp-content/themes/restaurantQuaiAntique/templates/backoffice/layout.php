@@ -1,11 +1,5 @@
 <?php
 
-//Templates
-/*require_once('dish.php');*/
-/*require_once('opening_time.php');*/
-/*require_once('guest_max.php');*/
-/*require_once('gallery.php');*/
-
 $aTab = array(
     'menu' => (object)array('id' => 'menu', 'title' => 'Menus', 'active' => false),
     'dish' => (object)array('id' => 'dish', 'title' => 'Plats', 'active' => false),

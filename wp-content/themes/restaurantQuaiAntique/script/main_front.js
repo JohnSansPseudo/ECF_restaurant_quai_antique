@@ -59,7 +59,6 @@ window.addEventListener('load', function() {
         });
     }
 
-    //  jonathan.teyssier@gmail.com
     //Connexion client & admin
     const oBtnConn = document.getElementById('btnConn');
     if(oBtnConn){
@@ -135,16 +134,9 @@ window.addEventListener('load', function() {
 
 
     //TITLE GALLERY
-    const oGallery = document.getElementById('ctnGallery');
-    if(oGallery){
-        const aBlock = oGallery.querySelectorAll('.wp-block-gallery .wp-block-image');
+    const aBlock = document.querySelectorAll('.ctnImgGallery');
+    if(aBlock){
         for(let oBlock of aBlock) {
-            let sTitle = oBlock.querySelector('img').getAttribute('alt');
-            if(sTitle === '') continue;
-            let oCtnTitle = document.createElement('div');
-            oCtnTitle.classList.add('ctnTitleImgGallery');
-            oCtnTitle.innerHTML = '<span class="titleImgGallery">' + sTitle + '</span>';
-            oBlock.append(oCtnTitle);
             oBlock.addEventListener('mouseenter', function () {
                 oBlock.querySelector('.ctnTitleImgGallery').animate([
                     { opacity: 1}], { duration: 300, fill: "forwards"});

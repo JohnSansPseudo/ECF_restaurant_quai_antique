@@ -1,28 +1,6 @@
 <?php
 
-//ADD MENU
-$sErrAddMenu = '';
-if(isset($_POST['err_add_menu'])) $sErrAddMenu = 'Ce menu existe déjà, merci d\'essayer avec un autre nom';
-$sNameMenu = '';
-if(isset($_POST['inpTitleMenu']))$sNameMenu = $_POST['inpTitleMenu'];
 
-//DELETE MENU
-$aErrDeleteMenu = array();
-if(isset($_POST['err_del_menu'])){
-    $aErrDeleteMenu[$_POST['idMenu']] =  $_POST['err_del_menu'];
-}
-
-//ADD MENU OPTION
-$sErrAddMenuOption = '';
-if(isset($_POST['err_add_menu_option'])) $sErrAddMenuOption = $_POST['err_add_menu_option'];
-
-
-
-//DELETE MENU OPTION
-$aErrDeleteMenuOption = array();
-if(isset($_POST['err_del_menu_option'])){
-    $aErrDeleteMenuOption[$_POST['idMenuOption']] =  $_POST['err_del_menu_option'];
-}
 
 ob_start();
 

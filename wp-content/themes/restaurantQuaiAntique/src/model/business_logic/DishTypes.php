@@ -14,10 +14,10 @@ final class DishTypes extends ManagerObjTable
     }
 
     /**
-     * @param $id
-     * @return bool
+     * @param $id int
+     * @return bool | Exception
      */
-    public function deleteById($id)
+    public function deleteById(int $id)
     {
         //On vérifie si l'id correspond à une entrée en BDD
         $mData = $this->getByWhere(array('id' => $id));
@@ -65,6 +65,7 @@ final class DishTypes extends ManagerObjTable
 
     /**
      * @var DishType $oDishType
+     * @return bool |DishType
      */
     public function add($oDishType)
     {

@@ -49,7 +49,8 @@ class OpeningTime
      */
     public function setId(int $iId): OpeningTime
     {
-        $oParam = new ParamInt($iId, self::Class . ' id ', 1);
+        //Il ne peut pas y avoir plus de 14 entrées 7 jours fois deux moments dans la journée
+        $oParam = new ParamInt($iId, self::Class . ' id ', 1, 14);
         if($oParam->getStringError() !== ''){
             $this->aErr[] = $oParam->getStringError();
         }

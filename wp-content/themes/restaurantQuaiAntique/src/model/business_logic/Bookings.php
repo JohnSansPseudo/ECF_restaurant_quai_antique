@@ -5,11 +5,18 @@ final class Bookings extends ManagerObjTable
 {
     CONST CLASS_MANAGER = 'Booking';
     CONST GUEST_MAX_OPTION = 'guest_max';
+
+    /**
+     * @return int
+     */
     static public function getNbGuestsMax()
     {
         return intval(get_option(self::GUEST_MAX_OPTION));
     }
 
+    /**
+     * @return string
+     */
     static public function getTableName():string
     {
         global $wpdb;
@@ -96,7 +103,12 @@ final class Bookings extends ManagerObjTable
         return $oBooking;
     }
 
-    public function getNbGuestsBySqlDateAndIdOpening($sSqlDate, $idOpening)
+    /**
+     * @param $sSqlDate string
+     * @param $idOpening int
+     * @return bool|mixed
+     */
+    public function getNbGuestsBySqlDateAndIdOpening(string $sSqlDate, int $idOpening)
     {
         $idOpening = intval($idOpening);
         $sSqlDate = htmlspecialchars($sSqlDate);

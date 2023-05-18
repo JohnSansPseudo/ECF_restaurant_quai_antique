@@ -163,14 +163,16 @@ window.addEventListener('load', function(){
     //*** OPNENING TIME
     //Effacer les horaires d'ouverture
     const aBtnSaveTimeDay  = document.getElementsByClassName('btnEraseTimeDay');
-    for(const btn of aBtnSaveTimeDay){
-        btn.addEventListener('click', function(){
-            const idOpening = btn.closest('tr').getAttribute('data-id');
-            const sTimeStart = '';
-            const sTimeEnd = '';
-            const oOpeningTimeManager = new OpeningTimeManager();
-            oOpeningTimeManager.update(idOpening, sTimeStart, sTimeEnd, true);
-        });
+    if(aBtnSaveTimeDay){
+        for(const btn of aBtnSaveTimeDay){
+            btn.addEventListener('click', function(){
+                const idOpening = btn.closest('tr').getAttribute('data-id');
+                const sTimeStart = '';
+                const sTimeEnd = '';
+                const oOpeningTimeManager = new OpeningTimeManager();
+                oOpeningTimeManager.update(idOpening, sTimeStart, sTimeEnd, true);
+            });
+        }
     }
 
     //**TOOLS TOAST ALERT
@@ -180,6 +182,89 @@ window.addEventListener('load', function(){
             e.target.closest('.' + ToastAlert.CLASS_CTN_TOAST_ALERT).remove();
         });
     }
+
+
+    //GALLERY
+    //Show gallery
+    const aBtnChooseImgGal = document.querySelectorAll('.btnImgChoice');
+    if(aBtnChooseImgGal){
+        for(const btn of aBtnChooseImgGal){
+            const oGallery = new Gallery();
+            btn.addEventListener('click', function(){
+                const idGallery = parseInt(btn.closest('tr').getAttribute('data-id_img_gallery'));
+                try{
+                    new ParamIntCheck(idGallery, 'idGallery').checkMin(0).checkMax(6);
+                    oGallery.setIdItemGallery(idGallery);
+                    oGallery.showOverlay();
+                    oGallery.showWrapper();
+                }
+                catch (e){
+                    alert(e.message);
+                    console.error(e.message);
+                    console.trace();
+                    return false;
+                }
+            });
+        }
+    }
+
+    //Quit gallery
+    const oOverlay = document.getElementById('overlayGallery');
+    if(oOverlay){
+        oOverlay.addEventListener('click', function () {
+            oOverlay.classList.add('hide');
+            const oWrap = document.getElementById('imgChoiceWrapper');
+            oWrap.setAttribute('data-id_item_gallery', '');
+            oWrap.classList.add('hide');
+        })
+    }
+
+    //Update img gallery
+    const aCtnImgChoice = document.querySelectorAll('.ctnItemImgChoice');
+    if(aCtnImgChoice){
+        const oGallery = new Gallery;
+        for(const oCtnImg of aCtnImgChoice){
+            oCtnImg.addEventListener('click', function () {
+                const idAttachment = parseInt(oCtnImg.getAttribute('data-id_attachment'));
+                const sSrc = oCtnImg.querySelector('img').getAttribute('src');
+                try{
+                    new ParamIntCheck(idAttachment, 'idAttachment').checkMin(1);
+                    oGallery.update(oGallery.getIdItemGallery(), idAttachment, 'idAttachment', sSrc);
+                }
+                catch (e){
+                    alert(e.message);
+                    console.error(e.message);
+                    console.trace();
+                    return false;
+                }
+            });
+        }
+    }
+
+    //Update title img gallery
+    const aTextarea = document.querySelectorAll('tr[data-id_img_gallery] textarea');
+    if(aTextarea)
+    {
+        const oGallery = new Gallery;
+        for(const oTxt of aTextarea)
+        {
+            oTxt.addEventListener('blur', function () {
+                const idGallery = parseInt(oTxt.closest('tr').getAttribute('data-id_img_gallery'));
+                const sTitle = oTxt.value;
+                try{
+                    new ParamStrCheck(sTitle, 'sTitle').checkMinLen(1);
+                    oGallery.update(idGallery, sTitle, 'title');
+                } catch (e){
+                    alert(e.message);
+                    console.error(e.message);
+                    console.trace();
+                    return false;
+                }
+            });
+        }
+    }
+
+    //FIN GALLERY
 });
 
 
@@ -188,14 +273,145 @@ class Manager
     getNonce()
     {
         let sNonce = document.getElementById('nc_ajax').value;
-        try{ new ParamStrCheck(sNonce, 'sNonce').checkMinLen(1); }
+        try{
+            new ParamStrCheck(sNonce, 'sNonce').checkMinLen(1);
+            return sNonce;
+        }
         catch (e){
             alert(e.message);
             console.error(e.message);
             console.trace();
             return false;
         }
-        return sNonce;
+
+    }
+}
+
+
+class Gallery extends Manager
+{
+    getOverlay()
+    {
+        return document.getElementById('overlayGallery');
+    }
+    showOverlay()
+    {
+        const o = this.getOverlay();
+        o.classList.remove('hide');
+    }
+    hideOverlay()
+    {
+        const o = this.getOverlay();
+        o.classList.add('hide');
+    }
+
+
+    getIdItemGallery()
+    {
+        const oWrap = this.getHtmlElementWrapper();
+        const idGallery = parseInt(oWrap.getAttribute('data-id_item_gallery'));
+
+        try{ new ParamIntCheck(idGallery, 'idGallery').checkMin(0).checkMax(6); }
+        catch (e){
+            alert(e.message);
+            console.error(e.message);
+            console.trace();
+            return false;
+        }
+        return idGallery;
+    }
+    setIdItemGallery(idGallery)
+    {
+        try{
+            new ParamIntCheck(idGallery, 'idGallery').checkMin(0).checkMax(6);
+            const oWrap = this.getHtmlElementWrapper();
+            oWrap.setAttribute('data-id_item_gallery', idGallery);
+        }
+        catch (e){
+            alert(e.message);
+            console.error(e.message);
+            console.trace();
+            return false;
+        }
+    }
+
+    getHtmlElementWrapper()
+    {
+        const oWrap = document.getElementById('imgChoiceWrapper');
+        try{
+            new ParamObjCheck(oWrap, 'oWrap');
+            return oWrap;
+        }
+        catch (e){
+            alert(e.message);
+            console.error(e.message);
+            console.trace();
+            return false;
+        }
+    }
+    showWrapper()
+    {
+        const oWrap = this.getHtmlElementWrapper();
+        oWrap.classList.remove('hide');
+    }
+    hideWrapper()
+    {
+        const oWrap = this.getHtmlElementWrapper();
+        oWrap.classList.add('hide');
+    }
+
+    setImgChoosed(idGalleryItem, sSrcImg)
+    {
+        const oImg = document.querySelector('tr[data-id_img_gallery="' + idGalleryItem + '"] .ctnImgChoice img');
+        oImg.setAttribute('src', sSrcImg);
+    }
+
+    update(idGallery, value, sField, sSrcImg='')
+    {
+        const sBody = new URLSearchParams({
+            idGallery: idGallery,
+            value: value,
+            field : sField,
+            action: action,
+            nonce: this.getNonce(),
+            ajax: 'updateImgGallery'});
+
+        const oInit = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Cache-Control': 'no-cache' },
+            body: sBody
+        }
+
+        fetch(sPage, oInit)
+            .then((oResp) => {
+                if(oResp.ok){ return oResp.json(); }
+                else{
+                    alert('Error then promise update menu');
+                    console.error('Error promise then update menu');
+                    console.trace();
+                }
+            })
+            .then((oResp) => {
+                if(parseInt(oResp.data.code) === 1) {
+                    new ToastAlert(ToastAlert.SUCCESS, oResp.data.mess);
+                    this.setIdItemGallery(0);
+                    this.hideOverlay();
+                    this.hideWrapper();
+                    if(sSrcImg !== '') this.setImgChoosed(idGallery, sSrcImg);
+                }
+                else {
+                    console.log(oResp.data.mess);
+                    alert(oResp.data.mess);
+                    console.trace();
+                }
+            })
+            .catch((oResp) => {
+                alert('Error catch promise');
+                console.error(oResp);
+                console.trace();
+            });
     }
 }
 

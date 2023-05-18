@@ -38,6 +38,4 @@ class ParamIntCheck extends ParamCheck
         }
         return this;
     }
-
-
 }

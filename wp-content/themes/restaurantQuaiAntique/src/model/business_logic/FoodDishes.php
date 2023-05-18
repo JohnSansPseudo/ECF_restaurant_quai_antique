@@ -5,8 +5,14 @@ final class FoodDishes extends ManagerObjTable
 {
     CONST CLASS_MANAGER = 'FoodDish';
 
+    /**
+     * @return FoodDishes
+     */
     static public function getInstance() { return new FoodDishes(); }
 
+    /**
+     * @return string
+     */
     static public function getTableName():string
     {
         global $wpdb;
@@ -50,6 +56,7 @@ final class FoodDishes extends ManagerObjTable
 
     /**
      * @var FoodDish $oFoodDish
+     * @return FoodDish |bool
      */
     public function add($oFoodDish)
     {

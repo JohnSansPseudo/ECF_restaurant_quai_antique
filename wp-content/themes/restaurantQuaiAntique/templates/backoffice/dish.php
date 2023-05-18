@@ -1,37 +1,6 @@
 <?php
 
-//ADD DISH TYPE
-$sErrAddDishType = '';
-if(isset($_POST['err_add_dish_type'])) $sErrAddDishType = 'Ce type de plat existe déjà, merci d\'essayer avec un autre nom';
-$sNameDishType = '';
-if(isset($_POST['inpTitleDishType']))$sNameDishType = $_POST['inpTitleDishType'];
 
-//DELETE DISH TYPE
-$aErrDeleteDishType = array();
-if(isset($_POST['err_del_dish_type'])){
-    $aErrDeleteDishType[$_POST['idDishType']] =  $_POST['err_del_dish_type'];
-}
-
-//ADD FOOD DISH
-$sErrAddFoodDish = '';
-if(isset($_POST['err_add_food_dish'])) $sErrAddFoodDish = $_POST['err_add_food_dish'];
-
-//$aParam = (object)array('idDishType' => 'selOptionDishType', 'sTitle' => 'inpTitleFoodDish', 'sDesc' => 'txtDescFoodDish', 'price' => 'inpPriceFoodDish');
-$sTitleFoodDish = '';
-if(isset($_POST['inpTitleFoodDish']))$sTitleFoodDish = $_POST['inpTitleFoodDish'];
-
-$sDescFoodDish = '';
-if(isset($_POST['txtDescFoodDish']))$sDescFoodDish = $_POST['txtDescFoodDish'];
-
-$sPriceFoodDish = '';
-if(isset($_POST['inpPriceFoodDish']))$sDescFoodDish = $_POST['inpPriceFoodDish'];
-
-
-// DELETE FOOD DISH
-$aErrDeleteFoodDish = array();
-if(isset($_POST['err_delete_food_dish'])){
-    $aErrDeleteFoodDish[$_POST['idFoodDish']] =  $_POST['err_delete_food_dish'];
-}
 
 ob_start();
 //ADD DISH TYPE

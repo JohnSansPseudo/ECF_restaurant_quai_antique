@@ -17,7 +17,7 @@ final class RestaurantMenus extends ManagerObjTable
      * @param $id int
      * @return bool
      */
-    public function deleteById($id)
+    public function deleteById(int $id)
     {
         //On vérifie si l'id correspond à une entrée en BDD
         $mData = $this->getByWhere(array('id' => $id));
@@ -73,6 +73,7 @@ final class RestaurantMenus extends ManagerObjTable
 
     /**
      * @var RestaurantMenu $oRestaurantMenu
+     * @return RestaurantMenu |bool
      */
     public function add($oRestaurantMenu)
     {

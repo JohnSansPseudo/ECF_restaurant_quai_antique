@@ -3,7 +3,6 @@
 
 class Booking
 {
-
     private int $id;
     private int $idOpening;
     private string $email;
@@ -36,9 +35,9 @@ class Booking
      * @param int $iNbGuest
      * @param string $sStartTime
      * @param string $sDate
-     * @param string |null $sAllergy
+     * @param string $sAllergy
      */
-    public function __construct(int $iIdOpening, string $sEmail, string $sFirstName, string $sLastName, string $sTelephone, string $sAllergy=null, int $iNbGuest, string $sStartTime, string $sDate, int $iId=0)
+    public function __construct(int $iIdOpening, string $sEmail, string $sFirstName, string $sLastName, string $sTelephone, string $sAllergy, int $iNbGuest, string $sStartTime, string $sDate, int $iId=0)
     {
         if($iId) $this->setId($iId);
         $this->setIdOpening($iIdOpening);

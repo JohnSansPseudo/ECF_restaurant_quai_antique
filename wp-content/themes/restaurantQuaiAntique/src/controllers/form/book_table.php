@@ -51,8 +51,13 @@ function bookTable()
 
         $oBooking = new Booking($idOpening, $sMail, $sFirstName, $sLastName, $sTel, $sAllergie, $iNbGuest, $sStartTime, $sSqlDate);
         if($oBooking && count($oBooking->getErrArray()) > 0){
-            $sMess = '<br/><br/> Error param form book table, please contact an admin <br/><br/><a href="' . $sBackPath . '">Retour</a>';
-            $_POST['err_book_table'] = implode(', ', $oBooking->getErrArray()) . $sMess;
+            $aErr = $oBooking->getErrArray();
+            if(isset($aErr['firstName'])) $_POST['err_firstName'] = $aErr['firstName'];
+            if(isset($aErr['tel'])) $_POST['err_tel'] = $aErr['tel'];
+            if(isset($aErr['lastName'])) $_POST['err_lastName'] = $aErr['lastName'];
+            if(isset($aErr['allergy'])) $_POST['err_allergy'] = $aErr['allergy'];
+            if(isset($aErr['email'])) $_POST['err_email'] = $aErr['email'];
+            if(isset($aErr['nbGuest'])) $_POST['err_nbGuest'] = $aErr['nbGuest'];
         }else{
             try{
 

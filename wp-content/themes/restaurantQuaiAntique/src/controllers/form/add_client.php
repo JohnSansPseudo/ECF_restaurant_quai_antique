@@ -56,7 +56,13 @@ function creatAccountClient($oParamSan, $sBackPath)
         $oClient = new Client($oParamSan->firstName, $oParamSan->lastName, $oParamSan->tel, $oParamSan->mail, $oParamSan->allergie, $sPassword, $oParamSan->nbGuest);
         if (!empty($oClient->getErrArray())) {
             unset($_POST['inpPassword']);
-            $_POST['err_add_client'] = (implode(', <br>', $oClient->getErrArray()));
+            $aErr = $oClient->getErrArray();
+            if(isset($aErr['firstName'])) $_POST['err_firstName'] = $aErr['firstName'];
+            if(isset($aErr['tel'])) $_POST['err_tel'] = $aErr['tel'];
+            if(isset($aErr['lastName'])) $_POST['err_lastName'] = $aErr['lastName'];
+            if(isset($aErr['allergy'])) $_POST['err_allergy'] = $aErr['allergy'];
+            if(isset($aErr['email'])) $_POST['err_email'] = $aErr['email'];
+            if(isset($aErr['nbGuest'])) $_POST['err_nbGuest'] = $aErr['nbGuest'];
         }else{
             try{
                 $bAdd = Clients::getInstance()->add($oClient);
@@ -88,9 +94,15 @@ function updateAccountClient($oClient, $oParam, $sBackPath)
     $oClient->setEmail($oParam->mail);
     $oClient->setNbGuest($oParam->nbGuest);
 
+
     if (!empty($oClient->getErrArray())) {
-        $sMess = '<br/><br/> Error param form update account, please contact an admin <br/><br/>';
-        $_POST['err_add_client'] = implode(', ', $oClient->getErrArray()) . $sMess;
+        $aErr = $oClient->getErrArray();
+        if(isset($aErr['firstName'])) $_POST['err_firstName'] = $aErr['firstName'];
+        if(isset($aErr['tel'])) $_POST['err_tel'] = $aErr['tel'];
+        if(isset($aErr['lastName'])) $_POST['err_lastName'] = $aErr['lastName'];
+        if(isset($aErr['allergy'])) $_POST['err_allergy'] = $aErr['allergy'];
+        if(isset($aErr['email'])) $_POST['err_email'] = $aErr['email'];
+        if(isset($aErr['nbGuest'])) $_POST['err_nbGuest'] = $aErr['nbGuest'];
 
     }else{
         $aDataUp = array(

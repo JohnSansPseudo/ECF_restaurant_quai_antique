@@ -22,7 +22,6 @@ if($oClient){
     $iNbGuest = $oClient->getNbGuest();
     $sConnectezVous = '';
 }
-
 get_header();
 ?>
 
@@ -40,28 +39,34 @@ get_header();
                     <p class="success"><?= $sSuccess ?></p>
                     <div class="elf">
                         <label for="inpFirstName">Prénom</label>
-                        <input type="text" id="inpFirstName" name="inpFirstName" value="<?= $sFirstName ?>" required>
+                        <input type="text" id="inpFirstName" name="inpFirstName" value="<?= $sFirstName ?>" required="required">
+                        <p class="error"><?= $sErrFirstName ?></p>
                     </div>
                     <div class="elf">
                         <label for="inpLastName">Nom</label>
-                        <input type="text" id="inpLastName" name="inpLastName" value="<?= $sLastName ?>" required>
+                        <input type="text" id="inpLastName" name="inpLastName" value="<?= $sLastName ?>" required="required">
+                        <p class="error"><?= $sErrLastName ?></p>
                     </div>
                     <div class="elf">
                         <label for="inpTel">Téléphone</label>
-                        <input type="tel" id="inpTel" name="inpTel" pattern="[0-9]{10}" placeholder="0102030405" value="<?= $sTel ?>" required>
+                        <input type="tel" id="inpTel" name="inpTel" pattern="[0-9]{10}" placeholder="0102030405" value="<?= $sTel ?>" required="required">
+                        <p class="error"><?= $sErrTel ?></p>
                     </div>
                     <div class="elf">
                         <label for="txtAllergie">Allergie(s)</label>
                         <textarea name="txtAllergie" id="txtAllergie" cols="18" rows="3" placeholder="Détaillez ici vos allergies"><?= $sAllergie ?></textarea>
+                        <p class="error"><?= $sErrAllergy ?></p>
                     </div>
                     <div class="elf">
                         <label for="inpMail">Mail</label>
-                        <input type="email" id="inpMail" name="inpMail" value="<?= $sMail ?>" required>
+                        <input type="email" id="inpMail" name="inpMail" value="<?= $sMail ?>" required="required">
+                        <p class="error"><?= $sErrEmail ?></p>
                     </div>
                     <?= $sPassword ?>
                     <div class="elf">
                         <label for="inpNbGuestDef">Nb de convives par défaut</label>
                         <input type="number" id="inpNbGuestDef" name="inpNbGuestDef" value="<?= $iNbGuest ?>" min="1" max="<?= Bookings::getNbGuestsMax(); ?>">
+                        <p class="error"><?= $sErrNbGuest ?></p>
                     </div>
                     <button type="submit" class="btn" id="btnCreateAccount" name="add-client"><?= $sTitleBtn ?></button>
                 </form>

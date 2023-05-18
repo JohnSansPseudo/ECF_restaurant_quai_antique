@@ -11,10 +11,26 @@ function getCartePage()
 function getBookTablePage()
 {
     $oClient = ClientConnection::isConnected();
-    $aStrHtml = OpeningTimes::getInstance()->getHtmlHourBooking();
+
+    $sDateToday = date('d/m/Y', time());
+    $sDateValue = $sDateToday;
+    if(isset($_POST['inpDateBook'])){
+        $sDateValue = htmlspecialchars($_POST['inpDateBook']);
+        $aDate = explode('/', $sDateValue);
+        $sDateSql = $aDate[2] . '-' . $aDate[1] . '-' . $aDate[0];
+    }else $sDateSql = date('Y-m-d', time());
+
+    $aStrHtml = OpeningTimes::getInstance()->getHtmlHourBooking($sDateSql);
 
     $sError = '';
     $sSuccess = '';
+
+    $iNbGuest = 2;
+    $sFirstName = '';
+    $sLastName = '';
+    $sTel = '';
+    $sMail = '';
+    $sAllergie = '';
 
     if(isset($_POST['err_book_table'])) $sError = htmlspecialchars($_POST['err_book_table']);
     if(isset($_GET['book']) && intval($_GET['book']) === 1)
@@ -28,6 +44,28 @@ function getBookTablePage()
             $sSuccess .= 'à ' . htmlspecialchars($_GET['time']);
         }
     }
+
+    if(isset($_POST['nbGuest'])) $iNbGuest = htmlspecialchars($_POST['nbGuest']);
+    if(isset($_POST['inpMail'])) $sMail = htmlspecialchars($_POST['inpMail']);
+    if(isset($_POST['inpTel'])) $sTel = htmlspecialchars($_POST['inpTel']);
+    if(isset($_POST['txtAllergie'])) $sAllergie = htmlspecialchars($_POST['txtAllergie']);
+    if(isset($_POST['inpLastName'])) $sLastName = htmlspecialchars($_POST['inpLastName']);
+    if(isset($_POST['inpFirstName'])) $sFirstName = htmlspecialchars($_POST['inpFirstName']);
+
+    $sErrFirstName = '';
+    $sErrTel = '';
+    $sErrLastName = '';
+    $sErrAllergy = '';
+    $sErrEmail = '';
+    $sErrNbGuest = '';
+
+    if(isset($_POST['err_firstName'])) $sErrFirstName = htmlspecialchars($_POST['err_firstName']);
+    if(isset($_POST['err_tel'])) $sErrTel = htmlspecialchars($_POST['err_tel']);
+    if(isset($_POST['err_lastName'])) $sErrLastName = htmlspecialchars($_POST['err_lastName']);
+    if(isset($_POST['err_allergy'])) $sErrAllergy = htmlspecialchars($_POST['err_allergy']);
+    if(isset($_POST['err_email'])) $sErrEmail = htmlspecialchars($_POST['err_email']);
+    if(isset($_POST['err_nbGuest'])) $sErrNbGuest = htmlspecialchars($_POST['err_nbGuest']);
+
     require_once(get_template_directory() . '/templates/front/page-' . PageWordpress::BOOK_TABLE_NAME . '.php');
 }
 
@@ -54,6 +92,20 @@ function getCreateAccountPage()
     if(isset($_POST['err_add_client'])) $sGlobalError = htmlspecialchars($_POST['err_add_client']);
     if(isset($_GET['success_add_client'])) $sSuccess = 'Votre compte est créé';
     if(isset($_GET['update_client'])) $sSuccess = 'Votre compte est modifié';
+
+    $sErrFirstName = '';
+    $sErrTel = '';
+    $sErrLastName = '';
+    $sErrAllergy = '';
+    $sErrEmail = '';
+    $sErrNbGuest = '';
+
+    if(isset($_POST['err_firstName'])) $sErrFirstName = htmlspecialchars($_POST['err_firstName']);
+    if(isset($_POST['err_tel'])) $sErrTel = htmlspecialchars($_POST['err_tel']);
+    if(isset($_POST['err_lastName'])) $sErrLastName = htmlspecialchars($_POST['err_lastName']);
+    if(isset($_POST['err_allergy'])) $sErrAllergy = htmlspecialchars($_POST['err_allergy']);
+    if(isset($_POST['err_email'])) $sErrEmail = htmlspecialchars($_POST['err_email']);
+    if(isset($_POST['err_nbGuest'])) $sErrNbGuest = htmlspecialchars($_POST['err_nbGuest']);
 
     require_once(get_template_directory() . '/templates/front/page-' . PageWordpress::ACCOUNT_NAME . '.php');
 }

@@ -31,12 +31,13 @@ class Gallery extends ManagerObjTable
         $oStatement = $oPDO->prepare($sql);
         if(!$oStatement) return false;
         $b = $oStatement->execute();
-
+        if(!$b) return $b;
         $aData = $this->getAllData();
         if(is_array($aData) && count($aData) === 0){
             for($i=0; $i<6; $i++){
                 $o = new ImageGallery(0, '');
                 $this->add($o);
+                return true;
             }
         } else return $b;
     }

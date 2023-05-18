@@ -54,7 +54,7 @@ class Client
         if(Bookings::getNbGuestsMax()) $iMax = Bookings::getNbGuestsMax();
         $oParam = new ParamInt($nbGuest, self::Class . ' nbGuestDef ', 1, $iMax);
         if($oParam->getStringError() !== ''){
-            $this->aErr['nbGuestDef'] = $oParam->getStringError();
+            $this->aErr['nbGuest'] = $oParam->getStringError();
         }
         else $this->nbGuest = $nbGuest;
         return $this;

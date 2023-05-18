@@ -67,7 +67,7 @@ class Booking
     {
         $oParam = new ParamInt($idOpening, self::Class . 'id opening', 1);
         if($oParam->getStringError() !== ''){
-            $this->aErr[] = $oParam->getStringError();
+            $this->aErr['idOpening'] = $oParam->getStringError();
         }
         else  $this->idOpening = $idOpening;
         return $this;
@@ -89,7 +89,7 @@ class Booking
     {
         $oParam = new ParamInt($iNbGuest, self::Class . 'nb guest', 1);
         if($oParam->getStringError() !== ''){
-            $this->aErr[] = $oParam->getStringError();
+            $this->aErr['nbGuest'] = $oParam->getStringError();
         }
         else  $this->nbGuest = $iNbGuest;
         return $this;
@@ -111,7 +111,7 @@ class Booking
     {
         $oParam = new ParamString($sStartTime, self::Class . ' start time', 8, 8);
         if($oParam->getStringError() !== ''){
-            $this->aErr[] = $oParam->getStringError();
+            $this->aErr['startTime'] = $oParam->getStringError();
         }
         else $this->startTime = $sStartTime;
         return $this;
@@ -133,7 +133,7 @@ class Booking
     {
         $oParam = new ParamString($sDate, self::Class . ' date ', 10, 10);
         if($oParam->getStringError() !== ''){
-            $this->aErr[] = $oParam->getStringError();
+            $this->aErr['bookingDate'] = $oParam->getStringError();
         }
         else $this->bookingDate = $sDate;
         return $this;
@@ -157,7 +157,7 @@ class Booking
     {
         $oParam = new ParamInt($iId, self::Class . ' id ', 1);
         if($oParam->getStringError() !== ''){
-            $this->aErr[] = $oParam->getStringError();
+            $this->aErr['id'] = $oParam->getStringError();
         }
         else  $this->id = $iId;
         return $this;
@@ -203,7 +203,7 @@ class Booking
     {
         $oParam = new ParamString($sFirstName, self::Class . ' firstName ', 3, 50);
         if($oParam->getStringError() !== ''){
-            $this->aErr[] = $oParam->getStringError();
+            $this->aErr['firstName'] = $oParam->getStringError();
         }
         else $this->firstName = $sFirstName;
         return $this;
@@ -225,7 +225,7 @@ class Booking
     {
         $oParam = new ParamString($sLastName, self::Class . ' lastName ', 3, 50);
         if($oParam->getStringError() !== ''){
-            $this->aErr[] = $oParam->getStringError();
+            $this->aErr['lastName'] = $oParam->getStringError();
         }
         else $this->lastName = $sLastName;
         return $this;
@@ -270,7 +270,7 @@ class Booking
     {
         $oParam = new ParamString($sAllergy, self::Class . ' allergy ', 0, 1000);
         if($oParam->getStringError() !== ''){
-            $this->aErr[] = $oParam->getStringError();
+            $this->aErr['allergy'] = $oParam->getStringError();
         }
         else $this->allergy = $sAllergy;
         return $this;

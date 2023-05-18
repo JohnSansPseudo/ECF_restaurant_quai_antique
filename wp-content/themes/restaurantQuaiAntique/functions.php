@@ -270,9 +270,7 @@ function includeFiles()
 function setTables()
 {
     $bOptionInitTheme = get_option('init_theme');
-
-    if(!$bOptionInitTheme)  add_option(Bookings::GUEST_MAX_OPTION);
-    else if(intval($bOptionInitTheme) === 1) return; //Le thème est déjà chargée si l'option est configurée
+    if(intval($bOptionInitTheme) === 1) return; //Le thème est déjà chargé si l'option est configurée à 1
 
     try{
         RestaurantMenus::getInstance()->createTable();

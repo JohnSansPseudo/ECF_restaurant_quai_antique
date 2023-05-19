@@ -61,6 +61,9 @@ class Gallery extends ManagerObjTable
     }
 
 
+    /**
+     * @return array
+     */
     public function getAllImgAttachmentWp()
     {
         $aJpg = get_posts(array(
@@ -90,6 +93,9 @@ class Gallery extends ManagerObjTable
         return $aData;
     }
 
+    /**
+     * @return array|bool
+     */
     public function getAttchementGallery()
     {
         $oPDO = PDOSingleton::getInstance();

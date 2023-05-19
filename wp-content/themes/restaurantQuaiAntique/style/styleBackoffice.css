@@ -1,4 +1,5 @@
 #RestaurantQuaiAntiqueBackOffice{
+    position : relative;
     padding: 10px;
 }
 
@@ -136,6 +137,10 @@ tr textarea{
 .tdInpTitleUpFoodDish{
     flex-grow: 2;
 }
+
+#tblOpeningTime{
+    width: 100%;
+}
 /* ONPENING TIME */
 
 
@@ -145,10 +150,22 @@ tr textarea{
 @media only screen and (max-width: 1000px){
     #tblEditOptionMenu tr,
     #tblEditFoodDish tr,
-    #tblGallery tr{
+    #tblGallery tr,
+    #tblOpeningTime tr{
         display: flex;
         flex-direction: column;
+        margin-bottom: 20px;
+        align-items: stretch;
     }
+
+    #tblEditOptionMenu tr button,
+    #tblOpeningTime tr button,
+    #tblEditFoodDish tr button{
+        margin-top: 20px;
+        height: 40px;
+        width: 100%;
+    }
+
 
     form#formAddDish{
         flex-direction: column;
@@ -180,9 +197,8 @@ tr textarea{
     display: flex;
     justify-content: flex-start;
     flex-wrap: wrap;
-    height: auto;
-    width: 50vw;
     overflow-y: scroll;
+    height: auto;
 
 }
 .ctnItemImgChoice{
@@ -191,9 +207,10 @@ tr textarea{
 }
 
 #imgChoiceWrapper{
-    position: absolute;
-    top: 35vh;
+    position: fixed;
+    top: 75px;
     left: 50%;
+
     transform: translateX(-50%);
     background: white;
     box-shadow: 2px 2px 6px grey;
@@ -229,7 +246,7 @@ tr textarea{
 }
 
 #overlayGallery{
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     background: rgba(255, 255, 255, 0.90);
@@ -242,4 +259,40 @@ tr textarea{
     align-items: center;
     justify-content: space-between;
 }
+
+.btnImgChoice{
+    height: 40px;
+    margin-left: 15px;
+}
+
+#tblGallery textarea{
+    height: 35px;
+}
 /* FIN GALLERY */
+
+
+@media only screen and (max-width: 800px){
+
+    #ctnImgChoice .body{
+        height: 70vh;
+    }
+
+    #imgChoiceWrapper{
+        top: 50px;
+        width: 80%;
+    }
+/*
+    A voir pour mettre en sticky
+    #ctnTabBackOffice {
+        position: fixed;
+        top: 40px;
+        background: lightgrey;
+        padding: 10px;
+        width: 100%;
+        left: 0;
+
+
+    }*/
+
+}
+

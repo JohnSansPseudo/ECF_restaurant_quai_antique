@@ -36,6 +36,7 @@ get_header();
                         <label for="inpDateBook">Date</label>
                         <input
                             type="text"
+                            onfocus="blur();"
                             id="inpDateBook"
                             name="inpDateBook"
                             value="<?= $sDateValue ?>"

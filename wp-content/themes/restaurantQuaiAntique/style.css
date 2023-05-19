@@ -216,11 +216,13 @@ footer .ctnSectionFooter .body .tblOpenningFooter
 
 /* DATE PICKER */
 .datepicker.datepicker-dropdown{
-    padding: 20px
+    padding: 10px
 }
-
+.datepicker table{
+    border-collapse : unset;
+}
 .datepicker.datepicker-dropdown .table-condensed td{
-    padding: 20px;
+    padding: 10px;
 }
 /* FIN DATE PICKER */
 

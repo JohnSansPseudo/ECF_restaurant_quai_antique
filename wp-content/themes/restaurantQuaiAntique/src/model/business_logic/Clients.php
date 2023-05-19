@@ -27,7 +27,7 @@ final class Clients extends ManagerObjTable
             lastName VARCHAR(50) NOT NULL,
             tel VARCHAR(10) NOT NULL,
             allergy TEXT(500),
-            nbGUest INT NOT NULL)";
+            nbGuest INT NOT NULL)";
 
         $oStatement = $oPDO->prepare($sql);
         if(!$oStatement) return false;

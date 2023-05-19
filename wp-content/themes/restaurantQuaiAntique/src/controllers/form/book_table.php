@@ -60,16 +60,11 @@ function bookTable()
             if(isset($aErr['nbGuest'])) $_POST['err_nbGuest'] = $aErr['nbGuest'];
         }else{
             try{
-
-                try{
-                    $bAdd = Bookings::getInstance()->add($oBooking);
-                    if($bAdd){
-                        header('Location:' . $sBackPath . '?book=1&date=' . $sSqlDate . '&time=' . $sStartTime);
-                    } else {
-                        $_POST['err_book_table'] = 'Erreur lors de la réservation contactez un administrateur.';
-                    }
-                }catch(Exception $e)  {
-                    $_POST['err_book_table'] = $e->getMessage();
+                $bAdd = Bookings::getInstance()->add($oBooking);
+                if($bAdd){
+                    header('Location:' . $sBackPath . '?book=1&date=' . $sSqlDate . '&time=' . $sStartTime);
+                } else {
+                    $_POST['err_book_table'] = 'Erreur lors de la réservation contactez un administrateur.';
                 }
             }catch(PDOException $e){
                 $_POST['err_book_table'] = 'Erreur  la réservation n\'a pas pu aboutir <br/><br/>' . $e->getMessage();

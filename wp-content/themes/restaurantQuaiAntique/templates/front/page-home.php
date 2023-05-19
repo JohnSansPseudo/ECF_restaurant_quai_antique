@@ -46,6 +46,14 @@ foreach($aImgGallery as $oImgGallery) {
         $i = 1;
     } else $i++;
 }
+
+$sSuggestion = '';
+if($sRow !== '') $sSuggestion = '<div class="row">
+                                    <h2 class="col-12">Les suggestions du chef</h2>
+                                    <div class="col-12" id="ctnGallery">
+                                        ' . $sRow . '
+                                    </div>
+                                </div>';
 get_header();
 ?>
 
@@ -55,12 +63,7 @@ get_header();
             <div class="sectionSepHome text-center">****</div>
         </div>
     </div>
-    <div class="row">
-        <h2 class="col-12">Les suggestions du chef</h2>
-        <div class="col-12" id="ctnGallery">
-            <?= $sRow ?>
-        </div>
-    </div>
+    <?= $sSuggestion ?>
     <div class="row">
         <div class="col-12 offset-md-4 col-md-4 g-2 text-center">
             <a href="<?= get_site_url() . '/' . PageWordpress::BOOK_TABLE_NAME ?>" class="btn btnSaillance large" id="btnBookHome">Réserver votre table</a>

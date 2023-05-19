@@ -14,7 +14,7 @@ $sBody = '<form method="post" action="#" id="formAddDishType">
                         </div>
                         <p class="errorField">' . $sErrAddDishType . '</p>
                     </div>
-                    <button type="submit" id="btnAddDishType" name="add_dish_type">Ajouter le type de plat</button>
+                    <button type="submit" id="btnAddDishType" name="add_dish_type" class="btn">Ajouter le type de plat</button>
                 </div>
             </form>';
 $sTitle = 'Ajouter un type de plat';

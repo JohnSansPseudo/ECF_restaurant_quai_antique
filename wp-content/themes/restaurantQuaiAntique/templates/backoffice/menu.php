@@ -15,7 +15,7 @@ $sBody = '<form method="post" action="#">
                         </div>
                         <p class="errorField">' . $sErrAddMenu . '</p>
                     </div>
-                    <button type="submit" id="btnAddMenu" name="add-menu">Ajouter le menu</button>
+                    <button type="submit" id="btnAddMenu" name="add-menu" class="btn">Ajouter le menu</button>
                 </div>
             </form>';
 $sTitle = 'Ajouter un menu';

@@ -51,10 +51,20 @@ final class Bookings extends ManagerObjTable
 
     /**
      * @param $oBooking Booking
-     * @return bool | array | Booking
+     * @return bool | array | Booking | Exception
      */
     public function add($oBooking)
     {
+        date_default_timezone_set("Europe/Paris");
+        //Si la date demandée est inférieure à aujourd'hui
+        $s = $oBooking->getBookingDate() . ' ' . $oBooking->getStartTime();
+        $iStartTimeAsking = strtotime($s);
+        $iTimeToday = time();
+
+        if($iStartTimeAsking < $iTimeToday){
+            throw new Exception('Error booking date (' . date('d/m/Y H:m:i', $iStartTimeAsking) . ' is inferior than actual time');
+        }
+
         //Vérification du nombre de place restante
         $iNbGuestBooked = $this->getNbGuestsBySqlDateAndIdOpening($oBooking->getBookingDate(), $oBooking->getIdOpening());
         $iPlaceAvailable = self::getNbGuestsMax() - $iNbGuestBooked;

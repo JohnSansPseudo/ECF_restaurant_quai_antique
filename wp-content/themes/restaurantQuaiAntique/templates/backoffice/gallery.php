@@ -36,7 +36,7 @@ foreach($aItemGallery as $oItemGallery)
                 <td>' . $oItemGallery->getId() . '</td>
                 <td class="ctnImgChoice">
                     <div class="ctnImgChoosed"><img src="' . $sSrc . '" class="imgChoosed"/></div>
-                    <button class="btnImgChoice" >Choisir une image</button>
+                    <button class="btnImgChoice">Choisir une image</button>
                 </td>
                 <td><textarea rows="1">' . $oItemGallery->getTitle() . '</textarea></td>
             </tr>';
@@ -63,9 +63,9 @@ $sBody = '<div>
             <div class="elf">
                 ' . wp_nonce_field('addMediaImgFile', 'add_media_img_file') . '
                 <label for="inpFileGallery">Insérer une image</label>
-                <input type="file" id="inpFileGallery" name="inpFileGallery">
+                <input type="file" id="inpFileGallery" name="inpFileGallery" >
             </div>
-            <button type="submit" name="btnAddMediaImgFile">Envoyer</button>
+            <button type="submit" name="btnAddMediaImgFile" class="btn">Envoyer</button>
         </form>';
 
 $sTitle = 'Ajouter une image';

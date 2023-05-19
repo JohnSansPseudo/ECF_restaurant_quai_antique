@@ -293,4 +293,21 @@ final class OpeningTimes extends ManagerObjTable
         }
         return $aErr;
     }
+
+    /**
+     * @param $oState PDOStatement
+     * @return array | bool
+     */
+    protected function statementGetExecute(PDOStatement $oState)
+    {
+        //dbrDie($oState->queryString);
+        $aArgs = array('lundi', 'midi', '12:00:00', '15:00:00', '1');
+        $bExec = $oState->execute();
+        if(!$bExec) return $bExec;
+        $aData = array();
+        $oState->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, static::CLASS_MANAGER,  $aArgs);
+        while ($o = $oState->fetch()) { $aData[$o->getId()] = $o; }
+        return $aData;
+    }
+
 }

@@ -18,6 +18,7 @@ $image = wp_get_attachment_image_src( $custom_logo_id , 'full' );
 <html lang="fr">
 <head>
     <meta charset="<? bloginfo('charset'); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <?php wp_head(); ?>
 </head>
 <body>

@@ -100,8 +100,11 @@ class Gallery extends ManagerObjTable
      */
     public function getAttchementGallery()
     {
+        global $wpdb;
+        $sTablePost = $wpdb->prefix . 'posts';
+
         $oPDO = PDOSingleton::getInstance();
-        $oState = $oPDO->prepare('SELECT g.*, p.guid as guid FROM ' . self::getTableName() . ' as g LEFT JOIN wp_posts as p ON p.ID = g.idAttachment');
+        $oState = $oPDO->prepare('SELECT g.*, p.guid as guid FROM ' . self::getTableName() . ' as g LEFT JOIN ' . $sTablePost . ' as p ON p.ID = g.idAttachment');
         $bExec = $oState->execute();
         if(!$bExec) return $bExec;
         $aData = array();

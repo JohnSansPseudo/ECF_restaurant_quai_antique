@@ -34,11 +34,13 @@ class Gallery extends ManagerObjTable
         if(!$b) return $b;
         $aData = $this->getAllData();
         if(is_array($aData) && count($aData) === 0){
+            $b = true;
             for($i=0; $i<6; $i++){
                 $o = new ImageGallery(0, '');
-                $this->add($o);
-                return true;
+                $c = $this->add($o);
+                if(!$c) $b = $c;
             }
+            return $b;
         } else return $b;
     }
 

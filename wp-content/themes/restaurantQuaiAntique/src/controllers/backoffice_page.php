@@ -44,6 +44,7 @@ function getDishPage($sAdminAction)
 function getGalleryPage($sAdminAction)
 {
     $aAttachment = Gallery::getInstance()->getAllImgAttachmentWp();
+    $aItemGallery = Gallery::getInstance()->getAllData();
     $sError = '';
     $sSuccess = '';
     if(isset($_POST['success_file'])) $sSuccess = htmlspecialchars($_POST['success_file']);

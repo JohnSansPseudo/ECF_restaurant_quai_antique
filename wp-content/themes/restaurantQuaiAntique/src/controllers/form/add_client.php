@@ -14,6 +14,13 @@ function addClient()
     unset($_POST['add-client']);
     unset($_REQUEST['add_client_nonce']);
 
+    unset($_POST['err_firstName']);
+    unset($_POST['err_tel']);
+    unset($_POST['err_lastName']);
+    unset($_POST['err_allergy']);
+    unset($_POST['err_email']);
+    unset($_POST['err_nbGuest']);
+
 
     $oParam = (object)array(
         'firstName' => 'inpFirstName',
@@ -22,7 +29,18 @@ function addClient()
         'mail' => 'inpMail',
         'nbGuest' => 'inpNbGuestDef');
     foreach ($oParam as $sParam){
-        if(!isset($_POST[$sParam])) $_POST['err_add_client'] = 'Error add client, data are missing';
+        if(!isset($_POST[$sParam])){
+            switch($sParam){
+                case 'date': $_POST['err_book_table'] = 'Merci de choisir une date disponible'; break;
+                case 'sStartTime' : $_POST['err_book_table'] = 'Merci de choisir une heure disponible'; break;
+                case 'nbGuest' : $_POST['err_nbGuest'] = 'Merci de renseigner un nombre d\'inivté valide'; break;
+                case 'firstName' : $_POST['err_firstName'] = 'Merci de renseigner prénom'; break;
+                case 'lastName' : $_POST['err_lastName'] = 'Merci de renseigner nom'; break;
+                case 'mail' : $_POST['err_email'] = 'Merci de renseigner mail'; break;
+                case 'tel' : $_POST['err_tel'] = 'Merci de renseigner votre téléphone'; break;
+                default: $_POST['err_book_table'] = 'Erreur lors de la réservation, merci de retenter ou contactez un administrateur.';
+            }
+        }
     }
     $oParam->allergie = 'txtAllergie';
 
@@ -51,8 +69,8 @@ function creatAccountClient($oParamSan, $sBackPath)
     if (!isset($_POST['inpPassword']) || $_POST['inpPassword'] === ''){
         $_POST['err_add_client'] = 'Error add client, data are missing, please ';
     }else{
-        $sPassword = sanitize_text_field(($_POST['inpPassword']));
-        $sPassword = ClientConnection::generatePassword($sPassword);
+        $sPasswordInit = sanitize_text_field(($_POST['inpPassword']));
+        $sPassword = ClientConnection::generatePassword($sPasswordInit);
         $oClient = new Client($oParamSan->firstName, $oParamSan->lastName, $oParamSan->tel, $oParamSan->mail, $oParamSan->allergie, $sPassword, $oParamSan->nbGuest);
         if (!empty($oClient->getErrArray())) {
             unset($_POST['inpPassword']);
@@ -69,8 +87,15 @@ function creatAccountClient($oParamSan, $sBackPath)
                 if($bAdd){
                     unset($_POST['inpPassword']);
                     new ClientConnection($oClient->getEmail(), $oClient->getPassword());
-                    $_POST['success_add_client'] = 1;
-                    header('Location: ' . $sBackPath . '?success_add_client=1');//Otherwise firfox keep the reuqest in memory and reload it on F5 keypress
+                    //Mail
+                    $sMess = 'Quai Antique, votre compte client est créé, vos identifiants, login : ' . $oClient->getEmail() . ' mot de passe : ' . $sPasswordInit . ' connectez-vous : https://quaiantique.online/sign-in/';
+                    $sSender = 'contact@quaiantique.online';
+                    $sHeaders = "From: " . $sSender . "\r\n".
+                        "Reply-To: contact@quaiantique.online\r\n".
+                        "Content-Type: text/html; charset=\"UTF-8\"\r\n";
+                    mail($oClient->getEmail(),'Quai Antique - Votre compte client', $sMess, $sHeaders, '');
+                    //Fin mail
+                    header('Location: ' . $sBackPath . '?success_add_client=1');//Otherwise firfox keep the request in memory and reload it on F5 keypress
                 }
             }catch(PDOException $e){
                 $_POST['err_add_client'] = $e->getMessage() . '<br/><br/>Error form add create account, please contact an admin';

@@ -20,7 +20,6 @@ window.addEventListener('load', function(){
             }
             const oMenuManager = new MenuManager(oMenu);
             oMenuManager.update();
-
         });
     }
     //*** FIN MENU - GESTION
@@ -250,10 +249,39 @@ window.addEventListener('load', function(){
         {
             oTxt.addEventListener('blur', function () {
                 const idGallery = parseInt(oTxt.closest('tr').getAttribute('data-id_img_gallery'));
+                try{ new ParamIntCheck(idGallery, 'idGallery').checkMin(0); }
+                catch (e){
+                    alert(e.message);
+                    console.error(e.message);
+                    console.trace();
+                    return false;
+                }
                 const sTitle = oTxt.value;
                 try{
-                    new ParamStrCheck(sTitle, 'sTitle').checkMinLen(1);
+                    new ParamStrCheck(sTitle, 'sTitle').checkMinLen(0);
                     oGallery.update(idGallery, sTitle, 'title');
+                } catch (e){
+                    alert(e.message);
+                    console.error(e.message);
+                    console.trace();
+                    return false;
+                }
+            });
+        }
+    }
+
+    //Delete (erase) img gallery & title
+    const aBtn = document.getElementsByClassName('btnDeleteImgGal');
+    if(aBtn) {
+        const oGallery = new Gallery();
+        for(const oBtn of aBtn){
+            oBtn.addEventListener('click', function () {
+                const idGallery = parseInt(oBtn.closest('tr').getAttribute('data-id_img_gallery'));
+                try{
+                    new ParamIntCheck(idGallery, 'idGallery').checkMin(0);
+                    if(confirm('Souhaitez-vous effacer l\'image et le texte ?')){
+                        oGallery.delete(idGallery);
+                    }
                 } catch (e){
                     alert(e.message);
                     console.error(e.message);
@@ -366,6 +394,51 @@ class Gallery extends Manager
         oImg.setAttribute('src', sSrcImg);
     }
 
+    delete(idGallery)
+    {
+        const sBody = new URLSearchParams({
+            idGallery: idGallery,
+            action: action,
+            nonce: this.getNonce(),
+            ajax: 'deleteImgGallery'});
+
+        const oInit = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Cache-Control': 'no-cache' },
+            body: sBody
+        }
+
+        fetch(sPage, oInit)
+            .then((oResp) => {
+                if(oResp.ok){ return oResp.json(); }
+                else{
+                    alert('Error then promise delete gallery');
+                    console.error('Error promise then delete gallery');
+                    console.trace();
+                }
+            })
+            .then((oResp) => {
+                if(parseInt(oResp.data.code) === 1) {
+                    new ToastAlert(ToastAlert.SUCCESS, oResp.data.mess);
+                    const oTr = document.querySelector('#tblGallery tr[data-id_img_gallery="' + idGallery + '"');
+                    oTr.querySelector('.imgChoosed').setAttribute('src', '');
+                    oTr.querySelector('textarea').innerHTML = '';
+                }
+                else {
+                    console.log(oResp.data.mess);
+                    alert(oResp.data.mess);
+                    console.trace();
+                }
+            })
+            .catch((oResp) => {
+                alert('Error catch promise');
+                console.error(oResp);
+                console.trace();
+            });
+    }
+
     update(idGallery, value, sField, sSrcImg='')
     {
         const sBody = new URLSearchParams({
@@ -388,8 +461,8 @@ class Gallery extends Manager
             .then((oResp) => {
                 if(oResp.ok){ return oResp.json(); }
                 else{
-                    alert('Error then promise update menu');
-                    console.error('Error promise then update menu');
+                    alert('Error then promise update gallery');
+                    console.error('Error promise then update gallery');
                     console.trace();
                 }
             })
@@ -446,8 +519,8 @@ class OpeningTimeManager extends Manager
             .then((oResp) => {
                 if(oResp.ok){ return oResp.json(); }
                 else{
-                    alert('Error then promise update menu');
-                    console.error('Error promise then update menu');
+                    alert('Error then promise update opening time');
+                    console.error('Error promise then update opening time');
                     console.trace();
                 }
             })
@@ -499,8 +572,8 @@ class FoodDishManager extends Manager
             .then((oResp) => {
                 if(oResp.ok){ return oResp.json(); }
                 else{
-                    alert('Error then promise update menu');
-                    console.error('Error promise then update menu');
+                    alert('Error then promise update food dish');
+                    console.error('Error promise then update food dish');
                     console.trace();
                 }
             })
@@ -575,8 +648,8 @@ class DishTypeManager extends Manager
             .then((oResp) => {
                 if(oResp.ok){ return oResp.json(); }
                 else{
-                    alert('Error then promise update menu');
-                    console.error('Error promise then update menu');
+                    alert('Error then promise update dish type');
+                    console.error('Error promise then update dish type');
                     console.trace();
                 }
             })
@@ -638,8 +711,8 @@ class OptionMenuManager
             .then((oResp) => {
                 if(oResp.ok){ return oResp.json(); }
                 else{
-                    alert('Error then promise update menu');
-                    console.error('Error promise then update menu');
+                    alert('Error then promise update option menu');
+                    console.error('Error promise then update option menu');
                     console.trace();
                 }
             })

@@ -48,6 +48,8 @@ add_action('after_setup_theme', 'testLauncher');
 
 function testLauncher()
 {
+    //global $wpdb;
+
     //dbrDie($_SESSION);
     //   /!\You have to comment "header('Location:...')" in each file you need
 

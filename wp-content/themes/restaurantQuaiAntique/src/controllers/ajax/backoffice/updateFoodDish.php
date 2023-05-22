@@ -4,7 +4,7 @@ function ajaxUpdateFoodDish()
 {
     //Si une des données necéssaire est manquante
     if(!isset($_POST['id']) || !isset($_POST['field']) || !isset($_POST['value'])) {
-        return JsonAnswer::retour(0, 'Error update menu, data are missing', '');
+        return JsonAnswer::retour(0, 'Error update food dish, data are missing', '');
     }
 
     //Sécurisation des paramètres reçues

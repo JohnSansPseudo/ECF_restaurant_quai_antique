@@ -6,8 +6,6 @@ function root_backoffice()
     if(isset($_GET['admin_action']) && $_GET['admin_action'] && $_GET['admin_action'] !== '') $sAdminAction = htmlspecialchars($_GET['admin_action']);
     $oCurUser = _wp_get_current_user();
     if(!user_can($oCurUser->ID, 'administrator')){
-
-        dbr(_wp_get_current_user());
         echo '<p class="error">Access denied</p>';
         die();
     }

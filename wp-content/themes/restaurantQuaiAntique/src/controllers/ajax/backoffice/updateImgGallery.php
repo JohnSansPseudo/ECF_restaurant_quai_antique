@@ -4,7 +4,7 @@ function ajaxUpdateImgGallery()
 {
     //Si une des données necéssaire est manquante
     if(!isset($_POST['idGallery']) || !isset($_POST['value']) || !isset($_POST['field']) ) {
-        return JsonAnswer::retour(0, 'Error update menu, data are missing', '');
+        return JsonAnswer::retour(0, 'Error update image gallery, data are missing', '');
     }
 
     //Sécurisation des paramètres reçues

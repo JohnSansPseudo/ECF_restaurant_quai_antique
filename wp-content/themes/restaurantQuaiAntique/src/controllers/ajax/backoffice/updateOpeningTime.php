@@ -3,7 +3,7 @@ function ajaxUpdateOpeningTime()
 {
     //Si une des données necéssaire est manquante
     if(!isset($_POST['id']) || !isset($_POST['timeStart']) || !isset($_POST['timeEnd'])) {
-        return JsonAnswer::retour(0, 'Error update menu, data are missing', '');
+        return JsonAnswer::retour(0, 'Error update opening time, data are missing', '');
     }
 
 

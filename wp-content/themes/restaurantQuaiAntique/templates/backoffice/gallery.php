@@ -2,9 +2,6 @@
 
 //MODAL choix des images
 $sImgChoice = '';
-/**
- *@var $oAttachment WP_Post
- */
 foreach ($aAttachment as $oAttachment)
 {
     $sImgChoice .= '<div class="ctnItemImgChoice mHover" data-id_attachment="' . $oAttachment->ID . '">
@@ -17,10 +14,7 @@ $sImgChoice = '<div id="imgChoiceWrapper" data-id_item_gallery="" class="hide">
                         <div class="body">' . $sImgChoice . '</div>
                     </div>
                 </div>';
-
-$sItemGallery = '';
-$aItemGallery = Gallery::getInstance()->getAllData();
-
+//Fin MODAL choix des images
 
 //LIGNE DU TABLEAU POUR LE PARAMETRAGE
 $sTr = '';
@@ -39,6 +33,11 @@ foreach($aItemGallery as $oItemGallery)
                     <button class="btnImgChoice">Choisir une image</button>
                 </td>
                 <td><textarea rows="1">' . $oItemGallery->getTitle() . '</textarea></td>
+                <td>
+                    <button type="submit" name="delete_menu" class="btnDeleteImgGal">
+                        <span class="dashicons dashicons-trash dashicons-action mHover"></span>
+                    </button>
+                </td>
             </tr>';
 }
 
@@ -55,6 +54,7 @@ $sTable = '<table id="tblGallery">
 
 ob_start();
 
+/*Form ajouter une image*/
 $sBody = '<div>
             <p class="error">' . $sError . '</p>
             <p class="success">' . $sSuccess . '</p>
@@ -71,9 +71,12 @@ $sBody = '<div>
 $sTitle = 'Ajouter une image';
 include('layout_subsection.php');
 
+/*Modifiez la gallerie*/
 $sBody = $sTable;
 $sTitle = 'Modifiez la gallerie';
 include('layout_subsection.php');
+
+/*Bas de page*/
 echo $sImgChoice;
 echo '<div id="overlayGallery" class="hide"></div>';
 $sContent = ob_get_clean(); ?>

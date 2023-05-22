@@ -32,19 +32,25 @@ foreach($aMenus as $oMenus){
  */
 $sImg = '';
 $sRow = '';
-$i = 1;
+$i = 0;
+$j = 0;
+$iImgTotal = count($aImgGallery);
 foreach($aImgGallery as $oImgGallery) {
 
-    if(!$oImgGallery->guid) continue;
-    $sImg .= '<div class="col-12 col-md-4  ctnImgGallery">
+    if($oImgGallery->guid){
+        $sImg .= '<div class="col-12 col-md-4  ctnImgGallery">
                     <img src="' . $oImgGallery->guid . '" class="imgGallery">
                     <div class="ctnTitleImgGallery"><span class="titleImgGallery">' . $oImgGallery->getTitle() .'</span></div>
                 </div>';
-    if($i === 3){
+        $i++;
+    }
+
+    if($i === 3 || ( ($i >= 1) && (($iImgTotal - 1) === $j)) ){
         $sRow .= '<div class="row g-1 mb-1">' . $sImg . '</div>';
         $sImg = '';
-        $i = 1;
-    } else $i++;
+        $i = 0;
+    }
+    $j++;
 }
 
 $sSuggestion = '';

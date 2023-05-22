@@ -6,6 +6,7 @@ require_once('backoffice/updateDishType.php');
 require_once('backoffice/updateFoodDish.php');
 require_once('backoffice/updateOpeningTime.php');
 require_once ('backoffice/updateImgGallery.php');
+require_once ('backoffice/deleteImgGallery.php');
 
 require_once('front/updateBookingHour.php');
 require_once('front/isUserNameAdmin.php');
@@ -40,6 +41,7 @@ function root_ajax()
                 case 'updateFoodDish': $oJSON = ajaxUpdateFoodDish(); break;
                 case 'updateOpeningTime': $oJSON = ajaxUpdateOpeningTime(); break;
                 case 'updateImgGallery': $oJSON = ajaxUpdateImgGallery(); break;
+                case 'deleteImgGallery': $oJSON = ajaxDeleteImgGallery(); break;
                 //FRONT
                 case 'updateBookingHours': $oJSON = ajaxUpdateBookingHour(); break;
                 case 'isUserNameAdmin': $oJSON = ajaxIsUserNameAdmin(); break;

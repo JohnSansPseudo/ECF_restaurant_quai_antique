@@ -84,7 +84,7 @@ function getMenuPage($sAdminAction)
     }
 
     $aMenu = RestaurantMenus::getInstance()->getAllData();
-    $aOptionMenu = RestaurantMenuOptions::getInstance()->getAllData();
+    $aOptionMenu = RestaurantMenuOptions::getInstance()->getAllData(' ORDER BY idMenu ');
     require_once(get_template_directory() .'/templates/backoffice/menu.php');
     require_once(get_template_directory() . '/templates/backoffice/layout.php');
 }

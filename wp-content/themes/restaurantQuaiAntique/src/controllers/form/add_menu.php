@@ -1,5 +1,5 @@
 <?php
-function addMenu()
+function addMenu($bTest=false)
 {
     $sBackPath = get_admin_url() .'admin.php?page=QuaiAntiqueParam';
     if(!isset($_POST['add-menu'])) return false;
@@ -20,21 +20,34 @@ function addMenu()
             $oRestaurantMenus = new RestaurantMenus();
             $oMenu = new RestaurantMenu($sTitle);
             if(count($oMenu->getErrArray()) > 0) {
-                die(implode(', ', $oMenu->getErrArray()) . '<br/><br/> Error param form add menu, please contact an admin <br/><br/><a href="' . $sBackPath . '">Retour</a>');
+                $_POST['err_add_menu'] = implode(', ', $oMenu->getErrArray());
+                if($bTest) return $_POST['err_add_menu'];
             }
 
             $mResult = $oRestaurantMenus->getByWhere(array('title' => $oMenu->getTitle()));
-            if(is_array($mResult) && count($mResult) > 0) $_POST['err_add_menu'] = 1;
+            if(is_array($mResult) && count($mResult) > 0){
+                $_POST['err_add_menu'] = 1;
+                if($bTest) return 'This menu already exist' . var_dump($mResult);
+            }
             else {
                 $bAdd = RestaurantMenus::getInstance()->add($oMenu);//On l'ajoute
-                if(!$bAdd)  die($bAdd . '<br/><br/> Error form add menu, please contact an admin <br/><br/><a href="' . $sBackPath . '">Retour</a>');
-                else unset($_POST['inpTitleMenu']);
+                if(!$bAdd){
+                    $_POST['err_add_menu'] = $bAdd . '<br/><br/> Error form add menu, please contact an admin';
+                    if($bTest) return $_POST['err_add_menu'];
+                }
+                else{
+                    unset($_POST['inpTitleMenu']);
+                    if($bTest) return $bAdd;
+                }
             }
         } catch(Exception $e){
-            echo $e->getMessage();
-            die('<br/><br/><a href="' . $sBackPath . '">Retour</a>');
+            $_POST['err_add_menu'] =  $e->getMessage();
+            if($bTest) return $_POST['err_add_menu'];
         }
-    } else $_POST['err_add_menu'] = 'Error add menu, title is missing';
+    } else{
+        $_POST['err_add_menu'] = 'Error add menu, title is missing';
+        if($bTest) return $_POST['err_add_menu'];
+    }
 
 
 }

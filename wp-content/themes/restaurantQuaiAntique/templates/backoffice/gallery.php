@@ -22,6 +22,7 @@ $sTr = '';
  * @var $oItemGallery ImageGallery
  */
 
+
 foreach($aItemGallery as $oItemGallery)
 {
     $sSrc = '';
@@ -34,8 +35,11 @@ foreach($aItemGallery as $oItemGallery)
                 </td>
                 <td><textarea rows="1">' . $oItemGallery->getTitle() . '</textarea></td>
                 <td>
-                    <button type="submit" name="delete_menu" class="btnDeleteImgGal">
-                        <span class="dashicons dashicons-trash dashicons-action mHover"></span>
+                    <button type=""  class="btnUpdateTitleImgGal btnBig mHover">
+                        <span class=" ">Modifier le titre</span>
+                    </button>
+                    <button class="btnDeleteImgGal btnBig mHover">
+                        <span>Tout effacer</span>
                     </button>
                 </td>
             </tr>';
@@ -71,9 +75,9 @@ $sBody = '<div>
 $sTitle = 'Ajouter une image';
 include('layout_subsection.php');
 
-/*Modifiez la gallerie*/
+/*Modifiez la galerie*/
 $sBody = $sTable;
-$sTitle = 'Modifiez la gallerie';
+$sTitle = 'Modifiez la galerie';
 include('layout_subsection.php');
 
 /*Bas de page*/

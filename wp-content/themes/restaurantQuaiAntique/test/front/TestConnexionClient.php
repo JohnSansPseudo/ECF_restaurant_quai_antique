@@ -6,63 +6,70 @@ Class TestConnexionClient
 
     function testMainConnexionClient()
     {
-        echo 'Start testMainConnexionClient<br/>';
+        echo 'Start ' . __FUNCTION__ . '<br/>';
+        try{
+            $oTestCreateAccount = new TestCreateAccount();
+            /**
+             * @var Client $oClient
+             */
+            $oClient = $oTestCreateAccount->testCreateClientAccountByUserForm();
+            if($oClient){
+                //Le client est automatiquement connecté à la création de son compte on commence donc par le déconnecté
+                $this->testDeconnexionClient();
+                $this->testConnexionClientFail();
+                $this->testConnexionClientConn($oClient->getEmail(), $oClient->getPassword());
+                $this->testDeconnexionClient();
+                Clients::getInstance()->deleteById($oClient->getId());
+                htmlMessageTest('Clients::getInstance()->deleteById');
+                echo 'End ' . __FUNCTION__ . '<br/>';
+            } else htmlMessageTest('Clients::getInstance()->deleteById', false, 'Error delete client');
 
-        $oTestCreateAccount = new TestCreateAccount();
-        $oTestCreateAccount->testCreatClientAccountByUserForm();
-        $oClient = $oTestCreateAccount->getLastClientInsert();
+        }catch(Exception $e){
+            echo $e->getMessage();
+            die();
+        }
 
-        //Le client est automatiquement connecté à la création de son compte on commence donc par le déconnecté
-
-        $bDeco = $this->testDeconnexionClient();
-        if(!$bDeco) dbrDie($bDeco);
-        else echo 'testDeconnexionClient => ok<br/>';
-
-        $bFail = $this->testConnexionClientFail();
-        if($bFail !== true) dbrDie($bFail);
-        echo 'testConnexionClientFail => ok<br/>';
-
-        $bConn = $this->testConnexionClientConn($oClient->getEmail(), $oClient->getPassword());
-        if($bConn !== true) echo 'testConnexionClient => ok<br/>';
-
-        $bDeco = $this->testDeconnexionClient();
-        if(!$bDeco) dbrDie($bDeco);
-        else echo 'testDeconnexionClient => ok<br/>';
-        Clients::getInstance()->deleteById($oClient->getId());
-
-        dbrDie('End ' . self::class);
     }
 
-    /**
-     * @return bool|string
-     */
+
     function testConnexionClientFail()
     {
         $sMail = 'toto@error.com';
         $sPass = 'sdfdf';
         new ClientConnection($sMail, $sPass);
-        if(ClientConnection::isConnected()) return 'testConnexionClientFail => Client should not be connected';
-        else return true;
+        $b = ClientConnection::isConnected();
+        if($b) htmlMessageTest(__FUNCTION__, false,'Client should be connected');
+        else htmlMessageTest(__FUNCTION__);
     }
 
+    /**
+     * @param $sMail string
+     * @param $sPass string
+     * @throws Exception
+     */
     function testConnexionClientConn($sMail, $sPass)
     {
         $_POST['log'] = $sMail;
         $_POST['pwd'] = $sPass;
+        $_POST['conn-client'] = '';
         $_REQUEST['conn_client_nonce'] = wp_create_nonce('connClient');
         connexionClient();
-        if(ClientConnection::isConnected()) return 'testConnexionClient => Client should be connected';
-        else return 'Client should not be connected';
+        $b = ClientConnection::isConnected();
+
+        if($b === false) htmlMessageTest(__FUNCTION__, false, 'Client should be connected');
+        else htmlMessageTest(__FUNCTION__);
     }
 
+    /**
+     * @throws Exception
+     */
     function testDeconnexionClient()
     {
         $_REQUEST['deco_client_nonce'] = wp_create_nonce('decoClient');
         $_POST['deco-client'] = '';
         decoClient();
-        if(ClientConnection::isConnected()) return 'testDeconnexionClient => Client should not be connected';
-        else return true;
+        $b = ClientConnection::isConnected();
+        if($b) htmlMessageTest(__FUNCTION__, false, 'Client should not be connected');
+        else htmlMessageTest( __FUNCTION__);
     }
-
-
 }

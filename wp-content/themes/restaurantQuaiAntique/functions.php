@@ -45,19 +45,35 @@ add_action('template_redirect', 'bookTable');
 //TEST
 add_action('after_setup_theme', 'testLauncher');
 
-
 function testLauncher()
 {
-    //global $wpdb;
+    //$oTestCreateAccount = new TestCreateAccount();
+    //$oTestCreateAccount->mainTestCreateAccount();
 
-    //dbrDie($_SESSION);
-    //   /!\You have to comment "header('Location:...')" in each file you need
+    //$oTestConn = new TestConnexionClient();
+    //$oTestConn->testMainConnexionClient();
 
-    /*$oTestCreateAccount = new TestCreateAccount();
-    $oTestCreateAccount->mainTestCreateAccount();*/
+    //$oTestBook = new TestBooking();
+    //$oTestBook->mainTestBookTable();
 
-    /*$oTestConn = new TestConnexionClient();
-    $oTestConn->testMainConnexionClient();*/
+
+    //$oTestDishType = new TestDishType();
+    //$oTestDishType->mainTestDishType();
+
+    //$oTestFoodDish = new TestFoodDish();
+    //$oTestFoodDish->mainTestFoodDish();
+
+
+    //$oTestMenu = new TestMenu();
+    //$oTestMenu->mainTestMenu();
+
+    //$oTestMenuOption = new TestMenuOption();
+    //$oTestMenuOption->mainTestMenuOption();
+
+    //$oTestGallery = new TestGallery();
+    //$oTestGallery->mainTestGallery();
+
+    //die();
 }
 
 //FRONT - MENU

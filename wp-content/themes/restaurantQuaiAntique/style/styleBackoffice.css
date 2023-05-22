@@ -27,6 +27,10 @@
     flex-grow: 2;
 }
 
+.btnBig{
+    padding: 10px 20px;
+}
+
 button[type="submit"]{
     margin: 10px 7px;
 }
@@ -141,41 +145,13 @@ tr textarea{
 #tblOpeningTime{
     width: 100%;
 }
-/* ONPENING TIME */
 
-
-
-
-/* FIN OPENING TIME */
-@media only screen and (max-width: 1000px){
-    #tblEditOptionMenu tr,
-    #tblEditFoodDish tr,
-    #tblGallery tr,
-    #tblOpeningTime tr{
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 20px;
-        align-items: stretch;
-    }
-
-    #tblEditOptionMenu tr button,
-    #tblOpeningTime tr button,
-    #tblEditFoodDish tr button{
-        margin-top: 20px;
-        height: 40px;
-        width: 100%;
-    }
-
-
-    form#formAddDish{
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    #formAddDish btn{
-        height: 50px;
-    }
+.tdFlex{
+    display: flex;
 }
+
+
+
 /* FIN MENUS & DISH TYPE & DISH */
 
 /* FORM GUEST MAX */
@@ -271,6 +247,51 @@ tr textarea{
 /* FIN GALLERY */
 
 
+
+
+
+@media only screen and (max-width: 1000px){
+    #tblEditOptionMenu tr,
+    #tblEditFoodDish tr,
+    #tblGallery tr,
+    #tblOpeningTime tr,
+    #tblEditMenu tr,
+    #tblEditDishType tr{
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 20px;
+        align-items: stretch;
+    }
+
+    #tblEditMenu,
+    #tblEditDishType{
+        width: 100%;
+    }
+
+    #tblGallery textarea{
+        height: 110px;
+    }
+    #tblEditOptionMenu tr button,
+    #tblOpeningTime tr button,
+    #tblEditFoodDish tr button,
+    #tblEditMenu tr button,
+    #tblEditDishType tr button{
+        margin-top: 20px;
+        height: 40px;
+        width: 100%;
+    }
+
+
+    form#formAddDish{
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    #formAddDish btn{
+        height: 50px;
+    }
+}
+
 @media only screen and (max-width: 800px){
 
     #ctnImgChoice .body{
@@ -281,18 +302,17 @@ tr textarea{
         top: 50px;
         width: 80%;
     }
-/*
-    A voir pour mettre en sticky
-    #ctnTabBackOffice {
-        position: fixed;
-        top: 40px;
-        background: lightgrey;
-        padding: 10px;
-        width: 100%;
-        left: 0;
+    /*
+        A voir pour mettre en sticky
+        #ctnTabBackOffice {
+            position: fixed;
+            top: 40px;
+            background: lightgrey;
+            padding: 10px;
+            width: 100%;
+            left: 0;
 
 
-    }*/
+        }*/
 
 }
-

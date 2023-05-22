@@ -1,7 +1,5 @@
 <?php
 
-
-
 ob_start();
 //ADD DISH TYPE
 $sBody = '<form method="post" action="#" id="formAddDishType">
@@ -112,7 +110,10 @@ function getTableRowAddDishType($aDishType, $aErrDeleteDishType)
         }
         $sTrMenu .= '<tr data-id="' . $oDish->getId() . '">
                         <td><input class="inpTitleDishTypeUpdate" type="text" value="' . $oDish->getTitle(). '"></td>
-                        <td>
+                        <td class="tdFlex">
+                            <button class="btnBig mHover btnUpdateTitleDishType">
+                                <span class="">Modifier le titre</span>
+                            </button>
                             <form method="post" action="#">
                                 ' . wp_nonce_field('deleteDishType', "delete_dish_type_nonce") . '
                                 <input type="hidden" name="idDishType" value="' . $oDish->getId() . '" />
@@ -164,7 +165,10 @@ function getTableRowFoodDish($aFoodDish, $aDishType, $aErrDeleteFoodDish)
                         <td class="tdInpTitleUpFoodDish"><input type="text" class="inpTitleUpFoodDish" name="" value="' . $oFoodDish->getTitle() . '"></td>
                         <td class="tdTxtDescUpFoodDish"><textarea class="txtDescUpFoodDish" name="txtDescUpFoodDish">' . $oFoodDish->getDescription() . '</textarea></td>
                         <td><input type="number" class="inpPriceUpFoodDish" name ="inpPriceUpFoodDish" value="' . $oFoodDish->getPrice() . '"></td>
-                        <td>
+                        <td class="tdFlex">
+                            <button class="btnBig mHover btnUpdateDishFood">
+                                <span class="">Modifier le plat</span>
+                            </button>
                              <form method="post" action="#">
                                 ' . wp_nonce_field('deleteFoodDish', "delete_food_dish_nonce") . '
                                 <input type="hidden" name="idFoodDish" value="' . $oFoodDish->getId() . '" />

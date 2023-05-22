@@ -27,9 +27,11 @@ function ajaxUpdateOptionMenu()
     $sField = sanitize_text_field( $_POST['field']);
     $mValue = null;
     $aDataUpdate = array();
+    $aField = RestaurantMenuOption::getArrayField();
     switch($sField)
     {
-        case 'idMenu':
+        case 1:
+            //1 => 'idMenu', 2 => 'title', 3 => 'description', 4 => 'price'
             $mValue = intval($_POST['value']);
             $oOption->setIdMenu($mValue);
             if(count($oOption->getErrArray()) > 0){
@@ -37,7 +39,7 @@ function ajaxUpdateOptionMenu()
             }
             $aDataUpdate[$sField] = $oOption->getIdMenu();
             break;
-        case 'title':
+        case 2:
             $mValue = sanitize_text_field( $_POST['value']);
             $oOption->setTitle($mValue);
             if(count($oOption->getErrArray()) > 0){
@@ -45,7 +47,7 @@ function ajaxUpdateOptionMenu()
             }
             $aDataUpdate[$sField] = $oOption->getTitle();
             break;
-        case 'description':
+        case 3:
             $mValue = sanitize_text_field( $_POST['value']);
             $oOption->setDescription($mValue);
             if(count($oOption->getErrArray()) > 0){
@@ -53,7 +55,7 @@ function ajaxUpdateOptionMenu()
             }
             $aDataUpdate[$sField] = $oOption->getDescription();
             break;
-        case 'price':
+        case 4:
             $mValue = floatval($_POST['value']);
             $oOption->setPrice($mValue);
             if(count($oOption->getErrArray()) > 0){

@@ -120,7 +120,10 @@ function getTableRowOptionMenu(array $aOption, array $aMenu, array $aErrDeleteMe
                         <td class="tdInpTitleUpMenuOption"><input type="text" class="inpTitleUpMenuOption" name="" value="' . $oOption->getTitle() . '"></td>
                         <td class="tdTxtDescUpMenuOption"><textarea class="txtDescUpMenuOption" name="txtDescUpMenuOption">' . $oOption->getDescription() . '</textarea></td>
                         <td><input type="number" class="inpPriceUpMenuOption" name ="inpPriceUpMenuOption" value="' . $oOption->getPrice() . '"></td>
-                        <td>
+                        <td class="tdFlex">
+                            <button class="btnBig mHover btnUpdateOption">
+                                <span class="">Modifier l\'option</span>
+                            </button>
                              <form method="post" action="#">
                                 ' . wp_nonce_field('deleteMenuOption', "delete_menu_option_nonce") . '
                                 <input type="hidden" name="idMenuOption" value="' . $oOption->getId() . '" />
@@ -156,7 +159,10 @@ function getTableRowAddMenu($aMenu, $aErrDeleteMenu)
         }
         $sTrMenu .= '<tr data-id="' . $oMenu->getId() . '">
                         <td><input class="inpTitleMenuUpdate" type="text" value="' . $oMenu->getTitle(). '"></td>
-                        <td>
+                        <td class="tdFlex">
+                            <button class="btnBig mHover btnUpdateTitleMenu">
+                                <span class="">Modifier le titre</span>
+                            </button>
                             <form method="post" action="#">
                                 ' . wp_nonce_field('deleteMenu', "delete_menu_nonce") . '
                                 <input type="hidden" name="idMenu" value="' . $oMenu->getId() . '" />

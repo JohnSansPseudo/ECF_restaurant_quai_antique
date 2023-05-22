@@ -6,13 +6,14 @@ window.addEventListener('load', function(){
 
     //*** MENU - GESTION
     //Modification des menus
-    const aInpTitleMenu = document.getElementsByClassName('inpTitleMenuUpdate');
-    for(const inp of aInpTitleMenu){
-        inp.addEventListener('blur', function(){
-            const idMenu = inp.closest('tr').getAttribute('data-id');
-            const sTitle = inp.value;
+    const aBtnTitleMenu = document.querySelectorAll('.btnUpdateTitleMenu');
+    for(const oBtn of aBtnTitleMenu){
+        const oTr = oBtn.closest('tr');
+        const inp = oTr.getElementsByClassName('inpTitleMenuUpdate')[0];
+        const idMenu = oTr.getAttribute('data-id');
+        oBtn.addEventListener('click', function(){
             const oMenu = new Menu();
-            oMenu.setId(idMenu).setTitle(sTitle);
+            oMenu.setId(idMenu).setTitle(inp.value);
             if(oMenu.aError.length > 0) {
                 console.error(oMenu.aError);
                 alert(oMenu.aError);
@@ -32,7 +33,7 @@ window.addEventListener('load', function(){
         oSel.addEventListener('change', function(){
             const idOptionMenu = oSel.closest('tr').getAttribute('data-id');
             const idMenu = oSel.value;
-            const sField = 'idMenu';
+            const sField = 1;
             const oManager = new OptionMenuManager();
             oManager.update(idOptionMenu, sField, idMenu);
         });
@@ -44,7 +45,7 @@ window.addEventListener('load', function(){
         oInp.addEventListener('blur', function(){
             const idOptionMenu = oInp.closest('tr').getAttribute('data-id');
             const sTitle = oInp.value;
-            const sField = 'title';
+            const sField = 2;
             const oManager = new OptionMenuManager();
             oManager.update(idOptionMenu, sField, sTitle);
         });
@@ -56,7 +57,7 @@ window.addEventListener('load', function(){
         oTxt.addEventListener('blur', function(){
             const idOptionMenu = oTxt.closest('tr').getAttribute('data-id');
             const sDesc = oTxt.value;
-            const sField = 'description';
+            const sField = 3;
             const oManager = new OptionMenuManager();
             oManager.update(idOptionMenu, sField, sDesc);
         });
@@ -68,7 +69,7 @@ window.addEventListener('load', function(){
         oInp.addEventListener('blur', function(){
             const idOptionMenu = oInp.closest('tr').getAttribute('data-id');
             const sPrice = oInp.value;
-            const sField = 'price';
+            const sField = 4;
             const oManager = new OptionMenuManager();
             oManager.update(idOptionMenu, sField, sPrice);
         });
@@ -78,13 +79,14 @@ window.addEventListener('load', function(){
 
     //*** DISH TYPE
     //Modification des types de plats
-    const aInpTitleDishType = document.getElementsByClassName('inpTitleDishTypeUpdate');
-    for(const inp of aInpTitleDishType){
-        inp.addEventListener('blur', function(){
-            const idDishType = inp.closest('tr').getAttribute('data-id');
-            const sTitle = inp.value;
+    const aBtnTitleDishType = document.querySelectorAll('.btnUpdateTitleDishType');
+    for(const oBtn of aBtnTitleDishType){
+        const oTr = oBtn.closest('tr');
+        const inp = oTr.getElementsByClassName('inpTitleDishTypeUpdate')[0];
+        const idDishType = oTr.getAttribute('data-id');
+        oBtn.addEventListener('click', function(){
             const oDishTypeManager = new DishTypeManager();
-            oDishTypeManager.update(idDishType, sTitle);
+            oDishTypeManager.update(idDishType, inp.value);
         });
     }
     //*** FIN DISH TYPE
@@ -98,9 +100,8 @@ window.addEventListener('load', function(){
         oSel.addEventListener('change', function(){
             const idFoodDish = oSel.closest('tr').getAttribute('data-id');
             const idDishType = oSel.value;
-            const sField = 'idDishType';
             const oManager = new FoodDishManager();
-            oManager.update(idFoodDish, sField, idDishType);
+            oManager.update(idFoodDish, 1, idDishType);
         });
     }
     //Update food dish => title
@@ -110,9 +111,8 @@ window.addEventListener('load', function(){
         oInp.addEventListener('blur', function(){
             const idFoodDish = oInp.closest('tr').getAttribute('data-id');
             const sTitle = oInp.value;
-            const sField = 'title';
             const oManager = new FoodDishManager();
-            oManager.update(idFoodDish, sField, sTitle);
+            oManager.update(idFoodDish, 2, sTitle);
         });
     }
     //Update food dish => description
@@ -122,9 +122,8 @@ window.addEventListener('load', function(){
         oTxt.addEventListener('blur', function(){
             const idFoodDish = oTxt.closest('tr').getAttribute('data-id');
             const sDesc = oTxt.value;
-            const sField = 'description';
             const oManager = new FoodDishManager();
-            oManager.update(idFoodDish, sField, sDesc);
+            oManager.update(idFoodDish, 3, sDesc);
         });
     }
     //Update food dish => price
@@ -134,9 +133,8 @@ window.addEventListener('load', function(){
         oInp.addEventListener('blur', function(){
             const idFoodDish = oInp.closest('tr').getAttribute('data-id');
             const sPrice = oInp.value;
-            const sField = 'price';
             const oManager = new FoodDishManager();
-            oManager.update(idFoodDish, sField, sPrice);
+            oManager.update(idFoodDish, 4, sPrice);
         });
     }
 
@@ -241,14 +239,16 @@ window.addEventListener('load', function(){
     }
 
     //Update title img gallery
-    const aTextarea = document.querySelectorAll('tr[data-id_img_gallery] textarea');
-    if(aTextarea)
+    const aBtnTitleGal = document.querySelectorAll('.btnUpdateTitleImgGal');
+    if(aBtnTitleGal)
     {
         const oGallery = new Gallery;
-        for(const oTxt of aTextarea)
+        for(const oBtn of aBtnTitleGal)
         {
-            oTxt.addEventListener('blur', function () {
-                const idGallery = parseInt(oTxt.closest('tr').getAttribute('data-id_img_gallery'));
+            const oTr = oBtn.closest('tr');
+            const idGallery = parseInt(oTr.getAttribute('data-id_img_gallery'));
+            const oTxt = oTr.querySelector('textarea');
+            oBtn.addEventListener('click', function () {
                 try{ new ParamIntCheck(idGallery, 'idGallery').checkMin(0); }
                 catch (e){
                     alert(e.message);
@@ -294,6 +294,11 @@ window.addEventListener('load', function(){
 
     //FIN GALLERY
 });
+
+//btnUpdateOption
+//
+//
+//btnUpdateDishFood
 
 
 class Manager

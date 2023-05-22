@@ -1,9 +1,10 @@
 <?php
 
-function ajaxUpdateImgGallery()
+function ajaxUpdateImgGallery($bTest=false)
 {
     //Si une des données necéssaire est manquante
     if(!isset($_POST['idGallery']) || !isset($_POST['value']) || !isset($_POST['field']) ) {
+        if($bTest) return 'Error update image gallery, data are missing';
         return JsonAnswer::retour(0, 'Error update image gallery, data are missing', '');
     }
 
@@ -18,7 +19,8 @@ function ajaxUpdateImgGallery()
     $aData = Gallery::getInstance()->getByWhere(array('id' => $idGallery));
     if(is_array($aData) && count($aData) === 1) $oImgGallery = array_pop($aData);
     else{
-        return JsonAnswer::retour(0, 'Error this id img gallery does not exists : ' . $idGallery, '');
+        if($bTest) return 'Error this id img gallery does not exists : ' . $idGallery;
+        else return JsonAnswer::retour(0, 'Error this id img gallery does not exists : ' . $idGallery, '');
     }
     $aDataUpload = array();
     switch($sField)
@@ -27,7 +29,8 @@ function ajaxUpdateImgGallery()
             $idAttachment = intval($_POST['value']);
             $oImgGallery->setIdAttachment($idAttachment);
             if(count($oImgGallery->getErrArray()) > 0){
-                return JsonAnswer::retour(0, join(', ', $oImgGallery->getErrArray()), '');
+                if($bTest) return join(', ', $oImgGallery->getErrArray());
+                else return JsonAnswer::retour(0, join(', ', $oImgGallery->getErrArray()), '');
             }
             $aDataUpload = array($sField => $idAttachment);
             break;
@@ -35,7 +38,8 @@ function ajaxUpdateImgGallery()
             $sTitle = sanitize_text_field($_POST['value']);
             $oImgGallery->setTitle($sTitle);
             if(count($oImgGallery->getErrArray()) > 0){
-                return JsonAnswer::retour(0, join(', ', $oImgGallery->getErrArray()), '');
+                if($bTest) return join(', ', $oImgGallery->getErrArray());
+                else return JsonAnswer::retour(0, join(', ', $oImgGallery->getErrArray()), '');
             }
             $aDataUpload = array($sField => $sTitle);
             break;
@@ -44,10 +48,16 @@ function ajaxUpdateImgGallery()
 
     try{
         $bUp = Gallery::getInstance()->updateById($idGallery, $aDataUpload);
-        if(!$bUp) return JsonAnswer::retour(0, dbr($bUp), '');
-        return JsonAnswer::retour(1, 'Gallery updated', '');
+        if(!$bUp){
+            if($bTest) return $bUp;
+            else return JsonAnswer::retour(0, var_dump($bUp), '');
+        } else {
+            if($bTest) return true;
+            else return JsonAnswer::retour(1, 'Gallery updated', '');
+        }
     }catch(Exception $e){
-       return JsonAnswer::retour(0, 'Error update gallery', '');
+        if($bTest) return $e->getMessage();
+        else return JsonAnswer::retour(0, 'Error update gallery ' . $e->getMessage(), '');
     }
 
 }

@@ -426,4 +426,11 @@ footer .ctnSectionFooter .body .tblOpenningFooter
 }
 /* FIN NAV BAR */
 
+.error{
+    color: darkred;
+}
+.success{
+    color: darkgreen;
+}
+
 

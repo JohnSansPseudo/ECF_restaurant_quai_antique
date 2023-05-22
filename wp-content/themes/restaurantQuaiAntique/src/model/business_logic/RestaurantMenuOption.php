@@ -19,6 +19,14 @@ class RestaurantMenuOption
     }
 
     /**
+     * @return string[]
+     */
+    static public function getArrayField()
+    {
+        return array(1 => 'idMenu', 2 => 'title', 3 => 'description', 4 => 'price');
+    }
+
+    /**
      * RestaurantMenuOption constructor.
      * @param int $iId
      * @param int $iIdMenu

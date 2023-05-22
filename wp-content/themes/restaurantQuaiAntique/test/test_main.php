@@ -4,8 +4,30 @@
 //FRONT
 require_once('front/TestConnexionClient.php');
 require_once('front/TestCreateAccount.php');
+require_once('front/TestBooking.php');
+require_once('back/TestDishType.php');
+require_once('back/TestFoodDish.php');
+require_once('back/TestMenu.php');
+require_once('back/TestMenuOption.php');
+require_once('back/TestGallery.php');
 
 
+function htmlMessageTest(string $sFunction, bool $State=true, string $sMess='')
+{
+    if($State === false){
+        $sClass = 'error';
+        $sStatus = 'Fail';
+        if($sMess === '') $sMess = ' Error';
+    } else if($State === true){
+        $sClass = 'success';
+        $sStatus = 'Success';
+        if($sMess === '') $sMess = ' ok';
+    }
+    else{
+        throw new Exception('Error $sState must be a booolean');
+    }
+    echo '<p class="' . $sClass . '">' . $sStatus . ' => ' . $sFunction . ' => ' . $sMess . '</p>';
+}
 
 function testTables()
 {

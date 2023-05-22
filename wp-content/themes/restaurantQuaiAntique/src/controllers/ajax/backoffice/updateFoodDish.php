@@ -26,39 +26,42 @@ function ajaxUpdateFoodDish()
     $sField = sanitize_text_field( $_POST['field']);
     $mValue = null;
     $aDataUpdate = array();
+    $aField = FoodDishes::getArrayField();
+
     switch($sField)
     {
-        case 'idDishType':
+        //array(1 => 'idDishType', 2 => 'title', 3 => 'description', 4 => 'price');
+        case '1':
             $mValue = intval($_POST['value']);
             $oFoodDish->setIdDishType($mValue);
             if(count($oFoodDish->getErrArray()) > 0){
                 return JsonAnswer::retour(0, join(', ', $oFoodDish->getErrArray()), '');
             }
-            $aDataUpdate[$sField] = $oFoodDish->getIdDishType();
+            $aDataUpdate[$aField[$sField]] = $oFoodDish->getIdDishType();
             break;
-        case 'title':
+        case '2':
             $mValue = sanitize_text_field( $_POST['value']);
             $oFoodDish->setTitle($mValue);
             if(count($oFoodDish->getErrArray()) > 0){
                 return JsonAnswer::retour(0, join(', ', $oFoodDish->getErrArray()), '');
             }
-            $aDataUpdate[$sField] = $oFoodDish->getTitle();
+            $aDataUpdate[$aField[$sField]] = $oFoodDish->getTitle();
             break;
-        case 'description':
+        case '3':
             $mValue = sanitize_text_field( $_POST['value']);
             $oFoodDish->setDescription($mValue);
             if(count($oFoodDish->getErrArray()) > 0){
                 return JsonAnswer::retour(0, join(', ', $oFoodDish->getErrArray()), '');
             }
-            $aDataUpdate[$sField] = $oFoodDish->getDescription();
+            $aDataUpdate[$aField[$sField]] = $oFoodDish->getDescription();
             break;
-        case 'price':
+        case '4':
             $mValue = floatval($_POST['value']);
             $oFoodDish->setPrice($mValue);
             if(count($oFoodDish->getErrArray()) > 0){
                 return JsonAnswer::retour(0, join(', ', $oFoodDish->getErrArray()), '');
             }
-            $aDataUpdate[$sField] = $oFoodDish->getPrice();
+            $aDataUpdate[$aField[$sField]] = $oFoodDish->getPrice();
             break;
         default: return JsonAnswer::retour(0, 'Error switch update food dish $sField(' . $sField . ') is unknow', '');
     }

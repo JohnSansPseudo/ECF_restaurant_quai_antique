@@ -238,15 +238,14 @@ final class OpeningTimes extends ManagerObjTable
             $sAttrDisabled = ' disabled=disabled';
         }
         return '<div class="ctnBookingHourItem mHover">
-                <div class="btnHour ' . $sSelected . ' ' . $sClassDisabled . '">' . date('H:i', $iTimestamp) . '</div>
-                <input type="radio" class="inpIdOpening hide" name="idOpening" value="' . $idOpening . '" ' . $sChecked . $sAttrDisabled . '>
-                <input
-                    class="inpBookingHour hide"
-                    type="radio"
-                    name="startAppointement"
-                    ' . $sChecked . $sAttrDisabled . '
-                    value="' . date('H:i', $iTimestamp) . '">
-            </div>';
+                    <div class="btnHour ' . $sSelected . ' ' . $sClassDisabled . '">' . date('H:i', $iTimestamp) . '</div>
+                    <input
+                        class="inpBookingHour hide"
+                        type="radio"
+                        name="startAppointement"
+                        ' . $sChecked . $sAttrDisabled . '
+                        value="' . date('H:i', $iTimestamp) . '">
+                </div>';
     }
 
     /**
@@ -310,4 +309,36 @@ final class OpeningTimes extends ManagerObjTable
         return $aData;
     }
 
+    /**
+     * @param $sSqlDate string
+     * @param $sHourMinSec string
+     * @return bool|OpeningTime
+     * @throws Exception
+     */
+    public function getIdOpeningByDateAndHour($sSqlDate, $sHourMinSec)
+    {
+        date_default_timezone_set("Europe/Paris");
+        $oDate = new DateTime($sSqlDate . ' ' . $sHourMinSec);
+        $sEnDay = strtoupper($oDate->format('l'));
+        $sFrDay = self::getLongDayEnToFr($sEnDay);
+        $aData = $this->getByWhere(array('day' => $sFrDay));
+        $iStartBooking = $oDate->getTimestamp();
+
+        if($aData && is_array($aData))
+        {
+            /**
+             * @var OpeningTime $oOpening
+             */
+            foreach($aData as $oOpening){
+                $iStartTimeDay = strtotime($sSqlDate . ' ' . $oOpening->getStartTimeDay());
+                $iEndTimeDay = strtotime($sSqlDate . ' ' .  $oOpening->getEndTimeDay());
+                if($iStartBooking <= $iEndTimeDay && $iStartBooking >= $iStartTimeDay){
+                    return $oOpening;
+                }
+            }
+            return false;
+        }
+        throw new Exception('Erreur ' . __FUNCTION__);
+
+    }
 }

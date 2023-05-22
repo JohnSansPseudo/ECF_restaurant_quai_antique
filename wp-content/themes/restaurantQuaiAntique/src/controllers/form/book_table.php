@@ -1,6 +1,6 @@
 <?php
 
-function bookTable()
+function bookTable($bTest=false)
 {
     $sBackPath = get_site_url() . '/' . PageWordpress::BOOK_TABLE_NAME;
     if (!isset($_POST['book-table'])) return false;
@@ -23,16 +23,18 @@ function bookTable()
 
     $oParam = (object)array(
         'date' => 'inpDateBook',
-        'idOpening' => 'idOpening',
         'sStartTime' => 'startAppointement',
         'nbGuest' => 'inpNbGuest',
         'firstName' => 'inpFirstName',
         'lastName' => 'inpLastName',
         'mail' => 'inpMail',
         'tel' => 'inpTel');
-    foreach ($oParam as $sParam){
+
+    $bError = false;
+    foreach ($oParam as $k => $sParam){
         if(!isset($_POST[$sParam])){
-            switch($sParam){
+            $bError = true;
+            switch($k){
                 case 'date': $_POST['err_book_table'] = 'Merci de choisir une date disponible'; break;
                 case 'sStartTime' : $_POST['err_book_table'] = 'Merci de choisir une heure disponible'; break;
                 case 'nbGuest' : $_POST['err_nbGuest'] = 'Merci de renseigner un nombre d\'inivté valide'; break;
@@ -44,8 +46,7 @@ function bookTable()
             }
         }
     }
-
-    if(!isset($_POST['err_book_table'])) {
+    if($bError === false) {
 
         $sStartTime = sanitize_text_field($_POST[$oParam->sStartTime]);
         $sStartTime .= ':00';
@@ -55,9 +56,9 @@ function bookTable()
         $sSqlDate = $aDate[2] . '-' . $aDate[1] . '-' . $aDate[0];
         if(!preg_match('/[0-9]{4}-[0-1][0-9]-[0-3][0-9]/', $sSqlDate)){
             $_POST['err_book_table'] = 'Erreur dans le format de date : ' . $sDateFr;
+            if($bTest) return $_POST['err_book_table'];
         }
 
-        $idOpening = intval($_POST[$oParam->idOpening]);
         $iNbGuest = intval($_POST[$oParam->nbGuest]);
         $sFirstName = sanitize_text_field($_POST[$oParam->firstName]);
         $sLastName = sanitize_text_field($_POST[$oParam->lastName]);
@@ -67,34 +68,53 @@ function bookTable()
         $sAllergie = '';
         if(isset($_POST['txtAllergie'])) $sAllergie = sanitize_textarea_field($_POST['txtAllergie']);
 
-        $oBooking = new Booking($idOpening, $sMail, $sFirstName, $sLastName, $sTel, $sAllergie, $iNbGuest, $sStartTime, $sSqlDate);
-        if($oBooking && count($oBooking->getErrArray()) > 0){
-            $aErr = $oBooking->getErrArray();
-            if(isset($aErr['firstName'])) $_POST['err_firstName'] = $aErr['firstName'];
-            if(isset($aErr['tel'])) $_POST['err_tel'] = $aErr['tel'];
-            if(isset($aErr['lastName'])) $_POST['err_lastName'] = $aErr['lastName'];
-            if(isset($aErr['allergy'])) $_POST['err_allergy'] = $aErr['allergy'];
-            if(isset($aErr['email'])) $_POST['err_email'] = $aErr['email'];
-            if(isset($aErr['nbGuest'])) $_POST['err_nbGuest'] = $aErr['nbGuest'];
+        $oOpening = OpeningTimes::getInstance()->getIdOpeningByDateAndHour($sSqlDate, $sStartTime);
+        if($oOpening === false){
+            $_POST['err_book_table'] = 'Error please check date and time are available';
+            if($bTest) return $_POST['err_book_table'];
         }else{
-            try{
-                $bAdd = Bookings::getInstance()->add($oBooking);
-                if($bAdd){
-                    //Mail
-                    $sMess = 'Votre table est réservée pour le ' . $sDateFr . ' à ' . $oBooking->getStartTime() . ' pour ' . $oBooking->getNbGuest() . ' personne(s)';
-                    $sSender = 'contact@quaiantique.online';
-                    $sHeaders = "From: " . $sSender . "\r\n".
+
+            $oBooking = new Booking($oOpening->getId(), $sMail, $sFirstName, $sLastName, $sTel, $sAllergie, $iNbGuest, $sStartTime, $sSqlDate);
+            if($oBooking && count($oBooking->getErrArray()) > 0){
+                $aErr = $oBooking->getErrArray();
+                if(isset($aErr['firstName'])) $_POST['err_firstName'] = $aErr['firstName'];
+                if(isset($aErr['tel'])) $_POST['err_tel'] = $aErr['tel'];
+                if(isset($aErr['lastName'])) $_POST['err_lastName'] = $aErr['lastName'];
+                if(isset($aErr['allergy'])) $_POST['err_allergy'] = $aErr['allergy'];
+                if(isset($aErr['email'])) $_POST['err_email'] = $aErr['email'];
+                if(isset($aErr['nbGuest'])) $_POST['err_nbGuest'] = $aErr['nbGuest'];
+                if($bTest) return $aErr;
+            }else{
+                try{
+                    $bAdd = Bookings::getInstance()->add($oBooking);
+                    if($bAdd){
+
+                        //Mail
+                        if($bTest === false)
+                        {
+                            $sMess = 'Votre table est réservée pour le ' . $sDateFr . ' à ' . $oBooking->getStartTime() . ' pour ' . $oBooking->getNbGuest() . ' personne(s)';
+                            $sSender = 'contact@quaiantique.online';
+                            $sHeaders = "From: " . $sSender . "\r\n".
                                 "Reply-To: contact@quaiantique.online\r\n".
                                 "Content-Type: text/html; charset=\"UTF-8\"\r\n";
-                    mail($oBooking->getEmail(),'Quai Antique - Votre réservation', $sMess, $sHeaders, '');
-                    //Fin mail
-                    header('Location:' . $sBackPath . '?book=1&date=' . $sSqlDate . '&time=' . $sStartTime);
-                } else {
-                    $_POST['err_book_table'] = 'Erreur lors de la réservation contactez un administrateur.';
+                            mail($oBooking->getEmail(),'Quai Antique - Votre réservation', $sMess, $sHeaders, '');
+                            //Fin mail
+                            header('Location:' . $sBackPath . '?book=1&date=' . $sSqlDate . '&time=' . $sStartTime);
+                        }else{
+                            return $oBooking;
+                        }
+
+                    } else {
+                        $_POST['err_book_table'] = 'Erreur lors de la réservation contactez un administrateur.';
+                        if($bTest) return $bAdd;
+                    }
+                }catch(Exception $e){
+                    $_POST['err_book_table'] = 'Erreur : ' . $e->getMessage();
+                    if($bTest) return $_POST['err_book_table'];
                 }
-            }catch(Exception $e){
-                $_POST['err_book_table'] = 'Erreur : ' . $e->getMessage();
             }
         }
+    } else{
+        if($bTest) return $_POST;
     }
 }

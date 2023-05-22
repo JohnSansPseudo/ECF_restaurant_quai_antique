@@ -20,6 +20,14 @@ final class FoodDishes extends ManagerObjTable
     }
 
     /**
+     * @return string[]
+     */
+    static public function getArrayField()
+    {
+        return array(1 => 'idDishType', 2 => 'title', 3 => 'description', 4 => 'price');
+    }
+
+    /**
      * @return bool
      */
     function createTable():bool

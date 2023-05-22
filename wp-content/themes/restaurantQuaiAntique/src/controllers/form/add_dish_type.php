@@ -1,6 +1,7 @@
 <?php
-function addDishType()
+function addDishType($bTest=false)
 {
+
     $sBackPath = get_admin_url() .'admin.php?page=QuaiAntiqueParam?admin_action=dish';
     if(!isset($_POST['add_dish_type'])) return false;
 
@@ -15,24 +16,38 @@ function addDishType()
 
     if(isset($_POST['inpTitleDishType'])){
 
+
         $sTitle = sanitize_text_field($_POST['inpTitleDishType']);
         try{
             $oDishTypeManager = new DishTypes();
             $oDishType = new DishType($sTitle);
             if(count($oDishType->getErrArray()) > 0) {
-                die(implode(', ', $oDishType->getErrArray()) . '<br/><br/> Error param form add dish type, please contact an admin <br/><br/><a href="' . $sBackPath . '">Retour</a>');
+                $_POST['err_add_dish_type'] = implode(', ', $oDishType->getErrArray());
+                if($bTest) return $_POST['err_add_dish_type'];
             }
 
             $mResult = $oDishTypeManager->getByWhere(array('title' => $oDishType->getTitle()));
-            if(is_array($mResult) && count($mResult) > 0) $_POST['err_add_dish_type'] = 1;
+            if(is_array($mResult) && count($mResult) > 0){
+                $_POST['err_add_dish_type'] = 1;
+                if($bTest) return 'This dish type already exist' . var_dump($mResult);
+            }
             else {
                 $bAdd = $oDishTypeManager->add($oDishType);//On l'ajoute
-                if(!$bAdd)  die(implode(', ', $oDishType->getErrArray()) . '<br/><br/> Error form add menu, please contact an admin <br/><br/><a href="' . $sBackPath . '">Retour</a>');
-                else unset($_POST['inpTitleDishType']);
+                if(!$bAdd){
+                    $_POST['err_add_dish_type'] = implode(', ', $oDishType->getErrArray());
+                    if($bTest) return $_POST['err_add_dish_type'];
+                }
+                else{
+                    unset($_POST['inpTitleDishType']);
+                    if($bTest) return $bAdd;
+                }
             }
         } catch(Exception $e){
-            echo $e->getMessage();
-            die('<br/><br/><a href="' . $sBackPath . '">Retour</a>');
+            $_POST['err_add_dish_type'] = $e->getMessage();
+            if($bTest) return $_POST['err_add_dish_type'];
         }
-    } else $_POST['err_add_dish_type'] = 'Error add dish type, title is missing';
+    } else{
+        $_POST['err_add_dish_type'] = 'Error add dish type, title is missing';
+        if($bTest) return $_POST['err_add_dish_type'];
+    }
 }

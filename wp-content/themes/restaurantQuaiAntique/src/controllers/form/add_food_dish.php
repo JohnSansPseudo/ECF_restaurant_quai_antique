@@ -1,6 +1,6 @@
 <?php
 
-function addFoodDish()
+function addFoodDish($bTest=false)
 {
 
     $sBackPath = get_admin_url() .'admin.php?page=QuaiAntiqueParam&admin_action=dish';
@@ -17,7 +17,11 @@ function addFoodDish()
 
     $aParam = (object)array('idDishType' => 'selOptionDishType', 'sTitle' => 'inpTitleFoodDish', 'sDesc' => 'txtDescFoodDish', 'price' => 'inpPriceFoodDish');
     foreach ($aParam as $sParam){
-        if(!isset($_POST[$sParam])) $_POST['err_add_food_dish'] = 'Error add food dish, data are missing';
+        if(!isset($_POST[$sParam])){
+            $_POST['err_add_food_dish'] = 'Error add food dish, data are missing';
+            if($bTest) return  $_POST['err_add_food_dish'];
+        }
+
     }
 
     if(!isset($_POST['err_add_food_dish']))
@@ -31,11 +35,23 @@ function addFoodDish()
             $oFoodDish = new FoodDish($idFoodDish, $sTitle, $sDescription, $fPrice);
 
             if(count($oFoodDish->getErrArray()) > 0){
-                die(implode(', ', $oFoodDish->getErrArray()) . '<br/><br/> Error param form add food dish, please contact an admin <br/><br/><a href="' . $sBackPath . '">Retour</a>');
+                $_POST['err_add_food_dish'] = implode(', ', $oFoodDish->getErrArray());
+                if($bTest) return  $_POST['err_add_food_dish'];
             }
             $bAdd = FoodDishes::getInstance()->add($oFoodDish);
-            if(!$bAdd) die( $bAdd . '<br/><br/> Error form add food dish, please contact an admin <br/><br/><a href="' . $sBackPath . '">Retour</a>');
-            else foreach ($aParam as $sParam){ unset($_POST[$sParam]); }
-        }catch(Exception $e){ $_POST['err_add_food_dish'] = $e->getMessage(); }
+            if(!$bAdd){
+                $_POST['err_add_food_dish'] = $bAdd;
+                if($bTest) return $_POST['err_add_food_dish'];
+            }
+            else{
+                foreach ($aParam as $sParam){ unset($_POST[$sParam]); }
+                if($bTest) return $bAdd;
+            }
+        }catch(Exception $e){
+            $_POST['err_add_food_dish'] = $e->getMessage();
+            if($bTest) return $_POST['err_add_food_dish'];
+        }
+    } else{
+        if($bTest) return  $_POST['err_add_food_dish'];
     }
 }

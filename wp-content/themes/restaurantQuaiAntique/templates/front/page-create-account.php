@@ -8,7 +8,8 @@ $sPassword = '<div class="elf">
                 </div>';
 
 $sConnectezVous = '<a href="' . get_site_url() . '/' . PageWordpress::SING_IN_NAME . '">Ou connectez-vous</a>';
-
+$sRecaptcha = '<div class="g-recaptcha" data-sitekey="' . PUBLIC_KEY_RECAPTCHA . '"></div>';
+$sScriptRecaptcha = '<script src="https://www.google.com/recaptcha/api.js" async defer></script>';
 if($oClient){
     $sTitle = 'Modifiez votre compte';
     $sPassword = '';
@@ -21,10 +22,16 @@ if($oClient){
     $sMail = $oClient->getEmail();
     $iNbGuest = $oClient->getNbGuest();
     $sConnectezVous = '';
+    $sRecaptcha = '';
+    $sScriptRecaptcha = '';
+}
+if(LOCAL_SITE_USE === true){
+    $sRecaptcha = '';
+    $sScriptRecaptcha = '';
 }
 get_header();
 ?>
-
+    <?= $sScriptRecaptcha ?>
     <div class="row firstRow">
         <div class="col-12">
             <h2><?= $sTitle ?></h2>
@@ -68,6 +75,7 @@ get_header();
                         <input type="number" id="inpNbGuestDef" name="inpNbGuestDef" value="<?= $iNbGuest ?>" min="1" max="<?= Bookings::getNbGuestsMax(); ?>">
                         <p class="error"><?= $sErrNbGuest ?></p>
                     </div>
+                    <?= $sRecaptcha ?>
                     <button type="submit" class="btn" id="btnCreateAccount" name="add-client"><?= $sTitleBtn ?></button>
                 </form>
                 <div>

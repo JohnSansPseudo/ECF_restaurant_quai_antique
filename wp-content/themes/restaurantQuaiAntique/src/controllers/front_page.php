@@ -76,6 +76,7 @@ function getBookTablePage()
         $bError = true;
     }
 
+
     if(isset($_GET['book']) && intval($_GET['book']) === 1 && $bError===false)
     {
         $aSuccess = array('Votre table est réservée');
@@ -120,7 +121,11 @@ function getCreateAccountPage()
     $sErrAllergy = '';
     $sErrEmail = '';
     $sErrNbGuest = '';
-    if(isset($_POST['err_add_client'])) $sGlobalError = htmlspecialchars($_POST['err_add_client']);
+    $bError = false;
+    if(isset($_POST['err_add_client'])){
+        $sGlobalError = htmlspecialchars($_POST['err_add_client']);
+        $bError = true;
+    }
 
     if(isset($_POST['err_firstName'])){
         $sErrFirstName = htmlspecialchars($_POST['err_firstName']);

@@ -1,5 +1,5 @@
 <?php
-function addMenuOption($bTest=false)
+function addMenuOption()
 {
     $sBackPath = get_admin_url() .'admin.php?page=QuaiAntiqueParam';
     if(!isset($_POST['addMenuOption'])) return false;
@@ -16,7 +16,7 @@ function addMenuOption($bTest=false)
     foreach ($aParam as $sParam){
         if(!isset($_POST[$sParam])){
             $_POST['err_add_menu_option'] = 'Error add menu option, data are missing';
-            if($bTest) return $_POST['err_add_menu_option'];
+            if(TEST_IN_PROGESS) return $_POST['err_add_menu_option'];
         }
     }
 
@@ -31,22 +31,22 @@ function addMenuOption($bTest=false)
 
             if(count($oOption->getErrArray()) > 0){
                 $_POST['err_add_menu_option'] = implode(', ', $oOption->getErrArray());
-                if($bTest) return $_POST['err_add_menu_option'];
+                if(TEST_IN_PROGESS) return $_POST['err_add_menu_option'];
             }
             $bAdd = RestaurantMenuOptions::getInstance()->add($oOption);
             if(!$bAdd){
                 $_POST['err_add_menu_option'] = $bAdd;
-                if($bTest) return $_POST['err_add_menu_option'];
+                if(TEST_IN_PROGESS) return $_POST['err_add_menu_option'];
             }
             else {
                 foreach ($aParam as $sParam){ unset($_POST[$sParam]); }
-                if($bTest) return $bAdd;
+                if(TEST_IN_PROGESS) return $bAdd;
             }
         }catch(Exception $e){
             $_POST['err_add_menu_option'] = $e->getMessage();
-            if($bTest) return $_POST['err_add_menu_option'];
+            if(TEST_IN_PROGESS) return $_POST['err_add_menu_option'];
         }
     } else {
-       if($bTest) return $_POST['err_add_menu_option'];
+       if(TEST_IN_PROGESS) return $_POST['err_add_menu_option'];
    }
 }

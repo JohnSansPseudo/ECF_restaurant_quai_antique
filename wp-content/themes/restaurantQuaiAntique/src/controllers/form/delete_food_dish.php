@@ -1,9 +1,8 @@
 <?php
 /**
- * @param bool $bTest
  * @return bool|string | void
  */
-function deleteFoodDish($bTest=false)
+function deleteFoodDish()
 {
     $sBackPath = get_admin_url() . 'admin.php?page=QuaiAntiqueParam&admin_action=dish';
     if (!isset($_POST['delete_food_dish'])) return false;
@@ -22,16 +21,16 @@ function deleteFoodDish($bTest=false)
             $b = FoodDishes::getInstance()->deleteById($id);
             if (!$b){
                 $_POST['err_delete_food_dish'] = 'Error delete food dish';
-                if($bTest) return $_POST['err_delete_food_dish'];
+                if(TEST_IN_PROGESS) return $_POST['err_delete_food_dish'];
             }else{
-                if($bTest) return true;
+                if(TEST_IN_PROGESS) return true;
             }
         } catch (Exception $e) {
             $_POST['err_delete_food_dish'] = $e->getMessage();
-            if($bTest) return $_POST['err_delete_food_dish'];
+            if(TEST_IN_PROGESS) return $_POST['err_delete_food_dish'];
         }
     } else {
         $_POST['err_delete_food_dish'] = 'Error delete food dish, id is missing';
-        if($bTest) return $_POST['err_delete_food_dish'];
+        if(TEST_IN_PROGESS) return $_POST['err_delete_food_dish'];
     }
 }

@@ -319,6 +319,8 @@ final class OpeningTimes extends ManagerObjTable
     {
         date_default_timezone_set("Europe/Paris");
         $oDate = new DateTime($sSqlDate . ' ' . $sHourMinSec);
+
+        //On récupère les horaires qui correspondent à ce jour ($sSqlDate) de la semaine
         $sEnDay = strtoupper($oDate->format('l'));
         $sFrDay = self::getLongDayEnToFr($sEnDay);
         $aData = $this->getByWhere(array('day' => $sFrDay));
@@ -332,13 +334,14 @@ final class OpeningTimes extends ManagerObjTable
             foreach($aData as $oOpening){
                 $iStartTimeDay = strtotime($sSqlDate . ' ' . $oOpening->getStartTimeDay());
                 $iEndTimeDay = strtotime($sSqlDate . ' ' .  $oOpening->getEndTimeDay());
-                if($iStartBooking <= $iEndTimeDay && $iStartBooking >= $iStartTimeDay){
+
+
+                if($iStartBooking >= $iStartTimeDay && $iStartBooking <= $iEndTimeDay){
                     return $oOpening;
                 }
             }
             return false;
         }
-        throw new Exception('Erreur ' . __FUNCTION__);
-
+        else throw new Exception('Erreur ' . __FUNCTION__);
     }
 }

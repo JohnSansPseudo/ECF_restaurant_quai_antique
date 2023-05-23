@@ -1,6 +1,6 @@
 <?php
 
-function addClient($bTest=false)
+function addClient()
 {
     $sBackPath = get_site_url() . '/' . PageWordpress::ACCOUNT_NAME;
     if(!isset($_POST['add-client'])) return false;
@@ -42,8 +42,10 @@ function addClient($bTest=false)
             }
         }
     }
+
     $oParam->allergie = 'txtAllergie';
     if($bError === false){
+
         $oParamSan = (object)array(
             'firstName' => sanitize_text_field($_POST[$oParam->firstName]),
             'lastName' => sanitize_text_field($_POST[$oParam->lastName]),
@@ -55,27 +57,36 @@ function addClient($bTest=false)
         else $oParamSan->allergie = '';
         $oClient = ClientConnection::isConnected();
         if($oClient){
-            $b = updateAccountClient($oClient, $oParamSan, $sBackPath, $bTest);
-            if($bTest) return $b;
+            $b = updateAccountClient($oClient, $oParamSan, $sBackPath);
+            if(TEST_IN_PROGESS) return $b;
         }
         else{
-            $b = creatAccountClient($oParamSan, $sBackPath, $bTest);
-            if($bTest) return $b;
+            $b = creatAccountClient($oParamSan, $sBackPath);
+            if(TEST_IN_PROGESS) return $b;
         }
     }else{
-        if($bTest) return $_POST;
+        if(TEST_IN_PROGESS) return $_POST;
     }
 }
+
+
+
 
 /**
  * @param $oParamSan object
  * @param $sBackPath string
  */
-function creatAccountClient($oParamSan, $sBackPath, $bTest)
+function creatAccountClient($oParamSan, $sBackPath)
 {
+    //RECAPTCHA
+    if(TEST_IN_PROGESS === false && LOCAL_SITE_USE === false){
+        $bRecap = checkFormRecaptcha('err_add_client');
+        if($bRecap === false) return false;
+    }
+
     if (!isset($_POST['inpPassword']) || $_POST['inpPassword'] === ''){
         $_POST['err_add_client'] = 'Error add client, data are missing, please ';
-        if($bTest) return $_POST['err_add_client'];
+        if(TEST_IN_PROGESS) return $_POST['err_add_client'];
     }else{
         $sPasswordInit = sanitize_text_field(($_POST['inpPassword']));
         $sPassword = ClientConnection::generatePassword($sPasswordInit);
@@ -89,7 +100,7 @@ function creatAccountClient($oParamSan, $sBackPath, $bTest)
             if(isset($aErr['allergy'])) $_POST['err_allergy'] = $aErr['allergy'];
             if(isset($aErr['email'])) $_POST['err_email'] = $aErr['email'];
             if(isset($aErr['nbGuest'])) $_POST['err_nbGuest'] = $aErr['nbGuest'];
-            if($bTest) return $oClient->getErrArray();
+            if(TEST_IN_PROGESS) return $oClient->getErrArray();
         }else{
             try{
                 $bAdd = Clients::getInstance()->add($oClient);
@@ -97,24 +108,27 @@ function creatAccountClient($oParamSan, $sBackPath, $bTest)
                 if($bAdd){
                     unset($_POST['inpPassword']);
                     new ClientConnection($oClient->getEmail(), $oClient->getPassword());
-                    if($bTest === false){
-                        //Mail
-                        $sMess = 'Quai Antique, votre compte client est créé, vos identifiants, login : ' . $oClient->getEmail() . ' mot de passe : ' . $sPasswordInit . ' connectez-vous : https://quaiantique.online/sign-in/';
-                        $sSender = 'contact@quaiantique.online';
-                        $sHeaders = "From: " . $sSender . "\r\n".
-                            "Reply-To: contact@quaiantique.online\r\n".
-                            "Content-Type: text/html; charset=\"UTF-8\"\r\n";
-                        mail($oClient->getEmail(),'Quai Antique - Votre compte client', $sMess, $sHeaders, '');
-                        //Fin mail
+                    if(TEST_IN_PROGESS === false){
+                        if(LOCAL_SITE_USE === false) {
+                            //Mail
+                            $sMess = 'Restaurant Quai Antique';
+                            $sMess .= 'votre compte client est créé, vos identifiants,';
+                            $sMess .= 'login : ' . $oClient->getEmail() . ' mot de passe : ' . $sPasswordInit;
+                            $sMess .= ' connectez-vous : https://quaiantique.online/sign-in/';
+                            $sSender = 'contact@quaiantique.online';
+                            $sHeaders = "From: " . $sSender . "\r\n" . "Reply-To: contact@quaiantique.online\r\n";
+                            mail($oClient->getEmail(), 'Quai Antique - Votre compte client', $sMess, $sHeaders, '');
+                            //Fin mail
+                        }
                         header('Location: ' . $sBackPath . '?success_add_client=1');//Otherwise firfox keep the request in memory and reload it on F5 keypress
                     }
                     else{ return $bAdd; }
                 }else{
-                    if($bTest) return $bAdd;
+                    if(TEST_IN_PROGESS) return $bAdd;
                 }
             }catch(PDOException $e){
                 $_POST['err_add_client'] = $e->getMessage() . '<br/><br/>Error form add create account, please contact an admin';
-                if($bTest) return $_POST['err_add_client'];
+                if(TEST_IN_PROGESS) return $_POST['err_add_client'];
             }
         }
     }
@@ -125,7 +139,7 @@ function creatAccountClient($oParamSan, $sBackPath, $bTest)
  * @param $oParam object
  * @param $sBackPath string
  */
-function updateAccountClient($oClient, $oParam, $sBackPath, $bTest)
+function updateAccountClient($oClient, $oParam, $sBackPath)
 {
     //**** Update client
     $oClient->setFirstName($oParam->firstName);
@@ -159,17 +173,15 @@ function updateAccountClient($oClient, $oParam, $sBackPath, $bTest)
 
             if(!$bUp) {
                 $_POST['err_add_client'] = var_dump($bUp) . ' An error occured while updating client account, please contact an admin';
-                if($bTest) return $bUp;
+                if(TEST_IN_PROGESS) return $bUp;
             }else{
                 $_POST['success_add_client'] = 'Votre compte est modifié';
-                if(!$bTest) header('Location: ' . $sBackPath . '?update_client=1');
+                if(!TEST_IN_PROGESS) header('Location: ' . $sBackPath . '?update_client=1');
                 else return $bUp;
             }
         }catch (Exception $e){
             $_POST['err_add_client'] = 'Erreur : ' . $e->getMessage();
-            if($bTest) return $_POST['err_add_client'];
+            if(TEST_IN_PROGESS) return $_POST['err_add_client'];
         }
-
     }
-
 }

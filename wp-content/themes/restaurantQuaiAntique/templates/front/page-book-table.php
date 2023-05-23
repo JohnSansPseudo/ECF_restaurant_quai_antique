@@ -19,8 +19,15 @@ if($aStrHtml){
 }else{
     $sError = 'An error occured in function getHtmlHourBooking(), please contact an admin, ' . $aStrHtml;
 }
+$sRecaptcha = '<div class="g-recaptcha" data-sitekey="' . PUBLIC_KEY_RECAPTCHA . '"></div>';
+$sScriptRecaptcha = '<script src="https://www.google.com/recaptcha/api.js" async defer></script>';
+if(LOCAL_SITE_USE === true){
+    $sRecaptcha = '';
+    $sScriptRecaptcha = '';
+}
 get_header();
 ?>
+    <?= $sScriptRecaptcha ?>
     <div class="row firstRow">
         <div class="col-12"><h2>Réservez votre table au Quai Antique</h2></div>
     </div>
@@ -89,6 +96,7 @@ get_header();
                         <textarea name="txtAllergie" id="" cols="18" rows="4"><?= $sAllergie ?></textarea>
                         <p class="error"><?= $sErrAllergy ?></p>
                     </div>
+                    <?= $sRecaptcha ?>
                     <button type="submit" class="btn btnSaillance big" name="book-table">Je réserve ma table</button>
                 </form>
             </div>

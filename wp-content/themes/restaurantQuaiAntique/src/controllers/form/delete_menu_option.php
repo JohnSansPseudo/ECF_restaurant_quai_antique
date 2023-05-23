@@ -1,8 +1,5 @@
 <?php
-/**
- * @param bool $bTest
- */
-function deleteMenuOption($bTest=false)
+function deleteMenuOption()
 {
     $sBackPath = get_admin_url() .'admin.php?page=QuaiAntiqueParam';
     if(!isset($_POST['delete_menu_option'])) return false;
@@ -18,7 +15,7 @@ function deleteMenuOption($bTest=false)
 
     if(!isset($_POST['idMenuOption']) ){
         $_POST['err_del_menu_option'] = 'Error delete menu, id is missing';
-        if($bTest) return $_POST['err_del_menu_option'];
+        if(TEST_IN_PROGESS) return $_POST['err_del_menu_option'];
     }
     else{
         $id = intval(($_POST['idMenuOption']));
@@ -26,12 +23,12 @@ function deleteMenuOption($bTest=false)
             $b = RestaurantMenuOptions::getInstance()->deleteById($id);
             if(!$b){
                 $_POST['err_del_menu_option'] = 'Error please contact an admin';
-                if($bTest) return $b;
+                if(TEST_IN_PROGESS) return $b;
             }
-            else if($bTest) return true;
+            else if(TEST_IN_PROGESS) return true;
         }catch(Exception $e){
             $_POST['err_del_menu_option'] = $e->getMessage();
-            if($bTest) return $_POST['err_del_menu_option'];
+            if(TEST_IN_PROGESS) return $_POST['err_del_menu_option'];
         }
         if(!$b) $_POST['err_del_menu_option'] = 'Error delete menu option';
     }

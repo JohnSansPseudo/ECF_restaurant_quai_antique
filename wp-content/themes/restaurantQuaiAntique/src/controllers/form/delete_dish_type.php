@@ -1,9 +1,8 @@
 <?php
 /**
- * @param bool $bTest
  * @return bool | string | void
  */
-function deleteDishType($bTest=false)
+function deleteDishType()
 {
 
     $sBackPath = get_admin_url() .'admin.php?page=QuaiAntiqueParam&admin_action=dish';
@@ -23,16 +22,16 @@ function deleteDishType($bTest=false)
             $b = DishTypes::getInstance()->deleteById($id);
             if(!$b){
                 $_POST['err_del_dish_type'] = 'Error delete dish type';
-                if($bTest) return $_POST['err_del_dish_type'];
+                if(TEST_IN_PROGESS) return $_POST['err_del_dish_type'];
             }else{
-                if($bTest) return true;
+                if(TEST_IN_PROGESS) return true;
             }
         } catch(Exception $e){
             $_POST['err_del_dish_type'] = $e->getMessage();
-            if($bTest) return $_POST['err_del_dish_type'];
+            if(TEST_IN_PROGESS) return $_POST['err_del_dish_type'];
         }
     } else{
         $_POST['err_del_dish_type'] = 'Error delete dish type, id is missing';
-        if($bTest) return $_POST['err_del_dish_type'];
+        if(TEST_IN_PROGESS) return $_POST['err_del_dish_type'];
     }
 }

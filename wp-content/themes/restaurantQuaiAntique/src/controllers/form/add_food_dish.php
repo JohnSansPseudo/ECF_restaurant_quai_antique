@@ -1,6 +1,6 @@
 <?php
 
-function addFoodDish($bTest=false)
+function addFoodDish()
 {
 
     $sBackPath = get_admin_url() .'admin.php?page=QuaiAntiqueParam&admin_action=dish';
@@ -19,7 +19,7 @@ function addFoodDish($bTest=false)
     foreach ($aParam as $sParam){
         if(!isset($_POST[$sParam])){
             $_POST['err_add_food_dish'] = 'Error add food dish, data are missing';
-            if($bTest) return  $_POST['err_add_food_dish'];
+            if(TEST_IN_PROGESS) return  $_POST['err_add_food_dish'];
         }
 
     }
@@ -36,22 +36,22 @@ function addFoodDish($bTest=false)
 
             if(count($oFoodDish->getErrArray()) > 0){
                 $_POST['err_add_food_dish'] = implode(', ', $oFoodDish->getErrArray());
-                if($bTest) return  $_POST['err_add_food_dish'];
+                if(TEST_IN_PROGESS) return  $_POST['err_add_food_dish'];
             }
             $bAdd = FoodDishes::getInstance()->add($oFoodDish);
             if(!$bAdd){
                 $_POST['err_add_food_dish'] = $bAdd;
-                if($bTest) return $_POST['err_add_food_dish'];
+                if(TEST_IN_PROGESS) return $_POST['err_add_food_dish'];
             }
             else{
                 foreach ($aParam as $sParam){ unset($_POST[$sParam]); }
-                if($bTest) return $bAdd;
+                if(TEST_IN_PROGESS) return $bAdd;
             }
         }catch(Exception $e){
             $_POST['err_add_food_dish'] = $e->getMessage();
-            if($bTest) return $_POST['err_add_food_dish'];
+            if(TEST_IN_PROGESS) return $_POST['err_add_food_dish'];
         }
     } else{
-        if($bTest) return  $_POST['err_add_food_dish'];
+        if(TEST_IN_PROGESS) return  $_POST['err_add_food_dish'];
     }
 }

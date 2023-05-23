@@ -269,22 +269,20 @@ class BtnHourManager
         oBtnHour.classList.add('selected');
     }
 
-    setInputsRadio(oBtnHour)
+    setInputRadio(oBtnHour)
     {
         let oInp = oBtnHour.parentNode.getElementsByClassName('inpBookingHour')[0];
-        oInp.checked = true;
-        oInp = oBtnHour.parentNode.getElementsByClassName('inpIdOpening')[0];
-        oInp.checked = true;
+        oInp.setAttribute('checked', 'checked');
     }
 
     switchSelectedHour(oBtnHour)
     {
+        const o = document.querySelector('.inpBookingHour[checked=checked]');
+        o.attributes.removeNamedItem('checked');
         this.removeAllSelectedClass();
         this.setSelectedClass(oBtnHour);
         this.setInputRadio(oBtnHour);
 
-        const o = document.querySelector('.inpBookingHour[checked=checked]');
-        console.log(o);
     }
 
 }

@@ -1,5 +1,9 @@
 <?php
 session_start();
+define('PUBLIC_KEY_RECAPTCHA','6LdFFS8mAAAAANc8iCLIlFIcp1vBYN-eGHDLlVHG');
+define('SECRETE_KEY_RECAPTCHA','6LdFFS8mAAAAAGAfUhbbhghvguTVnD2vjWPQvp2o');
+define('LOCAL_SITE_USE', true);
+define('TEST_IN_PROGESS', false);
 //MENU ADMIN
 add_action('admin_menu', 'sidebarAdminQuaiAntique');
 add_action('admin_bar_menu', 'topbarAdminQuaiAntique', 999);
@@ -40,13 +44,14 @@ add_action('admin_init', 'addMediaImgFile');
 add_action('template_redirect', 'addClient');
 add_action('template_redirect', 'decoClient');
 add_action('template_redirect', 'connexionClient');
-add_action('template_redirect', 'bookTable');
+add_action('template_redirect', 'bookTable', 10, 1);
 
 //TEST
 add_action('after_setup_theme', 'testLauncher');
 
 function testLauncher()
 {
+    /* PENSER 0 MODIFIER LA CONSTANTE TEST_IN_PROGESS EN HAUT DE CE FICHIER */
     //$oTestCreateAccount = new TestCreateAccount();
     //$oTestCreateAccount->mainTestCreateAccount();
 
@@ -168,6 +173,33 @@ function topbarAdminQuaiAntique($wp_admin_bar)
     $wp_admin_bar->add_node($admin_topbar);
 }
 
+function checkFormRecaptcha($sPostErr)
+{
+    if(empty($_POST['g-recaptcha-response'])){
+        $_POST[$sPostErr] = 'Merci de cocher la case de recaptcha';
+        return false;
+    }
+    $oRecaptcha = checkTokenRecaptcha($_POST['g-recaptcha-response'], SECRETE_KEY_RECAPTCHA);
+    if($oRecaptcha->success === false){
+        $sMess = 'Erreur lors de la validation du recaptcha : ' . implode('<br/>', $oRecaptcha->error-codes);
+        $_POST[$sPostErr] = $sMess;
+        return false;
+    }
+    return true;
+}
+
+
+function checkTokenRecaptcha($sToken, $secretKey) {
+    $sUrl  = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $secretKey . '&response=' . $sToken;
+    $curl = curl_init($sUrl);
+    curl_setopt($curl, CURLOPT_HEADER, false);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $verif_response = curl_exec($curl);
+    if ( empty($verif_response) ) return false;
+    else {
+        return json_decode($verif_response);
+    }
+}
 
 
 /* AJOUT SCRIPTS & CSS */
@@ -197,6 +229,8 @@ function quai_antique_scripts()
     //BOOTSTRAP
     wp_enqueue_script('bootstrapjs', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js', array('jquery'), false, true);
     wp_enqueue_script('bootstrap-datepicker', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js');
+
+   //wp_enqueue_script('google-recaptcha', 'https://www.google.com/recaptcha/api.js', '', '', '');//async defer
 
     wp_enqueue_style('bootstrapcss', "https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css");
     wp_enqueue_style('bootstrap-datepicker', 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css');

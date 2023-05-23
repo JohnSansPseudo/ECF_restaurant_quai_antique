@@ -1,6 +1,6 @@
 <?php
 
-function bookTable($bTest=false)
+function bookTable()
 {
     $sBackPath = get_site_url() . '/' . PageWordpress::BOOK_TABLE_NAME;
     if (!isset($_POST['book-table'])) return false;
@@ -46,6 +46,13 @@ function bookTable($bTest=false)
             }
         }
     }
+
+    //RECAPTCHA
+    if(TEST_IN_PROGESS === false && LOCAL_SITE_USE === false){
+        $bRecap = checkFormRecaptcha('err_book_table');
+        if($bRecap === false) $bError = true;
+    }
+
     if($bError === false) {
 
         $sStartTime = sanitize_text_field($_POST[$oParam->sStartTime]);
@@ -56,7 +63,7 @@ function bookTable($bTest=false)
         $sSqlDate = $aDate[2] . '-' . $aDate[1] . '-' . $aDate[0];
         if(!preg_match('/[0-9]{4}-[0-1][0-9]-[0-3][0-9]/', $sSqlDate)){
             $_POST['err_book_table'] = 'Erreur dans le format de date : ' . $sDateFr;
-            if($bTest) return $_POST['err_book_table'];
+            if(TEST_IN_PROGESS) return $_POST['err_book_table'];
         }
 
         $iNbGuest = intval($_POST[$oParam->nbGuest]);
@@ -71,7 +78,7 @@ function bookTable($bTest=false)
         $oOpening = OpeningTimes::getInstance()->getIdOpeningByDateAndHour($sSqlDate, $sStartTime);
         if($oOpening === false){
             $_POST['err_book_table'] = 'Error please check date and time are available';
-            if($bTest) return $_POST['err_book_table'];
+            if(TEST_IN_PROGESS) return $_POST['err_book_table'];
         }else{
 
             $oBooking = new Booking($oOpening->getId(), $sMail, $sFirstName, $sLastName, $sTel, $sAllergie, $iNbGuest, $sStartTime, $sSqlDate);
@@ -83,38 +90,42 @@ function bookTable($bTest=false)
                 if(isset($aErr['allergy'])) $_POST['err_allergy'] = $aErr['allergy'];
                 if(isset($aErr['email'])) $_POST['err_email'] = $aErr['email'];
                 if(isset($aErr['nbGuest'])) $_POST['err_nbGuest'] = $aErr['nbGuest'];
-                if($bTest) return $aErr;
+                if(TEST_IN_PROGESS) return $aErr;
             }else{
                 try{
                     $bAdd = Bookings::getInstance()->add($oBooking);
                     if($bAdd){
 
-                        //Mail
-                        if($bTest === false)
+                        if(TEST_IN_PROGESS === false)
                         {
-                            $sMess = 'Votre table est réservée pour le ' . $sDateFr . ' à ' . $oBooking->getStartTime() . ' pour ' . $oBooking->getNbGuest() . ' personne(s)';
-                            $sSender = 'contact@quaiantique.online';
-                            $sHeaders = "From: " . $sSender . "\r\n".
-                                "Reply-To: contact@quaiantique.online\r\n".
-                                "Content-Type: text/html; charset=\"UTF-8\"\r\n";
-                            mail($oBooking->getEmail(),'Quai Antique - Votre réservation', $sMess, $sHeaders, '');
-                            //Fin mail
+                            if(LOCAL_SITE_USE === false){
+                                //Mail
+                                $sMess = 'Restaurant Quai Antique';
+                                $sMess .= 'Votre table est réservée pour le ' . $sDateFr . ' à ' . $oBooking->getStartTime() . ' pour ' . $oBooking->getNbGuest() . ' personne(s)';
+                                $sSender = 'contact@quaiantique.online';
+                                $sHeaders = "From: " . $sSender . "\r\n". "Reply-To: contact@quaiantique.online\r\n";
+                                mail($oBooking->getEmail(),'Quai Antique - Votre réservation', $sMess, $sHeaders, '');
+                                //Fin mail
+                            }
                             header('Location:' . $sBackPath . '?book=1&date=' . $sSqlDate . '&time=' . $sStartTime);
                         }else{
+
+                            dbrDie('headerlosscsssatisson');
+                            die();
                             return $oBooking;
                         }
-
                     } else {
                         $_POST['err_book_table'] = 'Erreur lors de la réservation contactez un administrateur.';
-                        if($bTest) return $bAdd;
+                        if(TEST_IN_PROGESS) return $bAdd;
                     }
                 }catch(Exception $e){
                     $_POST['err_book_table'] = 'Erreur : ' . $e->getMessage();
-                    if($bTest) return $_POST['err_book_table'];
+                    if(TEST_IN_PROGESS) return $_POST['err_book_table'];
                 }
             }
         }
     } else{
-        if($bTest) return $_POST;
+        $_POST['err_book_table'] = 'Erreur : ';
+        if(TEST_IN_PROGESS) return $_POST['err_book_table'];
     }
 }

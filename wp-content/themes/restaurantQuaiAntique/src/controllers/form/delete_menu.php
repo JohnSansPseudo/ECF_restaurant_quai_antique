@@ -1,5 +1,5 @@
 <?php
-function deleteMenu($bTest=false)
+function deleteMenu()
 {
 
     $sBackPath = get_admin_url() .'admin.php?page=QuaiAntiqueParam';
@@ -19,18 +19,18 @@ function deleteMenu($bTest=false)
         try{
             $b = RestaurantMenus::getInstance()->deleteById($id);
             if(!$b){
-                if($bTest) return $b;
+                if(TEST_IN_PROGESS) return $b;
                 $_POST['err_del_menu'] = 'Error please contact an admin';
             } else{
-                if($bTest) return true;
+                if(TEST_IN_PROGESS) return true;
             }
         }
         catch(Exception $e){
             $_POST['err_del_menu'] = $e->getMessage();
-            if($bTest) return $_POST['err_del_menu'];
+            if(TEST_IN_PROGESS) return $_POST['err_del_menu'];
         }
     } else{
         $_POST['err_del_menu'] = 'Error delete menu, id is missing';
-        if($bTest) return $_POST['err_del_menu'];
+        if(TEST_IN_PROGESS) return $_POST['err_del_menu'];
     }
 }

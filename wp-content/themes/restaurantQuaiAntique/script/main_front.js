@@ -137,15 +137,18 @@ window.addEventListener('load', function() {
     const aBlock = document.querySelectorAll('.ctnImgGallery');
     if(aBlock){
         for(let oBlock of aBlock) {
-            oBlock.addEventListener('mouseenter', function () {
-                oBlock.querySelector('.ctnTitleImgGallery').animate([
-                    { opacity: 1}], { duration: 300, fill: "forwards"});
-            });
+            const sTitle = oBlock.querySelector('.titleImgGallery').textContent;
+            if(sTitle.length > 0){
+                oBlock.addEventListener('mouseenter', function () {
+                    oBlock.querySelector('.ctnTitleImgGallery').animate([
+                        { opacity: 1}], { duration: 300, fill: "forwards"});
+                });
 
-            oBlock.addEventListener('mouseleave', function () {
-                oBlock.querySelector('.ctnTitleImgGallery').animate([
-                    { opacity: 0}], { duration: 300, fill: "forwards"});
-            });
+                oBlock.addEventListener('mouseleave', function () {
+                    oBlock.querySelector('.ctnTitleImgGallery').animate([
+                        { opacity: 0}], { duration: 300, fill: "forwards"});
+                });
+            }
         }
     }
     //FIN TITLE GALLERY

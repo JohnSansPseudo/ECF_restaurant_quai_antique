@@ -74,7 +74,8 @@ final class ParamFloat extends ParamCheck
     {
         if($this->getMax() && $this->getValue() > $this->getMax())
         {
-            $this->aErr[] = 'Error ' . get_class($this) . ' : ' . $this->getVarName() . ' > $fMax, ' . $this->getValue() . ' > ' . $this->getMax();
+            $this->aErr[] = 'Error ' . get_class($this) . ' : ' . $this->getVarName() . ' is > at $iMax, your value ' . $this->getValue() . ' must be <= at' . $this->getMax();
+
         }
         return $this;
     }
@@ -85,7 +86,7 @@ final class ParamFloat extends ParamCheck
     public function checkMin(): ParamFloat
     {
         if($this->getMin() && $this->getValue() < $this->getMin()){
-            $this->aErr[] = 'Error ' . get_class($this) . ' : ' . $this->getVarName() . ' < $fMin, ' . $this->getValue() . ' < ' . $this->getMin();
+            $this->aErr[] = 'Error ' . get_class($this) . ' : ' . $this->getVarName() . ' is < at $iMin, you value ' . $this->getValue() . ' must be >= at ' . $this->getMin();
         }
         return $this;
     }

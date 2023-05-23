@@ -1,7 +1,7 @@
 <?php
 session_start();
 define('PUBLIC_KEY_RECAPTCHA','6LdFFS8mAAAAANc8iCLIlFIcp1vBYN-eGHDLlVHG');
-define('SECRETE_KEY_RECAPTCHA','6LdFFS8mAAAAAGAfUhbbhghvguTVnD2vjWPQvp2o');
+define('SECRETE_KEY_RECAPTCHA','');
 define('LOCAL_SITE_USE', true);
 define('TEST_IN_PROGESS', false);
 //MENU ADMIN

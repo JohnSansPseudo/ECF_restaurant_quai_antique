@@ -32,15 +32,16 @@ function addMenuOption()
             if(count($oOption->getErrArray()) > 0){
                 $_POST['err_add_menu_option'] = implode(', ', $oOption->getErrArray());
                 if(TEST_IN_PROGESS) return $_POST['err_add_menu_option'];
-            }
-            $bAdd = RestaurantMenuOptions::getInstance()->add($oOption);
-            if(!$bAdd){
-                $_POST['err_add_menu_option'] = $bAdd;
-                if(TEST_IN_PROGESS) return $_POST['err_add_menu_option'];
-            }
-            else {
-                foreach ($aParam as $sParam){ unset($_POST[$sParam]); }
-                if(TEST_IN_PROGESS) return $bAdd;
+            }else{
+                $bAdd = RestaurantMenuOptions::getInstance()->add($oOption);
+                if(!$bAdd){
+                    $_POST['err_add_menu_option'] = $bAdd;
+                    if(TEST_IN_PROGESS) return $_POST['err_add_menu_option'];
+                }
+                else {
+                    foreach ($aParam as $sParam){ unset($_POST[$sParam]); }
+                    if(TEST_IN_PROGESS) return $bAdd;
+                }
             }
         }catch(Exception $e){
             $_POST['err_add_menu_option'] = $e->getMessage();

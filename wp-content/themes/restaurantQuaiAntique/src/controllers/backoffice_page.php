@@ -4,7 +4,10 @@ function getDishPage($sAdminAction)
 {
     //ADD DISH TYPE
     $sErrAddDishType = '';
-    if(isset($_POST['err_add_dish_type'])) $sErrAddDishType = 'Ce type de plat existe déjà, merci d\'essayer avec un autre nom';
+    if(isset($_POST['err_add_dish_type']) && $_POST['err_add_dish_type'] !== ''){
+        $sErrAddDishType = htmlspecialchars($_POST['err_add_dish_type']);
+    }
+
     $sNameDishType = '';
     if(isset($_POST['inpTitleDishType']))$sNameDishType = htmlspecialchars($_POST['inpTitleDishType']);
 
@@ -63,27 +66,30 @@ function getMenuPage($sAdminAction)
 {
     //ADD MENU
     $sErrAddMenu = '';
-    if(isset($_POST['err_add_menu'])) $sErrAddMenu = 'Ce menu existe déjà, merci d\'essayer avec un autre nom';
+    if(isset($_POST['err_add_menu']) && $_POST['err_add_menu'] !== ''){
+        $sErrAddMenu = htmlspecialchars($_POST['err_add_menu']);
+    }
+
     $sNameMenu = '';
     if(isset($_POST['inpTitleMenu']))$sNameMenu = htmlspecialchars($_POST['inpTitleMenu']);
 
-//DELETE MENU
+    //DELETE MENU
     $aErrDeleteMenu = array();
     if(isset($_POST['err_del_menu'])){
         $aErrDeleteMenu[$_POST['idMenu']] =  htmlspecialchars($_POST['err_del_menu']);
     }
 
-//ADD MENU OPTION
+    //ADD MENU OPTION
     $sErrAddMenuOption = '';
     if(isset($_POST['err_add_menu_option'])) $sErrAddMenuOption = htmlspecialchars($_POST['err_add_menu_option']);
 
-//DELETE MENU OPTION
+    //DELETE MENU OPTION
     $aErrDeleteMenuOption = array();
     if(isset($_POST['err_del_menu_option'])){
         $aErrDeleteMenuOption[$_POST['idMenuOption']] =  htmlspecialchars($_POST['err_del_menu_option']);
     }
 
-    $aMenu = RestaurantMenus::getInstance()->getAllData();
+    $aMenu = RestaurantMenus::getInstance()->getAllData(' ORDER BY title');
     $aOptionMenu = RestaurantMenuOptions::getInstance()->getAllData(' ORDER BY idMenu ');
     require_once(get_template_directory() .'/templates/backoffice/menu.php');
     require_once(get_template_directory() . '/templates/backoffice/layout.php');

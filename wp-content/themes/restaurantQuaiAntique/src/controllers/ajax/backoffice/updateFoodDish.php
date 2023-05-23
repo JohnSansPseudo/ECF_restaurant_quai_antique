@@ -28,7 +28,7 @@ function ajaxUpdateFoodDish()
         else return JsonAnswer::retour(0, join(', ', $oFoodDish->getErrArray()), '');
     }
 
-    $sField = sanitize_text_field( $_POST['field']);
+    $sField = intval( $_POST['field']);
     $mValue = null;
     $aDataUpdate = array();
     $aField = FoodDishes::getArrayField();

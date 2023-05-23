@@ -22,7 +22,7 @@ class TestOpeningTime
     {
         $_POST['id'] = 1;
         $_POST['timeStart'] = '12:35';
-        $_POST['timeEnd'] = '15h08';
+        $_POST['timeEnd'] = '15:08';
         $b = ajaxUpdateOpeningTime();
         if($b === true) htmlMessageTest( __FUNCTION__);
         else{

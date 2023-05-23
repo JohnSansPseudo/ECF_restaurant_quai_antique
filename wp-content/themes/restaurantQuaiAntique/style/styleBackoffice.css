@@ -242,7 +242,7 @@ tr textarea{
 }
 
 #tblGallery textarea{
-    height: 35px;
+    height: 110px;
 }
 /* FIN GALLERY */
 
@@ -268,9 +268,7 @@ tr textarea{
         width: 100%;
     }
 
-    #tblGallery textarea{
-        height: 110px;
-    }
+
     #tblEditOptionMenu tr button,
     #tblOpeningTime tr button,
     #tblEditFoodDish tr button,

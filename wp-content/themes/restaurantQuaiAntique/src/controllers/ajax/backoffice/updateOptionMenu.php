@@ -29,7 +29,7 @@ function ajaxUpdateOptionMenu()
         else return JsonAnswer::retour(0, join(', ', $oOption->getErrArray()), '');
     }
 
-    $sField = sanitize_text_field( $_POST['field']);
+    $sField = intval( $_POST['field']);
     $mValue = null;
     $aDataUpdate = array();
     $aField = RestaurantMenuOptions::getArrayField();

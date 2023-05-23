@@ -22,22 +22,21 @@ function addMenu()
             if(count($oMenu->getErrArray()) > 0) {
                 $_POST['err_add_menu'] = implode(', ', $oMenu->getErrArray());
                 if(TEST_IN_PROGESS) return $_POST['err_add_menu'];
-            }
-
-            $mResult = $oRestaurantMenus->getByWhere(array('title' => $oMenu->getTitle()));
-            if(is_array($mResult) && count($mResult) > 0){
-                $_POST['err_add_menu'] = 1;
-                if(TEST_IN_PROGESS) return 'This menu already exist' . var_dump($mResult);
-            }
-            else {
-                $bAdd = RestaurantMenus::getInstance()->add($oMenu);//On l'ajoute
-                if(!$bAdd){
-                    $_POST['err_add_menu'] = $bAdd . '<br/><br/> Error form add menu, please contact an admin';
-                    if(TEST_IN_PROGESS) return $_POST['err_add_menu'];
-                }
-                else{
-                    unset($_POST['inpTitleMenu']);
-                    if(TEST_IN_PROGESS) return $bAdd;
+            }else {
+                $mResult = $oRestaurantMenus->getByWhere(array('title' => $oMenu->getTitle()));
+                if(is_array($mResult) && count($mResult) > 0){
+                    $_POST['err_add_menu'] = 'This menu already exist';
+                    if(TEST_IN_PROGESS) return $_POST['err_add_menu'] . var_dump($mResult);
+                } else {
+                    $bAdd = RestaurantMenus::getInstance()->add($oMenu);//On l'ajoute
+                    if(!$bAdd){
+                        $_POST['err_add_menu'] = $bAdd . '<br/><br/> Error form add menu, please contact an admin';
+                        if(TEST_IN_PROGESS) return $_POST['err_add_menu'];
+                    }
+                    else{
+                        unset($_POST['inpTitleMenu']);
+                        if(TEST_IN_PROGESS) return $bAdd;
+                    }
                 }
             }
         } catch(Exception $e){

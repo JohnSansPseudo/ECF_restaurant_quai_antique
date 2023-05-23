@@ -36,7 +36,7 @@ $image = wp_get_attachment_image_src( $custom_logo_id , 'full' );
                     <ul class="navbar-nav mb-2 mb-lg-0">
                         <?= wp_nav_menu($aMenuArgs); ?>
                     </ul>
-                    <a href="<?= get_site_url() ?>/<?= PageWordpress::BOOK_TABLE_NAME ?>" class="btn btnSaillance" id="">Réserver votre table</a>
+                    <a href="<?= get_site_url() ?>/<?= PageWordpress::BOOK_TABLE_NAME ?>" class="btn btnSaillance" id="">Réservez votre table</a>
                 </div>
             </div>
         </nav>

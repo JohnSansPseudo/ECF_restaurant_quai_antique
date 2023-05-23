@@ -44,7 +44,7 @@ add_action('admin_init', 'addMediaImgFile');
 add_action('template_redirect', 'addClient');
 add_action('template_redirect', 'decoClient');
 add_action('template_redirect', 'connexionClient');
-add_action('template_redirect', 'bookTable', 10, 1);
+add_action('template_redirect', 'bookTable');
 
 //TEST
 add_action('after_setup_theme', 'testLauncher');

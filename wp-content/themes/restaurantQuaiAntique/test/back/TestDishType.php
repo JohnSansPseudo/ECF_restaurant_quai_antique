@@ -34,7 +34,7 @@ class TestDishType
         /**
          * @var $oDishType DishType
          */
-        $oDishType = addDishType(true);
+        $oDishType = addDishType();
         if($oDishType && is_object($oDishType) && get_class($oDishType) === DishType::class) {
             htmlMessageTest( __FUNCTION__);
             return $oDishType;
@@ -55,7 +55,7 @@ class TestDishType
         $_POST['delete_dish_type'] = '';
         $_POST['idDishType'] = $oDishType->getId();
         $_REQUEST['delete_dish_type_nonce'] = wp_create_nonce('deleteDishType');
-        $b = deleteDishType(true);
+        $b = deleteDishType();
         if($b === true) htmlMessageTest( __FUNCTION__);
         else{
             var_dump($b);
@@ -71,7 +71,7 @@ class TestDishType
     {
         $_POST['id'] = $oDishType->getId();
         $_POST['title'] = 'My new title dish type';
-        $b = ajaxUpdateDishType(true);
+        $b = ajaxUpdateDishType();
         if($b === true) htmlMessageTest( __FUNCTION__);
         else{
             var_dump($b);

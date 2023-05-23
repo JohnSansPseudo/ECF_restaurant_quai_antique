@@ -15,6 +15,7 @@ class TestMenuOption
             $oMenuOption = $this->testAddMenuOption();
             if($oMenuOption)
             {
+                $this->testUpdateOptionMenuByForm($oMenuOption);
                 $this->deleteOptionMenuByForm($oMenuOption);
             }
             echo 'End ' . $sFunction  .'<br/>';
@@ -37,7 +38,7 @@ class TestMenuOption
         /**
          * @var $oMenuOption RestaurantMenuOption
          */
-        $oMenuOption = addMenuOption(true);
+        $oMenuOption = addMenuOption();
         if($oMenuOption && is_object($oMenuOption) && get_class($oMenuOption) === RestaurantMenuOption::class) {
             htmlMessageTest( __FUNCTION__);
             return $oMenuOption;
@@ -56,12 +57,39 @@ class TestMenuOption
         $_POST['idMenuOption'] = $oMenuOption->getId();
         $_POST['delete_menu_option'] = '';
         $_REQUEST['delete_menu_option_nonce'] = wp_create_nonce('deleteMenuOption');
-        $b = deleteMenuOption(true);
+        $b = deleteMenuOption();
         if($b === true) htmlMessageTest( __FUNCTION__);
         else{
             var_dump($b);
             dbr($b);
             htmlMessageTest( __FUNCTION__, false, ' Error');
+        }
+    }
+
+    /**
+     * @param $oMenuOption RestaurantMenuOption
+     */
+    public function testUpdateOptionMenuByForm($oMenuOption)
+    {
+        //return array(1 => 'idMenu', 2 => 'title', 3 => 'description', 4 => 'price');
+        $aField = RestaurantMenuOptions::getArrayField();
+        $this->testUpdateFieldOptionMenuByForm($oMenuOption->getId(), 1, 3, $aField[1]);
+        $this->testUpdateFieldOptionMenuByForm($oMenuOption->getId(), 2, 'Mon title test option menu', $aField[2]);
+        $this->testUpdateFieldOptionMenuByForm($oMenuOption->getId(), 3, 'Ma desc test option menu', $aField[3]);
+        $this->testUpdateFieldOptionMenuByForm($oMenuOption->getId(), 4, 58.9, $aField[4]);
+    }
+
+    public function testUpdateFieldOptionMenuByForm($id, $iField, $mValue, $sField)
+    {
+        $_POST['id'] = $id;
+        $_POST['field'] = $iField;
+        $_POST['value'] = $mValue;
+        $b = ajaxUpdateOptionMenu();
+        if($b === true) htmlMessageTest( __FUNCTION__, true, 'ok => ' . $sField);
+        else{
+            var_dump($b);
+            dbr($b);
+            htmlMessageTest( __FUNCTION__, false, ' Error => ' . $sField);
         }
     }
 }

@@ -51,7 +51,13 @@ add_action('after_setup_theme', 'testLauncher');
 
 function testLauncher()
 {
-    /* PENSER 0 MODIFIER LA CONSTANTE TEST_IN_PROGESS EN HAUT DE CE FICHIER */
+    /* PENSER A MODIFIER LA CONSTANTE TEST_IN_PROGESS EN HAUT DE CE FICHIER */
+
+    //echo '<br/><br/><br/><br/><br/><br/>'; // Pour la barre de menu en haut
+
+
+
+    /* FRONT */
     //$oTestCreateAccount = new TestCreateAccount();
     //$oTestCreateAccount->mainTestCreateAccount();
 
@@ -61,7 +67,9 @@ function testLauncher()
     //$oTestBook = new TestBooking();
     //$oTestBook->mainTestBookTable();
 
+    /* FIN FRONT */
 
+    /* BACK */
     //$oTestDishType = new TestDishType();
     //$oTestDishType->mainTestDishType();
 
@@ -77,6 +85,12 @@ function testLauncher()
 
     //$oTestGallery = new TestGallery();
     //$oTestGallery->mainTestGallery();
+
+    //$oTestOpeningTime = new TestOpeningTime();
+    //$oTestOpeningTime->mainTestOpeningTime();
+
+
+    /* FIN BACK */
 
     //die();
 }

@@ -13,7 +13,10 @@ class TestFoodDish
              * @var $oFoodDish FoodDish
              */
             $oFoodDish = $this->testAddFoodDish();
-            if($oFoodDish) $this->deleteFoodDishByForm($oFoodDish);
+            if($oFoodDish){
+                $this->testUpdateFoodDishByForm($oFoodDish);
+                $this->deleteFoodDishByForm($oFoodDish);
+            }
 
             echo 'End ' . $sFunction  .'<br/>';
 
@@ -34,7 +37,7 @@ class TestFoodDish
         /**
          * @var $oFoodDish FoodDish
          */
-        $oFoodDish = addFoodDish(true);
+        $oFoodDish = addFoodDish();
         if($oFoodDish && is_object($oFoodDish) && get_class($oFoodDish) === FoodDish::class) {
             htmlMessageTest( __FUNCTION__);
             return $oFoodDish;
@@ -54,7 +57,7 @@ class TestFoodDish
         $_POST['delete_food_dish'] = '';
         $_REQUEST['delete_food_dish_nonce'] = wp_create_nonce('deleteFoodDish');
         $_POST['idFoodDish'] = $oFoodDish->getId();
-        $b = deleteFoodDish(true);
+        $b = deleteFoodDish();
         if($b === true) htmlMessageTest( __FUNCTION__);
         else{
             var_dump($b);
@@ -62,4 +65,33 @@ class TestFoodDish
             htmlMessageTest( __FUNCTION__, false, ' Error');
         }
     }
+
+    /**
+     * @param $oFoodDish FoodDish
+     */
+    public function testUpdateFoodDishByForm($oFoodDish)
+    {
+        //array(1 => 'idDishType', 2 => 'title', 3 => 'description', 4 => 'price');
+        $aField = FoodDishes::getArrayField();
+        $this->testUpdateFieldFoodDishByForm($oFoodDish->getId(), 1, 3, $aField[1]);
+        $this->testUpdateFieldFoodDishByForm($oFoodDish->getId(), 2, 'Mon title test', $aField[2]);
+        $this->testUpdateFieldFoodDishByForm($oFoodDish->getId(), 3, 'Ma desc test', $aField[3]);
+        $this->testUpdateFieldFoodDishByForm($oFoodDish->getId(), 4, 55.6, $aField[4]);
+
+    }
+
+    public function testUpdateFieldFoodDishByForm($id, $iField, $mValue, $sField)
+    {
+        $_POST['id'] = $id;
+        $_POST['field'] = $iField;
+        $_POST['value'] = $mValue;
+        $b = ajaxUpdateFoodDish();
+        if($b === true) htmlMessageTest( __FUNCTION__, true, 'ok => ' . $sField);
+        else{
+            var_dump($b);
+            dbr($b);
+            htmlMessageTest( __FUNCTION__, false, ' Error => ' . $sField);
+        }
+    }
+
 }

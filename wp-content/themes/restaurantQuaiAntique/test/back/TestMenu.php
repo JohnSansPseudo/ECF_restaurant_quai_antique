@@ -34,7 +34,7 @@ class TestMenu
         /**
          * @var $oMenu RestaurantMenu
          */
-        $oMenu = addMenu(true);
+        $oMenu = addMenu();
         if($oMenu && is_object($oMenu) && get_class($oMenu) === RestaurantMenu::class) {
             htmlMessageTest( __FUNCTION__);
             return $oMenu;
@@ -55,7 +55,7 @@ class TestMenu
         $_POST['delete_menu'] = '';
         $_REQUEST['delete_menu_nonce'] = wp_create_nonce('deleteMenu');
         $_POST['idMenu'] = $oMenu->getId();
-        $b = deleteMenu(true);
+        $b = deleteMenu();
         if($b === true) htmlMessageTest( __FUNCTION__);
         else{
             var_dump($b);
@@ -72,7 +72,7 @@ class TestMenu
     {
         $_POST['id'] = $oMenu->getId();
         $_POST['title'] = 'My new title menu';
-        $b = ajaxUpdateMenu(true);
+        $b = ajaxUpdateMenu();
         if($b === true) htmlMessageTest( __FUNCTION__);
         else{
             var_dump($b);

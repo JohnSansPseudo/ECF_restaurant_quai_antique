@@ -5,11 +5,13 @@
 require_once('front/TestConnexionClient.php');
 require_once('front/TestCreateAccount.php');
 require_once('front/TestBooking.php');
+
 require_once('back/TestDishType.php');
 require_once('back/TestFoodDish.php');
 require_once('back/TestMenu.php');
 require_once('back/TestMenuOption.php');
 require_once('back/TestGallery.php');
+require_once('back/TestOpeningTime.php');
 
 
 function htmlMessageTest(string $sFunction, bool $State=true, string $sMess='')

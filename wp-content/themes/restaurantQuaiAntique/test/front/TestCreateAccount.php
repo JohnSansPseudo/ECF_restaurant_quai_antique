@@ -13,7 +13,7 @@ Class TestCreateAccount
             $oClient = $this->testCreateClientAccountByUserForm();
             if($oClient){
                 Clients::getInstance()->deleteById($oClient->getId());
-                echo htmlMessageTest('Clients::getInstance()->deleteById');
+                htmlMessageTest('Clients::getInstance()->deleteById');
             }  else htmlMessageTest('Clients::getInstance()->deleteById', false, 'Error delete client');
             echo 'End ' . __FUNCTION__ . '<br/>';
 
@@ -38,7 +38,7 @@ Class TestCreateAccount
         $_POST['inpNbGuestDef'] = '5';
         $_POST['inpPassword'] = 'test';
         $_REQUEST['add_client_nonce'] = wp_create_nonce('addClient');
-        $oClient = addClient(true);
+        $oClient = addClient();
         if($oClient && is_object($oClient) && get_class($oClient) === Client::class) {
             htmlMessageTest( __FUNCTION__);
             return $oClient;

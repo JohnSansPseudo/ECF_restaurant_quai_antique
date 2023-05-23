@@ -34,7 +34,7 @@ class TestGallery
     function testEraseGallery($oGallery)
     {
         $_POST['idGallery'] = $oGallery->getId();
-        $b= ajaxDeleteImgGallery(true);
+        $b= ajaxDeleteImgGallery();
         if($b === true) htmlMessageTest( __FUNCTION__);
         else{
             var_dump($b);
@@ -58,7 +58,7 @@ class TestGallery
         $_POST['idGallery'] = $oGallery->getId();
         $_POST['value'] = 'new title test';
         $_POST['field'] = 'title';
-        $b = ajaxUpdateImgGallery(true);
+        $b = ajaxUpdateImgGallery();
         if($b === true) htmlMessageTest( __FUNCTION__);
         else{
             var_dump($b);
@@ -75,7 +75,7 @@ class TestGallery
         $_POST['idGallery'] = $oGallery->getId();
         $_POST['value'] = 154;
         $_POST['field'] = 'idAttachment';
-        $b = ajaxUpdateImgGallery(true);
+        $b = ajaxUpdateImgGallery();
         if($b === true) htmlMessageTest( __FUNCTION__);
         else{
             var_dump($b);

@@ -39,7 +39,7 @@ class TestBooking
         $_POST['txtAllergie'] = 'Oui il y en a';
         $_POST['book-table'] = '';
         $_REQUEST['book_table_nonce'] = wp_create_nonce('bookTable');
-        $oBooking = bookTable(true);
+        $oBooking = bookTable();
         if($oBooking && is_object($oBooking) && get_class($oBooking) === Booking::class) {
             htmlMessageTest( __FUNCTION__);
             return $oBooking;

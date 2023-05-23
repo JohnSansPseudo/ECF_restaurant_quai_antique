@@ -4,7 +4,8 @@ function ajaxUpdateFoodDish()
 {
     //Si une des données necéssaire est manquante
     if(!isset($_POST['id']) || !isset($_POST['field']) || !isset($_POST['value'])) {
-        return JsonAnswer::retour(0, 'Error update food dish, data are missing', '');
+        if(TEST_IN_PROGESS) return 'Error update food dish, data are missing';
+        else return JsonAnswer::retour(0, 'Error update food dish, data are missing', '');
     }
 
     //Sécurisation des paramètres reçues
@@ -17,10 +18,14 @@ function ajaxUpdateFoodDish()
     $aFoodDish = FoodDishes::getInstance()->getByWhere(array('id' => $idFoodDish));
     if($aFoodDish && is_array($aFoodDish)){
         $oFoodDish = array_pop($aFoodDish);
-    }else return JsonAnswer::retour(0, 'Error id food dish is not exist in database', '');
+    }else{
+        if(TEST_IN_PROGESS) return 'Error id food dish is not exist in database';
+        else return JsonAnswer::retour(0, 'Error id food dish is not exist in database', '');
+    }
 
     if(count($oFoodDish->getErrArray()) > 0){
-        return JsonAnswer::retour(0, join(', ', $oFoodDish->getErrArray()), '');
+        if(TEST_IN_PROGESS) return join(', ', $oFoodDish->getErrArray());
+        else return JsonAnswer::retour(0, join(', ', $oFoodDish->getErrArray()), '');
     }
 
     $sField = sanitize_text_field( $_POST['field']);
@@ -35,7 +40,8 @@ function ajaxUpdateFoodDish()
             $mValue = intval($_POST['value']);
             $oFoodDish->setIdDishType($mValue);
             if(count($oFoodDish->getErrArray()) > 0){
-                return JsonAnswer::retour(0, join(', ', $oFoodDish->getErrArray()), '');
+                if(TEST_IN_PROGESS) return join(', ', $oFoodDish->getErrArray());
+                else return JsonAnswer::retour(0, join(', ', $oFoodDish->getErrArray()), '');
             }
             $aDataUpdate[$aField[$sField]] = $oFoodDish->getIdDishType();
             break;
@@ -43,7 +49,8 @@ function ajaxUpdateFoodDish()
             $mValue = sanitize_text_field( $_POST['value']);
             $oFoodDish->setTitle($mValue);
             if(count($oFoodDish->getErrArray()) > 0){
-                return JsonAnswer::retour(0, join(', ', $oFoodDish->getErrArray()), '');
+                if(TEST_IN_PROGESS) return join(', ', $oFoodDish->getErrArray());
+                else return JsonAnswer::retour(0, join(', ', $oFoodDish->getErrArray()), '');
             }
             $aDataUpdate[$aField[$sField]] = $oFoodDish->getTitle();
             break;
@@ -51,7 +58,8 @@ function ajaxUpdateFoodDish()
             $mValue = sanitize_text_field( $_POST['value']);
             $oFoodDish->setDescription($mValue);
             if(count($oFoodDish->getErrArray()) > 0){
-                return JsonAnswer::retour(0, join(', ', $oFoodDish->getErrArray()), '');
+                if(TEST_IN_PROGESS) return join(', ', $oFoodDish->getErrArray());
+                else return JsonAnswer::retour(0, join(', ', $oFoodDish->getErrArray()), '');
             }
             $aDataUpdate[$aField[$sField]] = $oFoodDish->getDescription();
             break;
@@ -59,18 +67,30 @@ function ajaxUpdateFoodDish()
             $mValue = floatval($_POST['value']);
             $oFoodDish->setPrice($mValue);
             if(count($oFoodDish->getErrArray()) > 0){
-                return JsonAnswer::retour(0, join(', ', $oFoodDish->getErrArray()), '');
+                if(TEST_IN_PROGESS) return join(', ', $oFoodDish->getErrArray());
+                else return JsonAnswer::retour(0, join(', ', $oFoodDish->getErrArray()), '');
             }
             $aDataUpdate[$aField[$sField]] = $oFoodDish->getPrice();
             break;
-        default: return JsonAnswer::retour(0, 'Error switch update food dish $sField(' . $sField . ') is unknow', '');
+        default:
+            if(TEST_IN_PROGESS) return join(', ', $oFoodDish->getErrArray());
+            else return JsonAnswer::retour(0, 'Error switch update food dish $sField(' . $sField . ') is unknow', '');
+            break;
     }
 
     try{
         $b = FoodDishes::getInstance()->updateById($oFoodDish->getId(), $aDataUpdate);
+        if($b === true){
+            if(TEST_IN_PROGESS) return true;
+            else return JsonAnswer::retour(1, 'Food dish updated', '');
+        } else {
+            if(TEST_IN_PROGESS) return $b;
+            else return JsonAnswer::retour(0, 'Error update food dish', $b);
+        }
+
     }catch(Exception $e){
-        return JsonAnswer::retour(0, 'Error ajaxUpdateFoodDIsh : ' . $e->getMessage(), '');
+        if(TEST_IN_PROGESS) return 'Error ajaxUpdateFoodDIsh : ' . $e->getMessage();
+        else return JsonAnswer::retour(0, 'Error ajaxUpdateFoodDIsh : ' . $e->getMessage(), '');
     }
-    if($b === true) return JsonAnswer::retour(1, 'Food dish updated', '');
-    return JsonAnswer::retour(0, 'Error update food dish', $b);
+
 }

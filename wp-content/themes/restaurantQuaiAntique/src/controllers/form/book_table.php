@@ -103,15 +103,14 @@ function bookTable()
                                 $sMess = 'Restaurant Quai Antique';
                                 $sMess .= 'Votre table est réservée pour le ' . $sDateFr . ' à ' . $oBooking->getStartTime() . ' pour ' . $oBooking->getNbGuest() . ' personne(s)';
                                 $sSender = 'contact@quaiantique.online';
-                                $sHeaders = "From: " . $sSender . "\r\n". "Reply-To: contact@quaiantique.online\r\n";
+                                $sHeaders = "From: " . $sSender . "\r\n".
+                                    "Reply-To: contact@quaiantique.online\r\n".
+                                    "Content-Type: text/html; charset=\"UTF-8\"\r\n";
                                 mail($oBooking->getEmail(),'Quai Antique - Votre réservation', $sMess, $sHeaders, '');
                                 //Fin mail
                             }
                             header('Location:' . $sBackPath . '?book=1&date=' . $sSqlDate . '&time=' . $sStartTime);
                         }else{
-
-                            dbrDie('headerlosscsssatisson');
-                            die();
                             return $oBooking;
                         }
                     } else {

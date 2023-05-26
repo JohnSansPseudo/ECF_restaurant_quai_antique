@@ -116,7 +116,9 @@ function creatAccountClient($oParamSan, $sBackPath)
                             $sMess .= 'login : ' . $oClient->getEmail() . ' mot de passe : ' . $sPasswordInit;
                             $sMess .= ' connectez-vous : https://quaiantique.online/sign-in/';
                             $sSender = 'contact@quaiantique.online';
-                            $sHeaders = "From: " . $sSender . "\r\n" . "Reply-To: contact@quaiantique.online\r\n";
+                            $sHeaders = "From: " . $sSender . "\r\n".
+                                "Reply-To: contact@quaiantique.online\r\n".
+                                "Content-Type: text/html; charset=\"UTF-8\"\r\n";
                             mail($oClient->getEmail(), 'Quai Antique - Votre compte client', $sMess, $sHeaders, '');
                             //Fin mail
                         }

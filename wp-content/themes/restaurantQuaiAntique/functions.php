@@ -66,7 +66,6 @@ function testLauncher()
 
     //$oTestBook = new TestBooking();
     //$oTestBook->mainTestBookTable();
-
     /* FIN FRONT */
 
     /* BACK */
@@ -75,7 +74,6 @@ function testLauncher()
 
     //$oTestFoodDish = new TestFoodDish();
     //$oTestFoodDish->mainTestFoodDish();
-
 
     //$oTestMenu = new TestMenu();
     //$oTestMenu->mainTestMenu();
@@ -88,8 +86,6 @@ function testLauncher()
 
     //$oTestOpeningTime = new TestOpeningTime();
     //$oTestOpeningTime->mainTestOpeningTime();
-
-
     /* FIN BACK */
 
     //die();
@@ -352,7 +348,6 @@ function setTables()
         if($iNbGuestMax === 0){
             add_option(Bookings::GUEST_MAX_OPTION, 50);
         }
-
         add_option('init_theme', 1);
 
     }catch(Exception $e){

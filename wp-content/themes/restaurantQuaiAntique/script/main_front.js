@@ -26,14 +26,8 @@ window.addEventListener('load', function() {
     $('#inpDateBook').on('change', function(){
         //Modfication des horaires proposé en fonction du jour sélectionné
         const sFrDate = $(this).val();
-        try{ new ParamStrCheck(sFrDate, 'sFrDate').checkMinLen(10).checkMaxLen(10); }
-        catch(e){
-            alert(e.message);
-            console.error(e.message);
-            console.trace();
-            return false;
-        }
         try{
+            new ParamStrCheck(sFrDate, 'sFrDate').checkMinLen(10).checkMaxLen(10);
             const sSqlDate = DateJs.sDateToSql(sFrDate, '/', DateJs.FR_LANG);
             const oBookingHoursDay = new BookingHoursDay();
             const sPage = $(this).attr('data-action');//Voir page book-table
@@ -196,7 +190,6 @@ class UserConnexion
                 }
             })
             .then((oResp) => {
-
                 if(parseInt(oResp.data.code) === 1) document.location.href = sPageReload;
                 else this.isUserNameAdmin(sMail, sPassword, sPageAjax, sPageAdminConn);
             })

@@ -1,10 +1,8 @@
 <?php
 function addDishType()
 {
-
     $sBackPath = get_admin_url() .'admin.php?page=QuaiAntiqueParam?admin_action=dish';
     if(!isset($_POST['add_dish_type'])) return false;
-
 
     if(!isset($_REQUEST['add_dish_type_nonce']) || !wp_verify_nonce($_REQUEST['add_dish_type_nonce'], 'addDishType' )){
         die('Vous n\'avez pas l\'autorisation d\'effectuer cette action. <br/><br/><a href="' . $sBackPath . '">Retour</a>');
@@ -15,8 +13,6 @@ function addDishType()
     unset($_REQUEST['add_dish_type_nonce']);
 
     if(isset($_POST['inpTitleDishType'])){
-
-
         $sTitle = sanitize_text_field($_POST['inpTitleDishType']);
         try{
             $oDishTypeManager = new DishTypes();
@@ -42,7 +38,6 @@ function addDishType()
                     }
                 }
             }
-
         } catch(Exception $e){
             $_POST['err_add_dish_type'] = $e->getMessage();
             if(TEST_IN_PROGESS) return $_POST['err_add_dish_type'];

@@ -20,10 +20,11 @@ class PDOSingleton
     {
         if (!isset(self::$instance)) {
             try{
-                self::$instance = new PDO('mysql:host=localhost;dbname=' . DB_NAME . ';charset=utf8', DB_USER, DB_PASSWORD);
+                self::$instance = new PDO('mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET, DB_USER, DB_PASSWORD);
             }
             catch(PDOException $oEx){
                 echo $oEx->getMessage();
+                echo $oEx->getTrace();
                 die('Error PDO conn');
             }
         }

@@ -657,8 +657,7 @@ class DishTypeManager extends Manager
                     console.error('Error promise then update dish type');
                     console.trace();
                 }
-            })
-            .then((oResp) => {
+            }).then((oResp) => {
                 if(parseInt(oResp.data.code) === 1) {
                     new ToastAlert(ToastAlert.SUCCESS, oResp.data.mess);
                     this.majTitleDishTypeAdd(id, sTitle);
@@ -669,8 +668,7 @@ class DishTypeManager extends Manager
                     alert(oResp.data.mess);
                     console.trace();
                 }
-            })
-            .catch((oResp) => {
+            }).catch((oResp) => {
                 alert('Error catch promise');
                 console.error(oResp);
                 console.trace();

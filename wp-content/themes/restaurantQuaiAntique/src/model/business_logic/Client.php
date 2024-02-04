@@ -130,7 +130,7 @@ class Client
      */
     public function setEmail(string $sEmail): Client
     {
-        $oParam = new ParamString($sEmail, ' email ', 3);
+        $oParam = new ParamString($sEmail, ' email ', 5);
         if($oParam->getStringError() !== ''){
             $this->aErr['email'] = $oParam->getStringError();
         }else if(!filter_var($sEmail, FILTER_VALIDATE_EMAIL)){

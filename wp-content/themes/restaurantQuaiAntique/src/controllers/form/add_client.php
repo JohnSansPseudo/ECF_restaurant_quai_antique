@@ -50,7 +50,7 @@ function addClient()
             'firstName' => sanitize_text_field($_POST[$oParam->firstName]),
             'lastName' => sanitize_text_field($_POST[$oParam->lastName]),
             'tel' => sanitize_text_field($_POST[$oParam->tel]),
-            'mail' =>  sanitize_text_field($_POST[$oParam->mail]),
+            'mail' =>  $_POST[$oParam->mail],
             'nbGuest' => intval($_POST[$oParam->nbGuest]));
 
         if(isset($_POST[$oParam->allergie]))$oParamSan->allergie = sanitize_text_field($_POST[$oParam->allergie]);
@@ -90,7 +90,9 @@ function creatAccountClient($oParamSan, $sBackPath)
     }else{
         $sPasswordInit = sanitize_text_field(($_POST['inpPassword']));
         $sPassword = ClientConnection::generatePassword($sPasswordInit);
+
         $oClient = new Client($oParamSan->firstName, $oParamSan->lastName, $oParamSan->tel, $oParamSan->mail, $oParamSan->allergie, $sPassword, $oParamSan->nbGuest);
+
         if (!empty($oClient->getErrArray())) {
             unset($_POST['inpPassword']);
             $aErr = $oClient->getErrArray();

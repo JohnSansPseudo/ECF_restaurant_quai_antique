@@ -9,9 +9,6 @@ class TestMenu
         echo 'Start ' . $sFunction  .'<br/>';
         try {
 
-            /**
-             * @var $oMenu RestaurantMenu
-             */
             $oMenu = $this->testAddMenuByForm();
             if($oMenu) {
                 $this->testUpdateMenuByForm($oMenu);

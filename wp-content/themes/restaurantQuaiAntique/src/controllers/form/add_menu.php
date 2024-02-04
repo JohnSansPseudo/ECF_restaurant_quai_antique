@@ -4,7 +4,6 @@ function addMenu()
     $sBackPath = get_admin_url() .'admin.php?page=QuaiAntiqueParam';
     if(!isset($_POST['add-menu'])) return false;
 
-
     if(!isset($_REQUEST['add_menu_nonce']) || !wp_verify_nonce($_REQUEST['add_menu_nonce'], 'addMenu' )){
         die('Vous n\'avez pas l\'autorisation d\'effectuer cette action. <br/><br/><a href="' . $sBackPath . '">Retour</a>');
     }

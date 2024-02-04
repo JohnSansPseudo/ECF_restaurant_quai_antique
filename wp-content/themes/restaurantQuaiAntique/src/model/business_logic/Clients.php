@@ -38,13 +38,14 @@ final class Clients extends ManagerObjTable
 
     /**
      * @param $oClient Client
-     * @return $oClient Client
+     * @return Client | bool
      */
     public function add($oClient)
     {
-
         $oPDO = PDOSingleton::getInstance();
-        $oStatement = $oPDO->prepare("insert INTO " . self::getTableName() . "(email, password, firstName, lastName, tel, allergy, nbGuest)  VALUES(:email, :password, :firstName, :lastName, :tel, :allergy, :nbGuest)");
+        $oStatement = $oPDO->prepare(
+            "insert INTO " . self::getTableName() . "(email, password, firstName, lastName, tel, allergy, nbGuest)  
+            VALUES(:email, :password, :firstName, :lastName, :tel, :allergy, :nbGuest)");
         if(!$oStatement) return false;
 
         $oStatement->bindValue(':email', $oClient->getEmail(), PDO::PARAM_STR);

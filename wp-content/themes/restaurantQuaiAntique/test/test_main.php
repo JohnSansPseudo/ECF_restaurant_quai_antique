@@ -78,7 +78,6 @@ function testTables()
     //dbrDie($oMenusOption->getAllData());
     //$oMenusOption->deleteById(5);
 
-
     $oDishTypes = new DishTypes();
     //$oDishTypes->createTable();
     //$oDisheType = new DishType('Entrées');
@@ -94,6 +93,4 @@ function testTables()
     //$oFoodDishes->updateById(1, array('title' => 'Caviars'));
     //dbrDie($oFoodDishes->getAllData());
     //$oFoodDishes->deleteById(1);
-
-
 }
